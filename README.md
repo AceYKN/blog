@@ -61,4 +61,4 @@ npm run dev
    - Environment variable: `NODE_VERSION` = `24.11.0`
 4. 点击部署。之后每次 `git push` 都会自动更新站点；PR/分支会得到预览链接。
 
-Cloudflare Pages 使用网站根路径，因此不需要设置 `NUXT_APP_BASE_URL`。`public/_redirects` 会把未知路径重写到 `index.html`，使访客直接打开任意文章、项目或笔记网址也能正常进入。
+Cloudflare Pages 使用网站根路径，因此不需要设置 `NUXT_APP_BASE_URL`。构建过程会移除顶层 `404.html`，启用 Cloudflare Pages 原生的 SPA 回退，使访客直接打开任意文章、项目或笔记网址也能正常进入。

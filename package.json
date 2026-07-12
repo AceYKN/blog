@@ -8,7 +8,7 @@
   "scripts": {
     "dev": "nuxt dev",
     "build": "nuxt build",
-    "generate": "nuxt generate",
+    "generate": "nuxt generate && node scripts/prepare-cloudflare-pages.mjs",
     "generate:note-meta": "node scripts/generate-note-meta.mjs",
     "prepare": "nuxt prepare"
   },
