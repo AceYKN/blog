@@ -47,8 +47,8 @@ npm run dev
 3. 填入构建设置：
    - Framework preset: `Nuxt.js`
    - Build command: `npm run generate`
-   - Build output directory: `.output/public`
-   - Environment variable: `NODE_VERSION` = `22`
+   - Build output directory: `dist`
+   - Environment variable: `NODE_VERSION` = `24.11.0`
 4. 点击部署。之后每次 `git push` 都会自动更新站点；PR/分支会得到预览链接。
 
 `public/_redirects` 已经设置单页应用回退，所以访客直接打开任意文章、项目或笔记网址也能正常进入。
