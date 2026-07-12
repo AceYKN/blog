@@ -14,6 +14,11 @@ export default defineNuxtConfig({
       meta: [
         { name: 'viewport', content: 'width=device-width, initial-scale=1' },
         { name: 'description', content: '學習筆記、文章與工作紀錄。' }
+      ],
+      script: [
+        {
+          innerHTML: "try { const saved = localStorage.getItem('theme'); document.documentElement.dataset.theme = saved === 'light' || saved === 'dark' ? saved : (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') } catch {}"
+        }
       ]
     }
   },
