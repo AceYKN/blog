@@ -33,22 +33,32 @@ tags: [生活, 工具]
 
 ## 本地预览
 
-```powershell
-npm install
+```sh
+npm ci
 npm run dev
 ```
 
 打开终端提示的网址（通常是 `http://localhost:3000`）。
 
-## 首次部署到 Cloudflare Pages
+## 部署
+
+### GitHub Pages
+
+仓库已包含 GitHub Actions 工作流。首次使用时，在 GitHub 仓库的 **Settings → Pages** 中，把 **Build and deployment → Source** 设为 **GitHub Actions**。之后推送到 `main` 会自动发布至：
+
+`https://aceykn.github.io/blog/`
+
+工作流会自动使用 `/blog/` 作为资源基路径，并生成 `404.html`，因此刷新或直接打开任意笔记链接都能正常显示。
+
+### Cloudflare Pages
 
 1. 在 GitHub 新建一个仓库，把本项目推送上去。
 2. 登录 Cloudflare，进入 **Workers & Pages → Create → Pages → Connect to Git**，选择仓库。
 3. 填入构建设置：
    - Framework preset: `Nuxt.js`
    - Build command: `npm run generate`
-   - Build output directory: `dist`
+   - Build output directory: `.output/public`
    - Environment variable: `NODE_VERSION` = `24.11.0`
 4. 点击部署。之后每次 `git push` 都会自动更新站点；PR/分支会得到预览链接。
 
-`public/_redirects` 已经设置单页应用回退，所以访客直接打开任意文章、项目或笔记网址也能正常进入。
+Cloudflare Pages 使用网站根路径，因此不需要设置 `NUXT_APP_BASE_URL`。`public/_redirects` 会把未知路径重写到 `index.html`，使访客直接打开任意文章、项目或笔记网址也能正常进入。

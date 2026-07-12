@@ -5,6 +5,9 @@ export default defineNuxtConfig({
   modules: ['@nuxt/content'],
   css: ['~/assets/css/main.css', 'katex/dist/katex.min.css'],
   app: {
+    // GitHub project sites are served from /<repository>/, while Cloudflare
+    // Pages and local development use the domain root.
+    baseURL: process.env.NUXT_APP_BASE_URL || '/',
     head: {
       htmlAttrs: { lang: 'zh-Hant' },
       title: 'blog',
