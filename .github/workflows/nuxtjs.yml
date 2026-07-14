@@ -42,11 +42,11 @@ jobs:
         env:
           NUXT_APP_BASE_URL: ${{ steps.pages.outputs.base_path }}
       - name: Add SPA fallback for direct links
-        run: cp .output/public/index.html .output/public/404.html
+        run: cp dist/index.html dist/404.html
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: ./.output/public
+          path: ./dist
 
   # Deployment job
   deploy:

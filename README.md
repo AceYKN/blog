@@ -57,7 +57,7 @@ npm run dev
 3. 填入构建设置：
    - Framework preset: `Nuxt.js`
    - Build command: `npm run generate`
-   - Build output directory: `.output/public`
+   - Build output directory: `dist`
    - Environment variable: `NODE_VERSION` = `24.11.0`
 4. 点击部署。之后每次 `git push` 都会自动更新站点；PR/分支会得到预览链接。
 
