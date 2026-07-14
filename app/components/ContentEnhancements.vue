@@ -1,6 +1,40 @@
 <script setup lang="ts">
 let sequence = 0
 
+async function renderMermaid(diagram: HTMLElement, source: string) {
+  const mermaid = (await import('mermaid')).default
+  const dark = document.documentElement.dataset.theme === 'dark'
+  mermaid.initialize({
+    startOnLoad: false,
+    securityLevel: 'strict',
+    theme: dark ? 'dark' : 'neutral',
+    themeVariables: dark
+      ? {
+          background: '#202a22',
+          primaryColor: '#222c24',
+          primaryTextColor: '#ece9dd',
+          primaryBorderColor: '#a9c9af',
+          lineColor: '#b8c8ee',
+          secondaryColor: '#2d291f',
+          tertiaryColor: '#302321'
+        }
+      : {
+          background: '#e4e9e2',
+          primaryColor: '#e4ebe5',
+          primaryTextColor: '#20251e',
+          primaryBorderColor: '#466555',
+          lineColor: '#465875',
+          secondaryColor: '#eee2d3',
+          tertiaryColor: '#e9d9d4'
+        }
+  })
+  const { svg } = await mermaid.render(`mermaid-${sequence++}`, source)
+  diagram.dataset.source = source
+  diagram.setAttribute('role', 'img')
+  diagram.setAttribute('aria-label', 'Mermaid diagram')
+  diagram.innerHTML = svg
+}
+
 async function enhance(root: ParentNode = document) {
   const blocks = [...root.querySelectorAll<HTMLElement>('.prose pre')]
   for (const block of blocks) {
@@ -16,18 +50,9 @@ async function enhance(root: ParentNode = document) {
 
     if (language === 'mermaid') {
       try {
-        const mermaid = (await import('mermaid')).default
-        mermaid.initialize({
-          startOnLoad: false,
-          securityLevel: 'strict',
-          theme: document.documentElement.dataset.theme === 'dark' ? 'dark' : 'neutral'
-        })
-        const { svg } = await mermaid.render(`mermaid-${sequence++}`, code.textContent || '')
         const diagram = document.createElement('div')
         diagram.className = 'mermaid-diagram'
-        diagram.setAttribute('role', 'img')
-        diagram.setAttribute('aria-label', 'Mermaid diagram')
-        diagram.innerHTML = svg
+        await renderMermaid(diagram, code.textContent || '')
         block.replaceWith(diagram)
         continue
       } catch {
@@ -53,8 +78,28 @@ async function enhance(root: ParentNode = document) {
   }
 }
 
+async function refreshMermaid() {
+  const diagrams = [...document.querySelectorAll<HTMLElement>('.mermaid-diagram')]
+  await Promise.all(
+    diagrams.map(async (diagram) => {
+      const source = diagram.dataset.source
+      if (!source) return
+      try {
+        await renderMermaid(diagram, source)
+      } catch {
+        // Keep the existing diagram visible if a re-render fails.
+      }
+    })
+  )
+}
+
 onMounted(() => {
   void nextTick(() => enhance())
+  window.addEventListener('blog:themechange', refreshMermaid)
+})
+
+onBeforeUnmount(() => {
+  window.removeEventListener('blog:themechange', refreshMermaid)
 })
 </script>
 

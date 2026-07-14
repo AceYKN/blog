@@ -2,7 +2,13 @@
 import { entryTitle, sourcePath, type LibraryEntry } from '~/utils/library'
 import type { SearchDocument, SearchIndex } from '~/utils/search'
 
-const props = defineProps<{ entry: LibraryEntry }>()
+const props = withDefaults(
+  defineProps<{
+    entry: LibraryEntry
+    showBreadcrumbs?: boolean
+  }>(),
+  { showBreadcrumbs: true }
+)
 const { data: index } = await useFetch<SearchIndex>('/search-catalog.json', { key: 'site-search-catalogue' })
 const path = computed(() => sourcePath(props.entry).replace(/\.md$/, ''))
 const current = computed(() => index.value?.documents.find((document) => document.kind === 'notes' && document.path === path.value))
@@ -24,7 +30,7 @@ const crumbs = computed(() => {
 </script>
 
 <template>
-  <nav class="breadcrumbs" aria-label="麵包屑">
+  <nav v-if="showBreadcrumbs" class="breadcrumbs" aria-label="麵包屑">
     <NuxtLink to="/library">課程筆記</NuxtLink
     ><span v-for="crumb in crumbs" :key="crumb.label"
       >/ <NuxtLink v-if="crumb.to" :to="crumb.to">{{ crumb.label }}</NuxtLink
