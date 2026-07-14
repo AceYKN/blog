@@ -3,7 +3,7 @@ import { entryTitle, sourcePath, type LibraryEntry } from '~/utils/library'
 import type { SearchDocument, SearchIndex } from '~/utils/search'
 
 const props = defineProps<{ entry: LibraryEntry }>()
-const { data: index } = await useFetch<SearchIndex>('/search-index.json', { key: 'site-search-index' })
+const { data: index } = await useFetch<SearchIndex>('/search-catalog.json', { key: 'site-search-catalogue' })
 const path = computed(() => sourcePath(props.entry).replace(/\.md$/, ''))
 const current = computed(() => index.value?.documents.find((document) => document.kind === 'notes' && document.path === path.value))
 const courseNotes = computed(() =>

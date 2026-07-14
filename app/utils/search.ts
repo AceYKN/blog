@@ -5,8 +5,8 @@ export type SearchDocument = {
   title: string
   path: string
   url: string
-  headings: string[]
-  text: string
+  headings?: string[]
+  text?: string
 }
 
 export type SearchIndex = { version: number; documents: SearchDocument[] }
@@ -65,8 +65,8 @@ export function searchIndex(
     .map((document) => {
       const title = normalize(document.title)
       const path = normalize(document.path)
-      const headings = normalize(document.headings.join(' '))
-      const text = normalize(document.text)
+      const headings = normalize(document.headings?.join(' ') || '')
+      const text = normalize(document.text || '')
       const matches = terms.every(
         (term) =>
           includesOrFuzzy(title, term) || includesOrFuzzy(path, term) || includesOrFuzzy(headings, term) || includesOrFuzzy(text, term)
@@ -80,7 +80,7 @@ export function searchIndex(
           (text.includes(term) ? 10 : 0),
         0
       )
-      return { ...document, score, matches, snippet: excerpt(document.text, terms) }
+      return { ...document, score, matches, snippet: excerpt(document.text || '', terms) }
     })
     .filter((result) => result.matches)
     .sort((left, right) => right.score - left.score || left.title.localeCompare(right.title, 'zh-Hant'))

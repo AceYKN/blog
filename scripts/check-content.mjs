@@ -50,7 +50,7 @@ for (const type of ['essays', 'tech', 'projects']) {
   }
 }
 
-const index = JSON.parse(await readFile(join(root, 'public', 'search-index.json'), 'utf8'))
+const index = JSON.parse(await readFile(join(root, 'public', 'search-catalog.json'), 'utf8'))
 const publishedMarkdown = contentRoutes.length
 if (index.documents.length !== publishedMarkdown)
   failures.push(`search index has ${index.documents.length} entries; expected ${publishedMarkdown}`)

@@ -5,3 +5,4 @@ dist
 node_modules
 content/source
 package-lock.json
+.claude

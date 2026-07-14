@@ -3,7 +3,7 @@ import { join, relative, sep } from 'node:path'
 import { format, resolveConfig } from 'prettier'
 
 const root = join(process.cwd(), 'content')
-const output = join(process.cwd(), 'public', 'search-index.json')
+const outputDirectory = join(process.cwd(), 'public')
 const sources = [
   { directory: 'source', kind: 'notes', prefix: '/notes' },
   { directory: 'essays', kind: 'essays', prefix: '/essays' },
@@ -73,11 +73,24 @@ for (const source of sources) {
 }
 
 documents.sort((left, right) => left.url.localeCompare(right.url, 'zh-Hant'))
-await mkdir(join(process.cwd(), 'public'), { recursive: true })
-const prettierOptions = (await resolveConfig(output)) ?? {}
-await writeFile(
-  output,
-  await format(`${JSON.stringify({ version: 1, documents }, null, 2)}\n`, { ...prettierOptions, filepath: output }),
-  'utf8'
-)
-console.log(`Generated search index for ${documents.length} published documents.`)
+await mkdir(outputDirectory, { recursive: true })
+
+async function writeIndex(filename, index) {
+  const output = join(outputDirectory, filename)
+  const prettierOptions = (await resolveConfig(output)) ?? {}
+  await writeFile(output, await format(`${JSON.stringify(index, null, 2)}\n`, { ...prettierOptions, filepath: output }), 'utf8')
+}
+
+const catalogue = documents.map((document) => ({
+  id: document.id,
+  kind: document.kind,
+  course: document.course,
+  title: document.title,
+  path: document.path,
+  url: document.url
+}))
+await writeIndex('search-catalog.json', { version: 1, documents: catalogue })
+for (const kind of sources.map((source) => source.kind)) {
+  await writeIndex(`search-index-${kind}.json`, { version: 1, documents: documents.filter((document) => document.kind === kind) })
+}
+console.log(`Generated a search catalogue and ${sources.length} scoped indexes for ${documents.length} published documents.`)
