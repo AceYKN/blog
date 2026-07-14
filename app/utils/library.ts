@@ -50,18 +50,6 @@ function sectionKeyFor(entry: LibraryEntry) {
     .find((candidate) => path === candidate || path.startsWith(`${candidate}/`))
 }
 
-export function tagsFor(entry: LibraryEntry) {
-  const path = sourcePath(entry)
-  const tags: string[] = []
-  const section = sectionFor(entry)
-  if (section !== '其他筆記') tags.push(section)
-  if (/pastpapers|testbank|review|HW/i.test(path)) tags.push('題解')
-  if (/note|notes|tutorial/i.test(path)) tags.push('課程筆記')
-  if (/chap\d+/i.test(path)) tags.push('章節筆記')
-  if (path.includes('codeforces')) tags.push('Codeforces')
-  return [...new Set(tags)]
-}
-
 // Builds a `directory path -> title` map from each folder's own index.md, so
 // catalogue() can label a directory using its curated title when it has no
 // entry in the static `directoryLabels` override map.

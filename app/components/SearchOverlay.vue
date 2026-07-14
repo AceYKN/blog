@@ -1,22 +1,15 @@
 <script setup lang="ts">
-import { entryTitle, entryUrl, sourcePath, tagsFor, type LibraryEntry } from '~/utils/library'
+import { entryTitle, entryUrl, searchNotes, sourcePath, type LibraryEntry } from '~/utils/library'
 
 const open = defineModel<boolean>('open', { default: false })
 const query = ref('')
 const input = ref<HTMLInputElement>()
-const { data: entries } = await useAsyncData('search-notes', () =>
-  queryCollection('notes').select('id', 'path', 'title', 'description').all()
-)
+const { data: entries, status } = useAsyncData('search-notes', () => queryCollection('notes').all(), { server: false })
 
 const results = computed(() => {
-  const terms = query.value.trim().toLocaleLowerCase().split(/\s+/).filter(Boolean)
-  if (!terms.length) return (entries.value || []).slice(0, 7)
-  return (entries.value || [])
-    .filter((entry: LibraryEntry) => {
-      const haystack = `${entryTitle(entry)} ${sourcePath(entry)} ${tagsFor(entry).join(' ')}`.toLocaleLowerCase()
-      return terms.every((term) => haystack.includes(term))
-    })
-    .slice(0, 20)
+  const notes = (entries.value || []) as LibraryEntry[]
+  if (!query.value.trim()) return notes.slice(0, 7)
+  return searchNotes(notes, query.value).slice(0, 20)
 })
 
 watch(open, async (value) => {
@@ -43,16 +36,12 @@ onBeforeUnmount(() => window.removeEventListener('keydown', onKeydown))
     <section class="search-dialog" role="dialog" aria-modal="true" aria-label="搜尋筆記">
       <input ref="input" v-model="query" type="search" placeholder="搜尋標題、路徑或標籤…" @keydown.esc="open = false" />
       <div class="search-results">
+        <p v-if="status === 'pending'">正在讀取筆記索引…</p>
         <NuxtLink v-for="entry in results" :key="entry.id" :to="entryUrl(entry)" class="search-result">
           <small>{{ sourcePath(entry) }}</small
           ><strong>{{ entryTitle(entry) }}</strong>
-          <span>{{
-            tagsFor(entry)
-              .map((tag) => `#${tag}`)
-              .join(' ')
-          }}</span>
         </NuxtLink>
-        <p v-if="!results.length">沒有相符的筆記。</p>
+        <p v-if="status !== 'pending' && !results.length">沒有相符的筆記。</p>
       </div>
     </section>
   </div>

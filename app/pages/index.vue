@@ -38,16 +38,13 @@ useSeoMeta({
         </button>
       </div>
       <nav aria-label="常用連結">
-        <a href="https://www.google.com/" target="_blank" rel="noreferrer" title="Google" aria-label="Google"
-          ><svg viewBox="0 0 24 24" aria-hidden="true">
-            <circle cx="12" cy="12" r="8" />
-            <path d="M20 12h-8v5" /></svg></a
-        ><a href="https://github.com/AceYKN" target="_blank" rel="noreferrer" title="GitHub" aria-label="GitHub"
+        <a href="https://github.com/AceYKN" target="_blank" rel="noreferrer" title="GitHub" aria-label="GitHub"
           ><svg viewBox="0 0 24 24" aria-hidden="true">
             <path
               d="M12 3a9 9 0 0 0-2.85 17.54c.45.08.62-.19.62-.43v-1.68c-2.53.55-3.06-1.07-3.06-1.07-.41-1.05-1.01-1.33-1.01-1.33-.83-.56.06-.55.06-.55.91.06 1.4.94 1.4.94.82 1.4 2.14 1 2.66.76.08-.59.32-1 .58-1.23-2.02-.23-4.15-1.01-4.15-4.49 0-1 .36-1.8.94-2.43-.09-.23-.41-1.17.09-2.42 0 0 .77-.25 2.5.93A8.7 8.7 0 0 1 12 7.3c.77 0 1.54.1 2.27.31 1.73-1.18 2.5-.93 2.5-.93.5 1.25.18 2.19.09 2.42.58.63.94 1.43.94 2.43 0 3.49-2.13 4.26-4.16 4.49.33.28.62.81.62 1.63v2.42c0 .24.16.52.63.43A9 9 0 0 0 12 3Z"
-            /></svg></a
-        ><a href="https://codeforces.com/" target="_blank" rel="noreferrer" title="Codeforces" aria-label="Codeforces"
+            /></svg
+        ></a>
+        <a href="https://codeforces.com/" target="_blank" rel="noreferrer" title="Codeforces" aria-label="Codeforces"
           ><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 18V9m6 9V5m6 13v-7" /></svg
         ></a>
       </nav>

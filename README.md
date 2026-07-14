@@ -1,4 +1,4 @@
-# Studiorum
+# blog
 
 一个部署到 Cloudflare Pages 的纯静态个人站。它不需要服务器；课程笔记、文章、项目、分享和日常记录都由 Markdown 驱动。
 

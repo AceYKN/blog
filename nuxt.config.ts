@@ -8,7 +8,7 @@ export default defineNuxtConfig({
   // Used by @nuxtjs/sitemap, @nuxtjs/robots and OG/canonical URL generation.
   // Override in production via NUXT_PUBLIC_SITE_URL.
   site: {
-    url: process.env.NUXT_PUBLIC_SITE_URL || 'https://blog.aceykn.com',
+    url: process.env.NUXT_PUBLIC_SITE_URL || 'https://aceykn-blog.pages.dev',
     name: 'blog',
     description: '學習筆記、文章與工作紀錄。',
     defaultLocale: 'zh-Hant'

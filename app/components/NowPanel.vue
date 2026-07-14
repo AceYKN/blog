@@ -4,6 +4,7 @@ import { site } from '~/config/site'
 const offset = ref(0)
 const now = ref(new Date())
 const weather = ref<{ temperature: number; label: string; location: string } | null>(null)
+let timer: number | undefined
 const current = computed(() => new Date(now.value.getTime() + offset.value))
 const weekdayNames = ['日', '月', '火', '水', '木', '金', '土']
 const weekday = computed(
@@ -78,10 +79,9 @@ async function locationName(latitude: number, longitude: number) {
 }
 
 onMounted(async () => {
-  const timer = window.setInterval(() => {
+  timer = window.setInterval(() => {
     now.value = new Date()
   }, 1_000)
-  onBeforeUnmount(() => window.clearInterval(timer))
   try {
     const remote = await $fetch<{ dateTime?: string }>('https://timeapi.io/api/time/current/zone?timeZone=Asia%2FTaipei')
     if (remote.dateTime) {
@@ -103,6 +103,10 @@ onMounted(async () => {
       { enableHighAccuracy: false, timeout: 8_000, maximumAge: 30 * 60 * 1_000 }
     )
   else loadWeather(site.weather.latitude, site.weather.longitude, site.weather.label)
+})
+
+onBeforeUnmount(() => {
+  if (timer) window.clearInterval(timer)
 })
 </script>
 
