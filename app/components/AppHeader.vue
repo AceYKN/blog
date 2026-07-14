@@ -2,6 +2,10 @@
 const searchOpen = useSearchOverlay()
 const theme = ref<'light' | 'dark'>('light')
 const isDark = computed(() => theme.value === 'dark')
+const isVisible = ref(true)
+const isElevated = ref(false)
+let previousScrollY = 0
+let updateHeader: (() => void) | undefined
 
 const setTheme = (value: 'light' | 'dark') => {
   theme.value = value
@@ -15,11 +19,28 @@ onMounted(() => {
   const stored = localStorage.getItem('theme')
   const preferred = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
   setTheme(stored === 'dark' || stored === 'light' ? stored : preferred)
+
+  previousScrollY = window.scrollY
+  updateHeader = () => {
+    const currentScrollY = window.scrollY
+    isElevated.value = currentScrollY > 12
+
+    if (currentScrollY < 24 || currentScrollY < previousScrollY - 8) isVisible.value = true
+    else if (currentScrollY > previousScrollY + 8) isVisible.value = false
+
+    previousScrollY = currentScrollY
+  }
+
+  window.addEventListener('scroll', updateHeader, { passive: true })
+})
+
+onBeforeUnmount(() => {
+  if (updateHeader) window.removeEventListener('scroll', updateHeader)
 })
 </script>
 
 <template>
-  <header class="site-header">
+  <header :class="['site-header', { 'site-header--hidden': !isVisible, 'site-header--elevated': isElevated }]">
     <NuxtLink class="wordmark" to="/">blog<span>.</span></NuxtLink>
     <nav aria-label="主要導覽">
       <NuxtLink to="/">Home</NuxtLink>

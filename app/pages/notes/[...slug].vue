@@ -6,22 +6,22 @@ definePageMeta({ layout: 'reading' })
 
 const route = useRoute()
 const slug = computed(() => (Array.isArray(route.params.slug) ? route.params.slug.join('/') : route.params.slug))
-const { data: entry } = await useAsyncData(
+const { data: entry, status } = useAsyncData(
   () => `note:${slug.value}`,
   async () => {
     const expectedPaths = [`/source/${slug.value}`, `/${slug.value}`]
     return (await queryCollection('notes').all()).find((item) => expectedPaths.includes(item.path)) || null
-  }
+  },
+  { server: false }
 )
-if (!entry.value) throw createError({ statusCode: 404, statusMessage: '找不到這篇筆記' })
-const note = computed(() => entry.value as LibraryEntry)
-const metadata = computed(() => noteMetadata[sourcePath(note.value)])
+const note = computed(() => entry.value as LibraryEntry | null)
+const metadata = computed(() => (note.value ? noteMetadata[sourcePath(note.value)] : undefined))
 
 useSeoMeta({
-  title: () => entryTitle(note.value),
-  description: () => note.value.description || sourcePath(note.value),
-  ogTitle: () => entryTitle(note.value),
-  ogDescription: () => note.value.description || sourcePath(note.value),
+  title: () => (note.value ? entryTitle(note.value) : '課程筆記'),
+  description: () => (note.value ? note.value.description || sourcePath(note.value) : '載入課程筆記中。'),
+  ogTitle: () => (note.value ? entryTitle(note.value) : '課程筆記'),
+  ogDescription: () => (note.value ? note.value.description || sourcePath(note.value) : '載入課程筆記中。'),
   ogImage: '/og-image.png',
   twitterCard: 'summary_large_image'
 })
@@ -58,7 +58,7 @@ onBeforeUnmount(() => observer?.disconnect())
 </script>
 
 <template>
-  <article class="reader-layout">
+  <article v-if="note" class="reader-layout">
     <div class="reader-main">
       <header class="reader-header">
         <p class="eyebrow">原文筆記</p>
@@ -80,4 +80,10 @@ onBeforeUnmount(() => observer?.disconnect())
       }}</a>
     </aside>
   </article>
+  <section v-else class="content-shelf">
+    <p class="eyebrow">COURSE NOTE</p>
+    <h1>{{ status === 'pending' ? '筆記を開いています…' : '找不到這篇筆記' }}</h1>
+    <p class="empty-note">{{ status === 'pending' ? '正在讀取原始筆記資料。' : '請從課程筆記頁重新選擇，或確認網址是否正確。' }}</p>
+    <NuxtLink v-if="status !== 'pending'" to="/library">返回課程筆記</NuxtLink>
+  </section>
 </template>
