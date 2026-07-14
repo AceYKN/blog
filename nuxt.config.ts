@@ -27,6 +27,7 @@ export default defineNuxtConfig({
       meta: [
         { name: 'viewport', content: 'width=device-width, initial-scale=1' },
         { name: 'description', content: '學習筆記、文章與工作紀錄。' },
+        { name: 'google-site-verification', content: 'fK_ZazKGBmk9Zu5OsiJAVEoaJCHqy4os1J3_6CmJyLo' },
         { property: 'og:type', content: 'website' },
         { property: 'og:site_name', content: 'blog' },
         { property: 'og:locale', content: 'zh_Hant' },
