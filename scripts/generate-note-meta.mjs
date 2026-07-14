@@ -1,5 +1,6 @@
 import { mkdir, readdir, stat, writeFile } from 'node:fs/promises'
 import { join, relative, sep } from 'node:path'
+import { format, resolveConfig } from 'prettier'
 
 const root = join(process.cwd(), 'content', 'source')
 const output = join(process.cwd(), 'app', 'data', 'note-metadata.ts')
@@ -23,8 +24,6 @@ const metadata = (await collect(root))
 
 const resolved = Object.fromEntries(await Promise.all(metadata))
 await mkdir(join(process.cwd(), 'app', 'data'), { recursive: true })
-await writeFile(
-  output,
-  `// Generated from original file timestamps. Do not edit by hand.\nexport const noteMetadata: Record<string, { updatedAt: string; githubPath: string }> = ${JSON.stringify(resolved, null, 2)} as const\n`,
-  'utf8'
-)
+const source = `// Generated from original file timestamps. Do not edit by hand.\nexport const noteMetadata: Record<string, { updatedAt: string; githubPath: string }> = ${JSON.stringify(resolved, null, 2)} as const\n`
+const prettierOptions = (await resolveConfig(output)) ?? {}
+await writeFile(output, await format(source, { ...prettierOptions, filepath: output }), 'utf8')

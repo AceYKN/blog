@@ -1,5 +1,6 @@
 import { mkdir, readdir, readFile, writeFile } from 'node:fs/promises'
 import { join, relative, sep } from 'node:path'
+import { format, resolveConfig } from 'prettier'
 
 const root = join(process.cwd(), 'content')
 const output = join(process.cwd(), 'public', 'search-index.json')
@@ -73,5 +74,10 @@ for (const source of sources) {
 
 documents.sort((left, right) => left.url.localeCompare(right.url, 'zh-Hant'))
 await mkdir(join(process.cwd(), 'public'), { recursive: true })
-await writeFile(output, `${JSON.stringify({ version: 1, documents }, null, 2)}\n`, 'utf8')
+const prettierOptions = (await resolveConfig(output)) ?? {}
+await writeFile(
+  output,
+  await format(`${JSON.stringify({ version: 1, documents }, null, 2)}\n`, { ...prettierOptions, filepath: output }),
+  'utf8'
+)
 console.log(`Generated search index for ${documents.length} published documents.`)
