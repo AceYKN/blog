@@ -17,6 +17,6 @@
       <NuxtLink to="/about">About me</NuxtLink>
       <span>Markdown 驅動</span>
     </div>
-    <small>© 2026 AceYKN<br >Built with Nuxt &amp; Cloudflare Pages.</small>
+    <small>© 2026 AceYKN<br />Built with Nuxt &amp; Cloudflare Pages.</small>
   </footer>
 </template>

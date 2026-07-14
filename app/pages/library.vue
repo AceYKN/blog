@@ -46,7 +46,7 @@ useSeoMeta({
     <section class="course-main">
       <label class="course-search"
         ><span>ノートを探す</span><input v-model="keyword" type="search" placeholder="操作系统、chap8、虚拟内存、Vue…"
-      ></label>
+      /></label>
       <div v-if="keyword" class="course-results">
         <p>{{ matches.length }} 件の結果</p>
         <NuxtLink v-for="entry in matches" :key="entry.id" :to="entryUrl(entry)"

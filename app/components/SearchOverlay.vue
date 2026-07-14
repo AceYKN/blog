@@ -41,7 +41,7 @@ onBeforeUnmount(() => window.removeEventListener('keydown', onKeydown))
 <template>
   <div v-if="open" class="search-backdrop" @click.self="open = false">
     <section class="search-dialog" role="dialog" aria-modal="true" aria-label="搜尋筆記">
-      <input ref="input" v-model="query" type="search" placeholder="搜尋標題、路徑或標籤…" @keydown.esc="open = false" >
+      <input ref="input" v-model="query" type="search" placeholder="搜尋標題、路徑或標籤…" @keydown.esc="open = false" />
       <div class="search-results">
         <NuxtLink v-for="entry in results" :key="entry.id" :to="entryUrl(entry)" class="search-result">
           <small>{{ sourcePath(entry) }}</small

@@ -33,7 +33,7 @@ useSeoMeta({
         <svg viewBox="0 0 24 24" aria-hidden="true">
           <circle cx="11" cy="11" r="6" />
           <path d="m16 16 4 4" /></svg
-        ><input id="global-search" v-model="search" type="search" placeholder="Google 搜尋" ><button type="submit" aria-label="搜尋">
+        ><input id="global-search" v-model="search" type="search" placeholder="Google 搜尋" /><button type="submit" aria-label="搜尋">
           ↗
         </button>
       </div>
