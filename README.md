@@ -6,13 +6,13 @@
 
 只需要新增或编辑 `content/` 下的 Markdown，然后提交并推送到 GitHub。Cloudflare Pages 会自动构建和发布。
 
-| 想发布什么 | 放到哪里 | 网址会是 |
-| --- | --- | --- |
-| 原有课程笔记 | `content/source/` | `/notes/...` |
-| 文章 | `content/posts/` | `/posts/...` |
-| 项目 | `content/projects/` | `/projects/...` |
-| 分享 | `content/shares/` | `/shares/...` |
-| 记录 | `content/records/` | `/records/...` |
+| 想发布什么   | 放到哪里            | 网址会是        |
+| ------------ | ------------------- | --------------- |
+| 原有课程笔记 | `content/source/`   | `/notes/...`    |
+| 文章         | `content/posts/`    | `/posts/...`    |
+| 项目         | `content/projects/` | `/projects/...` |
+| 分享         | `content/shares/`   | `/shares/...`   |
+| 记录         | `content/records/`  | `/records/...`  |
 
 新文章可以从这个最小模板开始：
 

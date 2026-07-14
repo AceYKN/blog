@@ -1,3 +1,5 @@
+import { courseAliases, courseLabels, directoryLabels, topLevelLabels } from '~/config/courses'
+
 export type LibraryEntry = {
   id: string
   path: string
@@ -20,63 +22,6 @@ export type LibraryGroup = {
   count: number
 }
 
-const courseLabels: Record<string, string> = {
-  'cs/os': '操作系統',
-  'cs/db': '資料庫系統',
-  'cs/algo': '演算法',
-  'cs/se': '軟體工程',
-  'cs/dm': '離散數學',
-  'code/vue': 'Vue',
-  code: '程式設計',
-  math: '數學',
-  language: '語言'
-}
-
-const topLevelLabels: Record<string, string> = {
-  cs: '計算機科學',
-  code: '程式設計',
-  language: '言語',
-  math: '數學'
-}
-
-// Mirrors the navigational names already used by my-note's VitePress sidebar.
-// Paths remain untouched; this only makes the reader-facing tree intelligible.
-const directoryLabels: Record<string, string> = {
-  abstract_algebra: '抽象代數',
-  math_analysis: '數學分析',
-  ode: '常微分方程',
-  os: '操作系統',
-  algo: '算法設計與分析',
-  db: '資料庫系統',
-  dm: '離散數學',
-  se: '軟體工程',
-  vue: 'Vue.js 完整課程',
-  deutsch: 'Deutsch',
-  nihongo: '日本語',
-  'german-for-reading': 'German for Reading',
-  notes: 'ノート',
-  note: 'ノート',
-  notesbychap: '章節ノート',
-  review: '復習',
-  review202505: '復習 2025',
-  testbank: '題庫',
-  pastpapers: '過去問',
-  HW: '宿題',
-  tutorial: '考試導讀',
-  '100+70': '100＋70 題庫'
-}
-
-const courseAliases: Record<string, string[]> = {
-  'cs/os': ['操作系統', '操作系统', 'operating system', 'operating systems', 'os'],
-  'cs/db': ['資料庫系統', '数据库系统', '資料庫', '数据库', 'database', 'db'],
-  'cs/algo': ['算法設計與分析', '算法设计与分析', '演算法', '算法', 'algorithm', 'algo'],
-  'cs/se': ['軟體工程', '软件工程', 'software engineering', 'se'],
-  'cs/dm': ['離散數學', '离散数学', 'discrete mathematics', 'dm'],
-  'code/vue': ['vue', 'vue.js', 'vuejs'],
-  math: ['數學', '数学', 'math'],
-  language: ['言語', '語言', '语言', 'language']
-}
-
 export function sourcePath(entry: LibraryEntry) {
   return entry.path.replace(/^\/source\//, '').replace(/^\//, '')
 }
@@ -90,12 +35,12 @@ export function entryUrl(entry: LibraryEntry) {
 }
 
 export function isCourseIndex(entry: LibraryEntry) {
-  return /(?:^|\/)index\.md$/i.test(entry.id) || /^source\/(?:cs|code|language|math)(?:\/[\w+\-]+)*$/i.test(entry.id)
+  return /(?:^|\/)index\.md$/i.test(entry.id) || /^source\/(?:cs|code|language|math)(?:\/[\w+-]+)*$/i.test(entry.id)
 }
 
 export function sectionFor(entry: LibraryEntry) {
   const key = sectionKeyFor(entry)
-  return key ? courseLabels[key] : '其他筆記'
+  return (key ? courseLabels[key] : undefined) || '其他筆記'
 }
 
 function sectionKeyFor(entry: LibraryEntry) {
@@ -117,12 +62,26 @@ export function tagsFor(entry: LibraryEntry) {
   return [...new Set(tags)]
 }
 
+// Builds a `directory path -> title` map from each folder's own index.md, so
+// catalogue() can label a directory using its curated title when it has no
+// entry in the static `directoryLabels` override map.
+function indexTitlesByDirectory(entries: LibraryEntry[]) {
+  const map = new Map<string, string>()
+  for (const entry of entries) {
+    if (!isCourseIndex(entry) || !entry.title) continue
+    map.set(sourcePath(entry), entry.title)
+  }
+  return map
+}
+
 export function catalogue(entries: LibraryEntry[]): LibraryGroup[] {
   const groups = new Map<string, LibraryGroup>()
+  const indexTitles = indexTitlesByDirectory(entries)
 
   for (const entry of entries.filter((entry) => !isCourseIndex(entry))) {
     const sourceParts = sourcePath(entry).split('/')
-    const groupKey = topLevelLabels[sourceParts[0]] ? sourceParts[0] : 'other'
+    const firstPart = sourceParts[0] ?? ''
+    const groupKey = topLevelLabels[firstPart] ? firstPart : 'other'
     const groupName = topLevelLabels[groupKey] || '其他筆記'
     let group = groups.get(groupKey)
 
@@ -145,7 +104,8 @@ export function catalogue(entries: LibraryEntry[]): LibraryGroup[] {
       const nodeKey = `${node.key}/${folder}`
       let child = node.children.find((item) => item.key === nodeKey)
       if (!child) {
-        child = { name: directoryLabels[folder] || folder.replace(/_/g, ' '), key: nodeKey, children: [], entries: [] }
+        const label = directoryLabels[folder] || indexTitles.get(nodeKey) || folder.replace(/_/g, ' ')
+        child = { name: label, key: nodeKey, children: [], entries: [] }
         node.children.push(child)
       }
       node = child
@@ -183,8 +143,22 @@ export function searchNotes(entries: LibraryEntry[], query: string) {
       const pathText = flat(path)
       const aliasText = flat([sectionFor(entry), ...aliases].join(' '))
       const bodyText = flat(body)
-      const score = terms.reduce((total, term) => total + (titleText.includes(term) ? 100 : 0) + (pathText.includes(term) ? 70 : 0) + (aliasText.includes(term) ? 60 : 0) + (bodyText.includes(term) ? 15 : 0), 0)
-      return { entry, score, matches: terms.every((term) => titleText.includes(term) || pathText.includes(term) || aliasText.includes(term) || bodyText.includes(term)) }
+      const score = terms.reduce(
+        (total, term) =>
+          total +
+          (titleText.includes(term) ? 100 : 0) +
+          (pathText.includes(term) ? 70 : 0) +
+          (aliasText.includes(term) ? 60 : 0) +
+          (bodyText.includes(term) ? 15 : 0),
+        0
+      )
+      return {
+        entry,
+        score,
+        matches: terms.every(
+          (term) => titleText.includes(term) || pathText.includes(term) || aliasText.includes(term) || bodyText.includes(term)
+        )
+      }
     })
     .filter((item) => item.matches)
     .sort((left, right) => right.score - left.score || entryTitle(left.entry).localeCompare(entryTitle(right.entry), 'zh-Hant'))

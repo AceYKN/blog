@@ -1,4 +1,4 @@
-import { defineCollection, defineContentConfig } from '@nuxt/content'
+import { defineCollection, defineContentConfig, z } from '@nuxt/content'
 
 export default defineContentConfig({
   collections: {
@@ -8,15 +8,27 @@ export default defineContentConfig({
     }),
     essays: defineCollection({
       type: 'page',
-      source: 'essays/**/*.md'
+      source: 'essays/**/*.md',
+      schema: z.object({
+        date: z.string().optional(),
+        tags: z.array(z.string()).optional()
+      })
     }),
     projects: defineCollection({
       type: 'page',
-      source: 'projects/**/*.md'
+      source: 'projects/**/*.md',
+      schema: z.object({
+        date: z.string().optional(),
+        tags: z.array(z.string()).optional()
+      })
     }),
     tech: defineCollection({
       type: 'page',
-      source: 'tech/**/*.md'
+      source: 'tech/**/*.md',
+      schema: z.object({
+        date: z.string().optional(),
+        tags: z.array(z.string()).optional()
+      })
     })
   }
 })
