@@ -39,7 +39,7 @@ useSeoMeta({
   <div class="course-layout">
     <aside class="course-nav">
       <p>コース案內</p>
-      <details v-for="group in groups" :key="group.key" open>
+      <details v-for="group in groups" :key="group.key">
         <summary>
           {{ group.name }} <small>{{ group.count }}</small>
         </summary>

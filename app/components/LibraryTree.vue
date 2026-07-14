@@ -12,7 +12,7 @@ const itemCount = computed(() => {
 
 <template>
   <div class="tree-node" :style="{ '--tree-depth': depth }">
-    <details class="tree-branch" :open="depth <= 1">
+    <details class="tree-branch">
       <summary>
         <span>{{ node.name }}</span
         ><small>{{ itemCount }} 篇</small>
