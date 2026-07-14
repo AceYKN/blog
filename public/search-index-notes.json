@@ -2,15 +2,6 @@
   "version": 1,
   "documents": [
     {
-      "id": "essays:giffgaff-low-cost-activation",
-      "kind": "essays",
-      "title": "giffgaff：一次低成本激活与保号的记录",
-      "path": "giffgaff-low-cost-activation",
-      "url": "/essays/giffgaff-low-cost-activation",
-      "headings": ["giffgaff：一次低成本激活与保号的记录", "先把目标拆开", "激活当天", "低成本的思路", "一个小清单"],
-      "text": "giffgaff：一次低成本激活与保号的记录 这不是一份“买得越多越好”的攻略。我的目标很简单：让卡顺利激活、确认号码可用，然后用尽量少的操作维持它的状态。 运营商规则、资费和漫游政策会变动。下单与充值前，还是以 giffgaff 当期官网说明为准。 先把目标拆开 我把这件事分成三段： 1. 激活 ：SIM 卡被系统识别，并完成首次开通； 2. 验证 ：能收验证码、能发出一条短信或完成一次通话； 3. 保号 ：在规则允许的间隔内留下有效使用记录。 这样做的好处是，不会把“首次充值”“买月包”和“长期维持号码”混成一件事。 激活当天 卡到手后，我先确认卡片编号、使用的手机是否解锁，以及是否能连接网络。随后在官网的 activation 页面输入 SIM 卡号，按提示完成账户设置。 激活完成后不要立刻收起来。最稳妥的检查顺序是： - 看手机是否出现运营商名称； - 收一条短信验证码； - 发一条短信给可信联系人，或进行一次短通话； - 登录账户确认号码与余额显示正常。 这几步并不花多少时间，却能避免日后才发现“卡已插过，但实际上没有完成开通”的情况。 低成本的思路 如果只是接收验证码或保留号码，我不会把月包当成默认选项。先看当期最低的单次充值和有效期规则，再决定是否需要 data plan。 我的原则是： 先满足“有效使用”的条件，再购买真正用得上的流量。 平时把余额、上一次使用日期、下一次提醒日记在日历里即可。提醒不必设得太密；重要的是留出缓冲，而不是等到最后一天才想起。 一个小清单 事情 完成后确认什么 -------- ---------------------- 激活 账户中能看到号码 首次使用 短信或通话有记录 余额 知道最低补充成本 提醒 下次检查日期已写入日历 号码对我而言更像一把备用钥匙：平时安静放着，需要时能打开门就好。把流程做简单，反而更容易长期坚持。"
-    },
-    {
       "id": "notes:code/cpp-start",
       "kind": "notes",
       "course": "code/cpp-start",
@@ -4006,27 +3997,6 @@
         "积分求导公式"
       ],
       "text": "一阶线性ODE求解公式 形式： $$\\frac{dy}{dx} + P(x)y = Q(x)$$ 求解公式： $$y = e^{-\\int P(x) \\, dx} \\left( \\int Q(x) e^{\\int P(x) \\, dx} \\, dx + C \\right)$$ 高阶线性ODE求解方法 齐次线性ODE 形式： $$a n \\frac{d^n y}{dx^n} + a {n-1} \\frac{d^{n-1} y}{dx^{n-1}} + \\dots + a 1 \\frac{dy}{dx} + a 0 y = 0$$ 求解步骤： 1. 写出特征方程： $$a n \\lambda^n + a {n-1} \\lambda^{n-1} + \\dots + a 1 \\lambda + a 0 = 0$$ 2. 求解得到特征根$\\lambda 1, \\lambda 2, \\dots, \\lambda k$。 3. 根据特征根的类型构建通解： - 单实根 $\\lambda i$：对应解为 $e^{\\lambda i x}$ - $k$ 重实根 $\\lambda i$：对应解为 $(C 1 + C 2 x + \\dots + C k x^{k-1}) e^{\\lambda i x}$ - 对于$k$重复根 $\\alpha + \\beta i$：对应解为 $e^{\\alpha x} (\\cos(\\beta x), \\sin(\\beta x))$ - 对于$k$重复复根 $\\alpha + \\beta i$：对应解为 $e^{\\alpha x} \\left( (C 1 + C 2 x + \\dots + C k x^{k-1}) \\cos(\\beta x)\\right)$ - 对于$k$重复复根 $\\alpha - \\beta i$：对应解为 $e^{\\alpha x} \\left( (C 1 + C 2 x + \\dots + C k x^{k-1}) \\sin(\\beta x)\\right)$ 4. 通解为各类解的线性组合。 非齐次线性ODE 形式： $$a n \\frac{d^n y}{dx^n} + a {n-1} \\frac{d^{n-1} y}{dx^{n-1}} + \\dots + a 1 \\frac{dy}{dx} + a 0 y = g(x)$$ 求解步骤： 1. 求解对应的齐次方程，得到通解 $y h$ 2. 观察非齐次项 $g(x)$ 的形式，一般是多项式、指数函数、三角函数等，尝试构造特解 $y p$。 - 如果 $g(x)$ 是多项式 ，尝试 $y p = Ax^n + Bx^{n-1} + \\dots + C$ 的形式。 - 如果 $g(x)$ 是指数函数，尝试 $y p = Ae^{kx}$ 的形式。 - 如果 $g(x)$ 是三角函数，尝试 $y p = A\\cos(kx) + B\\sin(kx)$ 的形式。 3. 将 $y p$ 代入原方程，求解系数。 4. 最终通解为 $y = y h + y p$ 利用皮卡逐步逼近序列求解ODE的近似解 形式： $$\\frac{dy}{dx} = f(x, y), \\quad y(x 0) = y 0$$ 第零次近似： $$\\phi 0(x) = y 0$$ 第一次近似： $$\\phi 1(x) = y 0 + \\int {x 0}^{x} f(t, \\phi 0(t)) \\, dt$$ 第$n$次近似： $$\\phi n(x) = y 0 + \\int {x 0}^{x} f(t, \\phi {n-1}(t)) \\, dt$$ 积分求导公式 TBD"
-    },
-    {
-      "id": "tech:claude-code-dpsk-macos",
-      "kind": "tech",
-      "title": "在 macOS 配置 Claude Code 与 DeepSeek API：从终端到项目目录",
-      "path": "claude-code-dpsk-macos",
-      "url": "/tech/claude-code-dpsk-macos",
-      "headings": [
-        "在 macOS 配置 Claude Code 与 DeepSeek API：从终端到项目目录",
-        "0. 准备",
-        "1. 安装 Claude Code",
-        "2. 单独保存 DeepSeek 配置",
-        "3. 在项目目录验证",
-        "4. 常见检查点",
-        "终端里找不到 `claude`",
-        "配置没有生效",
-        "项目里有不该读取的内容",
-        "小结",
-        "参考网站"
-      ],
-      "text": "在 macOS 配置 Claude Code 与 DeepSeek API：从终端到项目目录 这篇记录只保留可重复的部分：安装 CLI、把 DeepSeek 的连接信息放进 shell 配置、在一个干净项目里验证。密钥不写进仓库，也不复制进截图。 DeepSeek 同时提供 OpenAI 与 Anthropic 兼容接口。Claude Code 这里使用的是 Anthropic 兼容端点，而不是 OpenAI 的默认端点。 0. 准备 先确认终端和 Git 可用： macOS 默认 shell 通常是 zsh，后续配置写进 /.zshrc 。如果你使用的是 fish 或 bash，请改到对应的配置文件。 1. 安装 Claude Code 先确认 Node.js 版本满足 Claude Code 的要求，再安装 CLI： 能输出版本号后，再进入登录或授权步骤。不要急着在全局环境里放服务密钥；先保证 CLI 本身能正常启动。 2. 单独保存 DeepSeek 配置 新建一个只在本机保存的文件，例如 /.config/deepseek/claude.env ： 随后在 /.zshrc 最末尾加入： 重新加载配置： 这里最重要的一点是： 密钥文件不进入 Git 。如果项目里需要环境变量，再建立一个不提交的 .env.local ，并写好 .gitignore 。 3. 在项目目录验证 选一个没有敏感文件的测试目录： 第一次对话可以只给一个很小的任务，例如： 确认它能读取项目结构后，再尝试创建一个最小文件。把“只读确认”和“允许修改”分开，是我觉得最舒服的工作节奏。 4. 常见检查点 终端里找不到 claude 先重开终端；仍然不行时检查安装目录是否在 PATH ： 配置没有生效 不要直接把密钥打印到屏幕。只检查变量是否存在： 项目里有不该读取的内容 把私密文件放进 .gitignore 并不等于它不会被本地工具读到。对于密钥、导出的数据库和客户资料，我会把它们放到工作目录之外，或明确在开始前排除。 小结 这套配置的核心不是某一条命令，而是边界：CLI、服务配置、项目文件各自独立。以后更换 DeepSeek 模型时，只改本地环境文件，不需要改项目代码，也不会把凭据带进提交记录。 参考网站 - DeepSeek：Claude Code 集成说明 - DeepSeek：Anthropic API 兼容说明 - Claude Code：官方入门文档"
     }
   ]
 }

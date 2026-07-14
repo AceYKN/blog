@@ -6,14 +6,30 @@ const { data: entries } = await useAsyncData('library-notes', () => queryCollect
 const allEntries = computed(() => (entries.value || []) as LibraryEntry[])
 const groups = computed(() => catalogue(allEntries.value))
 const keyword = ref('')
-const { data: index } = await useFetch<SearchIndex>('/search-index.json', { key: 'site-search-index' })
-const matches = computed(() => searchIndex(index.value, keyword.value, { kind: 'notes' }))
+const index = ref<SearchIndex>()
+const isLoadingIndex = ref(false)
+const matches = computed(() => searchIndex(index.value, keyword.value))
 const continueReading = ref<{ url: string; title: string } | null>(null)
 
-onMounted(() => {
+async function loadNotesIndex() {
+  if (index.value || isLoadingIndex.value) return
+  isLoadingIndex.value = true
+  try {
+    index.value = await $fetch<SearchIndex>('/search-index-notes.json')
+  } finally {
+    isLoadingIndex.value = false
+  }
+}
+
+watch(keyword, (value) => {
+  if (value.trim()) void loadNotesIndex()
+})
+
+onMounted(async () => {
   try {
     const saved = JSON.parse(localStorage.getItem('blog:reading-progress-v1') || 'null') as { url?: string } | null
-    const entry = index.value?.documents.find((document) => document.url === saved?.url && document.kind === 'notes')
+    const catalogue = await $fetch<SearchIndex>('/search-catalog.json')
+    const entry = catalogue.documents.find((document) => document.url === saved?.url && document.kind === 'notes')
     if (entry) continueReading.value = { url: entry.url, title: entry.title }
   } catch {
     continueReading.value = null
@@ -59,20 +75,24 @@ useSeoMeta({
         >繼續閱讀 <strong>{{ continueReading.title }}</strong> →</NuxtLink
       >
       <label class="course-search"
-        ><span>ノートを探す</span><input v-model="keyword" type="search" placeholder="操作系统、chap8、虚拟内存、Vue…"
-      /></label>
+        ><span>ノートを探す</span
+        ><input v-model="keyword" type="search" placeholder="操作系统、chap8、虚拟内存、Vue…" @focus="loadNotesIndex" />
+      </label>
       <div v-if="keyword" class="course-results">
-        <p>{{ matches.length }} 件の結果</p>
-        <NuxtLink v-for="entry in matches" :key="entry.id" :to="entry.url"
-          ><strong
-            ><template v-for="part in highlightParts(entry.title, keyword)" :key="part.text"
-              ><mark v-if="part.match">{{ part.text }}</mark
-              ><template v-else>{{ part.text }}</template></template
-            ></strong
-          ><span>{{ entry.path }}</span
-          ><em>{{ entry.snippet }}</em></NuxtLink
-        >
-        <p v-if="!matches.length" class="empty-note">見つかりません。课程名、章节号或关键词试试。</p>
+        <p v-if="isLoadingIndex">正在讀取課程筆記索引…</p>
+        <template v-else>
+          <p>{{ matches.length }} 件の結果</p>
+          <NuxtLink v-for="entry in matches" :key="entry.id" :to="entry.url"
+            ><strong
+              ><template v-for="part in highlightParts(entry.title, keyword)" :key="part.text"
+                ><mark v-if="part.match">{{ part.text }}</mark
+                ><template v-else>{{ part.text }}</template></template
+              ></strong
+            ><span>{{ entry.path }}</span
+            ><em>{{ entry.snippet }}</em></NuxtLink
+          >
+          <p v-if="!matches.length" class="empty-note">見つかりません。课程名、章节号或关键词试试。</p>
+        </template>
       </div>
     </section>
   </div>
