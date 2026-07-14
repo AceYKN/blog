@@ -1,6 +1,6 @@
 # blog
 
-一个部署到 Cloudflare Pages 的纯静态个人站。它不需要服务器；课程笔记、文章、项目、分享和日常记录都由 Markdown 驱动。
+一个部署到 Cloudflare Pages 的纯静态个人站。它不需要服务器；课程笔记、随笔、技术文章和项目都由 Markdown 驱动。
 
 ## 日常更新
 
@@ -9,10 +9,9 @@
 | 想发布什么   | 放到哪里            | 网址会是        |
 | ------------ | ------------------- | --------------- |
 | 原有课程笔记 | `content/source/`   | `/notes/...`    |
-| 文章         | `content/posts/`    | `/posts/...`    |
+| 随笔         | `content/essays/`   | `/essays/...`   |
 | 项目         | `content/projects/` | `/projects/...` |
-| 分享         | `content/shares/`   | `/shares/...`   |
-| 记录         | `content/records/`  | `/records/...`  |
+| 技术文章     | `content/tech/`     | `/tech/...`     |
 
 新文章可以从这个最小模板开始：
 
@@ -21,7 +20,10 @@
 title: 标题
 description: 一句话摘要
 date: 2026-07-12
+updated: 2026-07-12
 tags: [生活, 工具]
+draft: false
+cover: /og-image.png
 ---
 
 # 标题
@@ -29,13 +31,14 @@ tags: [生活, 工具]
 正文写在这里。
 ```
 
-例如保存为 `content/records/2026-07-12-summer.md`，发布后就是 `/records/2026-07-12-summer`。课程原文在 `content/source/`；迁移完成前不要在这里改动它们。
+也可使用 `npm run new -- --type tech --slug my-post` 创建带完整 frontmatter 的草稿。可选类型是 `essays`、`tech` 与 `projects`；草稿不会进入搜索或 sitemap。课程原文在 `content/source/`；迁移完成前不要在这里改动它们。
 
 ## 本地预览
 
 ```sh
 npm ci
 npm run dev
+npm run check:content
 ```
 
 打开终端提示的网址（通常是 `http://localhost:3000`）。

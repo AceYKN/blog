@@ -2,7 +2,10 @@
 title: giffgaff：一次低成本激活与保号的记录
 description: 不追求囤卡，只把激活、首次使用与后续保号拆成几个清楚的小步骤。
 date: 2026-07-14
+updated: 2026-07-14
 tags: [生活, 通讯, 英国]
+draft: false
+cover: /og-image.png
 ---
 
 # giffgaff：一次低成本激活与保号的记录

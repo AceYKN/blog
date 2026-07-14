@@ -2,7 +2,10 @@
 title: 在 macOS 配置 Claude Code 与 DeepSeek API：从终端到项目目录
 description: 用 DeepSeek 的 Anthropic 兼容端点接入 Claude Code；一份可重复执行的 macOS 配置记录。
 date: 2026-07-14
+updated: 2026-07-14
 tags: [Claude Code, macOS, DeepSeek]
+draft: false
+cover: /og-image.png
 ---
 
 # 在 macOS 配置 Claude Code 与 DeepSeek API：从终端到项目目录

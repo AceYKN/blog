@@ -46,3 +46,4 @@ jobs:
         run: npm run generate
         env:
           NODE_VERSION: ${{ steps.node-version.outputs.version }}
+          GITHUB_TOKEN: ${{ github.token }}

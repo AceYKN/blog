@@ -597,6 +597,20 @@ main {
   min-width: 0;
   padding-top: 1rem;
 }
+.continue-reading {
+  display: block;
+  margin-bottom: 1rem;
+  padding: 0.85rem 1rem;
+  border: 1px solid var(--moss);
+  background: var(--surface-sand);
+  color: var(--ink);
+  text-decoration: none;
+  font-size: 0.85rem;
+}
+.continue-reading strong {
+  margin-left: 0.35rem;
+  font-weight: 500;
+}
 .course-search {
   display: block;
   padding: 1.4rem;
@@ -630,6 +644,13 @@ main {
 .course-results strong,
 .course-results span {
   display: block;
+}
+.course-results em {
+  display: block;
+  margin-top: 0.25rem;
+  color: var(--muted);
+  font-size: 0.78rem;
+  font-style: normal;
 }
 .course-results strong {
   font-weight: 500;
@@ -685,6 +706,44 @@ main {
 .reader-header {
   padding-bottom: 2.5rem;
   border-bottom: 1px solid var(--line);
+}
+.breadcrumbs {
+  margin: 0.8rem 0 1.1rem;
+  color: var(--muted);
+  font: 0.68rem/1.6 var(--font-mono);
+  overflow-wrap: anywhere;
+}
+.breadcrumbs a {
+  color: var(--moss);
+  text-decoration: none;
+}
+.course-pagination {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin-top: 2.5rem;
+  border-top: 1px solid var(--line);
+  padding-top: 1rem;
+}
+.course-pagination a {
+  min-width: 0;
+  color: var(--ink);
+  text-decoration: none;
+}
+.course-pagination a:last-child {
+  text-align: right;
+}
+.course-pagination small,
+.course-pagination strong {
+  display: block;
+}
+.course-pagination small {
+  color: var(--moss);
+  font: 0.65rem var(--font-mono);
+}
+.course-pagination strong {
+  margin-top: 0.25rem;
+  font-weight: 500;
 }
 .reader-header h1 {
   margin: 0.65rem 0 1rem;
@@ -792,17 +851,73 @@ main {
   color: var(--indigo);
 }
 .prose pre {
+  position: relative;
   overflow: auto;
   margin: 1.7rem 0;
-  padding: 1.2rem;
+  padding: 2.8rem 1.2rem 1.2rem;
   border: 1px solid var(--code-border);
   border-top: 3px solid var(--moss);
   background: var(--surface-code);
   color: var(--code-ink);
   font: 0.82rem/1.65 var(--font-mono);
 }
+.code-header {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.45rem 0.7rem;
+  border-bottom: 1px solid var(--code-border);
+  color: var(--moss);
+  font: 0.65rem var(--font-mono);
+}
+.code-copy {
+  padding: 0.12rem 0.35rem;
+  border: 1px solid var(--code-border);
+  border-radius: 3px;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+}
+.mermaid-diagram {
+  overflow: auto;
+  margin: 1.7rem 0;
+  padding: 1rem;
+  border: 1px solid var(--line);
+  background: white;
+}
+.mermaid-diagram svg {
+  display: block;
+  min-width: 28rem;
+  max-width: 100%;
+  margin: auto;
+}
 .prose code {
   font-family: var(--font-mono);
+}
+.prose pre code .line {
+  display: block;
+  min-height: 1.65em;
+  padding-left: 3.1em;
+  position: relative;
+}
+.prose pre code .line::before {
+  position: absolute;
+  left: 0;
+  width: 2.2em;
+  color: color-mix(in srgb, var(--muted) 70%, transparent);
+  content: attr(line);
+  text-align: right;
+  user-select: none;
+}
+.prose pre code .line.highlighted {
+  margin-inline: -1.2rem;
+  padding-right: 1.2rem;
+  padding-left: 4.3em;
+  background: color-mix(in srgb, var(--mark) 35%, transparent);
 }
 .prose :not(pre) > code {
   padding: 0.08rem 0.28rem;
@@ -922,6 +1037,18 @@ main {
 }
 .search-result strong {
   font-weight: 500;
+}
+.search-result span {
+  display: block;
+  margin-top: 0.35rem;
+  color: var(--muted);
+  font-size: 0.8rem;
+}
+.search-result mark,
+.course-results mark {
+  padding: 0;
+  background: var(--mark);
+  color: inherit;
 }
 
 @media (max-width: 780px) {

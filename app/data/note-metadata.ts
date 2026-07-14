@@ -457,7 +457,7 @@ export const noteMetadata: Record<string, { updatedAt: string; githubPath: strin
     githubPath: 'docs/cs/se/notesbychap/chap9.md'
   },
   index: {
-    updatedAt: '2026-06-08T08:04:02.048Z',
+    updatedAt: '2026-07-14T07:16:47.654Z',
     githubPath: 'docs/index.md'
   },
   'language/deutsch/german-for-reading/chap2/2.10': {

@@ -1,12 +1,23 @@
 <script setup lang="ts">
-import { catalogue, entryTitle, entryUrl, searchNotes, sourcePath, type LibraryEntry } from '~/utils/library'
+import { catalogue, entryTitle, entryUrl, type LibraryEntry } from '~/utils/library'
+import { highlightParts, searchIndex, type SearchIndex } from '~/utils/search'
 
 const { data: entries } = await useAsyncData('library-notes', () => queryCollection('notes').all())
 const allEntries = computed(() => (entries.value || []) as LibraryEntry[])
 const groups = computed(() => catalogue(allEntries.value))
 const keyword = ref('')
-const matches = computed(() => {
-  return searchNotes(allEntries.value, keyword.value)
+const { data: index } = await useFetch<SearchIndex>('/search-index.json', { key: 'site-search-index' })
+const matches = computed(() => searchIndex(index.value, keyword.value, { kind: 'notes' }))
+const continueReading = ref<{ url: string; title: string } | null>(null)
+
+onMounted(() => {
+  try {
+    const saved = JSON.parse(localStorage.getItem('blog:reading-progress-v1') || 'null') as { url?: string } | null
+    const entry = index.value?.documents.find((document) => document.url === saved?.url && document.kind === 'notes')
+    if (entry) continueReading.value = { url: entry.url, title: entry.title }
+  } catch {
+    continueReading.value = null
+  }
 })
 
 useSeoMeta({
@@ -44,14 +55,22 @@ useSeoMeta({
       </details>
     </aside>
     <section class="course-main">
+      <NuxtLink v-if="continueReading" :to="continueReading.url" class="continue-reading"
+        >繼續閱讀 <strong>{{ continueReading.title }}</strong> →</NuxtLink
+      >
       <label class="course-search"
         ><span>ノートを探す</span><input v-model="keyword" type="search" placeholder="操作系统、chap8、虚拟内存、Vue…"
       /></label>
       <div v-if="keyword" class="course-results">
         <p>{{ matches.length }} 件の結果</p>
-        <NuxtLink v-for="entry in matches" :key="entry.id" :to="entryUrl(entry)"
-          ><strong>{{ entryTitle(entry) }}</strong
-          ><span>{{ sourcePath(entry) }}</span></NuxtLink
+        <NuxtLink v-for="entry in matches" :key="entry.id" :to="entry.url"
+          ><strong
+            ><template v-for="part in highlightParts(entry.title, keyword)" :key="part.text"
+              ><mark v-if="part.match">{{ part.text }}</mark
+              ><template v-else>{{ part.text }}</template></template
+            ></strong
+          ><span>{{ entry.path }}</span
+          ><em>{{ entry.snippet }}</em></NuxtLink
         >
         <p v-if="!matches.length" class="empty-note">見つかりません。课程名、章节号或关键词试试。</p>
       </div>

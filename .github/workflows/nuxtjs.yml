@@ -41,6 +41,7 @@ jobs:
         run: npm run generate
         env:
           NUXT_APP_BASE_URL: ${{ steps.pages.outputs.base_path }}
+          GITHUB_TOKEN: ${{ github.token }}
       - name: Add SPA fallback for direct links
         run: cp dist/index.html dist/404.html
       - name: Upload artifact

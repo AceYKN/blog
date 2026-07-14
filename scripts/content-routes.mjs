@@ -1,7 +1,11 @@
-import { readdirSync, statSync } from 'node:fs'
+import { readFileSync, readdirSync, statSync } from 'node:fs'
 import { join, relative, sep } from 'node:path'
 
 const contentRoot = join(process.cwd(), 'content')
+
+function isDraft(file) {
+  return /^---\s*[\s\S]*?^draft:\s*true\s*$/m.test(readFileSync(file, 'utf8'))
+}
 
 function collectMarkdown(directory, rootDirectory = directory) {
   return readdirSync(directory, { withFileTypes: true }).flatMap((entry) => {
@@ -31,7 +35,7 @@ export const contentRoutes = [
     const directoryPath = join(contentRoot, directory)
 
     return collectMarkdown(directoryPath)
-      .filter(({ relativePath }) => !relativePath.startsWith('.'))
+      .filter(({ absolutePath, relativePath }) => !relativePath.startsWith('.') && !isDraft(absolutePath))
       .map(({ absolutePath, relativePath }) => ({
         route: `${prefix}/${relativePath.slice(0, -3).split(sep).join('/')}`,
         lastmod: statSync(absolutePath).mtime.toISOString()

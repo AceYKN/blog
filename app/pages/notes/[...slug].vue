@@ -5,6 +5,20 @@ import { noteMetadata } from '~/data/note-metadata'
 definePageMeta({ layout: 'reading' })
 
 const route = useRoute()
+const { siteUrl } = useRuntimeConfig().public
+const breadcrumb = () => ({
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: '首頁', item: `${siteUrl.replace(/\/$/, '')}/` },
+    { '@type': 'ListItem', position: 2, name: '課程筆記', item: `${siteUrl.replace(/\/$/, '')}/library` },
+    {
+      '@type': 'ListItem',
+      position: 3,
+      name: note.value ? entryTitle(note.value) : '課程筆記',
+      item: `${siteUrl.replace(/\/$/, '')}${route.path}`
+    }
+  ]
+})
 const slug = computed(() => (Array.isArray(route.params.slug) ? route.params.slug.join('/') : route.params.slug))
 const { data: entry, status } = useAsyncData(
   () => `note:${slug.value}`,
@@ -24,6 +38,8 @@ useSeoMeta({
   description: () => (note.value ? note.value.description || sourcePath(note.value) : '載入課程筆記中。'),
   ogTitle: () => (note.value ? entryTitle(note.value) : '課程筆記'),
   ogDescription: () => (note.value ? note.value.description || sourcePath(note.value) : '載入課程筆記中。'),
+  ogType: 'article',
+  ogUrl: () => `${siteUrl.replace(/\/$/, '')}${route.path}`,
   ogImage: '/og-image.png',
   twitterCard: 'summary_large_image'
 })
@@ -34,18 +50,34 @@ const lastUpdated = computed(() =>
     : ''
 )
 const { toc, activeId } = useArticleToc()
-const { siteUrl } = useRuntimeConfig().public
 const renderedNote = computed(() => {
   if (!note.value) return null
 
   const body = note.value.body as { value?: unknown[] } | undefined
   const nodes = body?.value
   const firstNode = nodes?.[0]
-  if (body && nodes && Array.isArray(firstNode) && firstNode[0] === 'h1') {
-    return { ...note.value, body: { ...body, value: nodes.slice(1) } }
+  if (body && nodes) {
+    const withoutDuplicateTitle = Array.isArray(firstNode) && firstNode[0] === 'h1' ? nodes.slice(1) : nodes
+    return {
+      ...note.value,
+      body: {
+        ...body,
+        value: withoutDuplicateTitle.map((node) => (Array.isArray(node) && node[0] === 'h1' ? ['h2', ...node.slice(1)] : node))
+      }
+    }
   }
 
   return note.value
+})
+
+onMounted(async () => {
+  await nextTick()
+  try {
+    const saved = JSON.parse(localStorage.getItem('blog:reading-progress-v1') || 'null') as { url?: string; y?: number } | null
+    if (saved?.url === route.path && typeof saved.y === 'number' && saved.y > 80) window.scrollTo({ top: saved.y, behavior: 'auto' })
+  } catch {
+    // Restoring a position is optional when browser storage is unavailable.
+  }
 })
 
 useHead(() => {
@@ -58,13 +90,19 @@ useHead(() => {
         type: 'application/ld+json',
         innerHTML: JSON.stringify({
           '@context': 'https://schema.org',
-          '@type': 'Article',
-          headline: entryTitle(note.value),
-          description: note.value.description || sourcePath(note.value),
-          dateModified: metadata.value?.updatedAt,
-          mainEntityOfPage: `${siteUrl.replace(/\/$/, '')}${route.path}`,
-          author: { '@type': 'Person', name: 'AceYKN' },
-          publisher: { '@type': 'Person', name: 'AceYKN' }
+          '@graph': [
+            {
+              '@type': 'LearningResource',
+              headline: entryTitle(note.value),
+              description: note.value.description || sourcePath(note.value),
+              dateModified: metadata.value?.updatedAt,
+              mainEntityOfPage: `${siteUrl.replace(/\/$/, '')}${route.path}`,
+              author: { '@id': `${siteUrl.replace(/\/$/, '')}/#aceykn` },
+              publisher: { '@id': `${siteUrl.replace(/\/$/, '')}/#aceykn` },
+              isAccessibleForFree: true
+            },
+            breadcrumb()
+          ]
         })
       }
     ]
@@ -77,6 +115,7 @@ useHead(() => {
     <div class="reader-main">
       <header class="reader-header">
         <p class="eyebrow">原文筆記</p>
+        <CourseNavigation :entry="note" />
         <h1>{{ entryTitle(note) }}</h1>
         <p class="reader-path">{{ sourcePath(note) }}</p>
         <div v-if="metadata" class="article-meta">
@@ -87,6 +126,8 @@ useHead(() => {
         </div>
       </header>
       <ContentRenderer v-if="renderedNote" :value="renderedNote" class="prose" />
+      <ContentEnhancements />
+      <CourseNavigation :entry="note" />
     </div>
     <aside v-if="toc.length" class="toc" aria-label="文章目次">
       <p>目次</p>

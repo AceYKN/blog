@@ -4,12 +4,40 @@
 const { cloudflareBeaconToken } = useRuntimeConfig().public
 const route = useRoute()
 const { siteUrl } = useRuntimeConfig().public
+const canonicalUrl = computed(() => `${siteUrl.replace(/\/$/, '')}${route.path}`)
 
 useHead(() => ({
   link: [
     {
       rel: 'canonical',
-      href: `${siteUrl.replace(/\/$/, '')}${route.path}`
+      href: canonicalUrl.value
+    }
+  ],
+  meta: [{ property: 'og:url', content: canonicalUrl.value }],
+  script: [
+    {
+      key: 'site-structured-data',
+      type: 'application/ld+json',
+      innerHTML: JSON.stringify({
+        '@context': 'https://schema.org',
+        '@graph': [
+          {
+            '@type': 'WebSite',
+            '@id': `${siteUrl.replace(/\/$/, '')}/#website`,
+            name: 'AceYKN Blog',
+            alternateName: 'blog',
+            url: `${siteUrl.replace(/\/$/, '')}/`,
+            inLanguage: 'zh-Hant'
+          },
+          {
+            '@type': 'Person',
+            '@id': `${siteUrl.replace(/\/$/, '')}/#aceykn`,
+            name: 'AceYKN',
+            url: `${siteUrl.replace(/\/$/, '')}/`,
+            sameAs: ['https://github.com/AceYKN']
+          }
+        ]
+      })
     }
   ]
 }))

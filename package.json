@@ -8,8 +8,12 @@
   "scripts": {
     "dev": "nuxt dev",
     "build": "nuxt build",
-    "generate": "nuxt generate && node scripts/prepare-cloudflare-pages.mjs",
+    "generate": "npm run sync:projects && npm run generate:note-meta && npm run generate:search-index && nuxt generate && node scripts/prepare-cloudflare-pages.mjs && npm run check:content",
     "generate:note-meta": "node scripts/generate-note-meta.mjs",
+    "generate:search-index": "node scripts/generate-search-index.mjs",
+    "sync:projects": "node scripts/sync-github-projects.mjs",
+    "check:content": "node scripts/check-content.mjs",
+    "new": "node scripts/new-content.mjs",
     "prepare": "nuxt prepare",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
@@ -25,6 +29,7 @@
     "@nuxtjs/sitemap": "^8.2.2",
     "better-sqlite3": "^12.11.1",
     "katex": "^0.17.0",
+    "mermaid": "^11.16.0",
     "nuxt": "^4.4.8",
     "rehype-katex": "^7.0.1",
     "remark-math": "^6.0.0"
