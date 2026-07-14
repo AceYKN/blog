@@ -117,7 +117,6 @@ useHead(() => {
         <p class="eyebrow">原文筆記</p>
         <CourseNavigation :entry="note" />
         <h1>{{ entryTitle(note) }}</h1>
-        <p class="reader-path">{{ sourcePath(note) }}</p>
         <div v-if="metadata" class="article-meta">
           <time>Last Updated · {{ lastUpdated }}</time
           ><a :href="`https://github.com/AceYKN/my-note/edit/main/${metadata.githubPath}`" target="_blank" rel="noreferrer"
@@ -127,7 +126,7 @@ useHead(() => {
       </header>
       <ContentRenderer v-if="renderedNote" :value="renderedNote" class="prose" />
       <ContentEnhancements />
-      <CourseNavigation :entry="note" />
+      <CourseNavigation :entry="note" :show-breadcrumbs="false" />
     </div>
     <aside v-if="toc.length" class="toc" aria-label="文章目次">
       <p>目次</p>

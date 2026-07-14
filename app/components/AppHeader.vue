@@ -11,6 +11,7 @@ const setTheme = (value: 'light' | 'dark') => {
   theme.value = value
   document.documentElement.dataset.theme = value
   localStorage.setItem('theme', value)
+  window.dispatchEvent(new CustomEvent('blog:themechange'))
 }
 
 const toggleTheme = () => setTheme(isDark.value ? 'light' : 'dark')
