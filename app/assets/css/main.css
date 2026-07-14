@@ -94,6 +94,8 @@ main,
   margin-inline: auto;
 }
 .site-header {
+  width: 100%;
+  padding-inline: max(2rem, calc((100% - var(--max)) / 2));
   position: sticky;
   z-index: 40;
   top: 0;
@@ -1063,7 +1065,7 @@ main {
   .site-header {
     grid-template-columns: 1fr auto;
     min-height: 5rem;
-    padding: 0.75rem 0;
+    padding: 0.75rem 1rem;
   }
   .site-header nav {
     grid-row: 2;
