@@ -2,6 +2,18 @@
 // Cloudflare Web Analytics (cookie-free). Only injected when a beacon token is
 // configured via NUXT_PUBLIC_CF_BEACON_TOKEN, so local dev stays clean.
 const { cloudflareBeaconToken } = useRuntimeConfig().public
+const route = useRoute()
+const { siteUrl } = useRuntimeConfig().public
+
+useHead(() => ({
+  link: [
+    {
+      rel: 'canonical',
+      href: `${siteUrl.replace(/\/$/, '')}${route.path}`
+    }
+  ]
+}))
+
 if (cloudflareBeaconToken) {
   useHead({
     script: [

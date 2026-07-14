@@ -5,6 +5,42 @@ const props = defineProps<{
 }>()
 const githubPath = computed(() => (props.entry.path ? `content${props.entry.path}.md` : ''))
 const { toc, activeId } = useArticleToc()
+const { siteUrl } = useRuntimeConfig().public
+const route = useRoute()
+const renderedEntry = computed(() => {
+  const body = props.entry.body as { value?: unknown[] } | undefined
+  const nodes = body?.value
+  const firstNode = nodes?.[0]
+
+  // The reader header already supplies the document's single visible H1.
+  // Most Markdown files repeat that title as their first node, so omit only
+  // that node from the rendered body without changing the source Markdown.
+  if (body && nodes && Array.isArray(firstNode) && firstNode[0] === 'h1') {
+    return { ...props.entry, body: { ...body, value: nodes.slice(1) } }
+  }
+
+  return props.entry
+})
+
+useHead(() => ({
+  script: [
+    {
+      key: 'article-structured-data',
+      type: 'application/ld+json',
+      innerHTML: JSON.stringify({
+        '@context': 'https://schema.org',
+        '@type': 'BlogPosting',
+        headline: props.entry.title,
+        description: props.entry.description,
+        datePublished: props.entry.date,
+        dateModified: props.entry.date,
+        mainEntityOfPage: `${siteUrl.replace(/\/$/, '')}${route.path}`,
+        author: { '@type': 'Person', name: 'AceYKN' },
+        publisher: { '@type': 'Person', name: 'AceYKN' }
+      })
+    }
+  ]
+}))
 
 useSeoMeta({
   title: () => props.entry.title,
@@ -33,7 +69,7 @@ useSeoMeta({
           <NuxtLink v-for="tag in entry.tags" :key="tag" :to="`/tags/${encodeURIComponent(tag)}`">#{{ tag }}</NuxtLink>
         </div>
       </header>
-      <ContentRenderer :value="entry" class="prose" />
+      <ContentRenderer :value="renderedEntry" class="prose" />
     </div>
     <aside v-if="toc.length" class="toc" aria-label="文章目次">
       <p>目次</p>

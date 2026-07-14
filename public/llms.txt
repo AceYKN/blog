@@ -1,0 +1,17 @@
+# AceYKN blog
+
+AceYKN 的公開個人網站，內容包含課程筆記、技術實作、隨筆與 GitHub 專案。
+所有文章均為可公開閱讀的 Markdown 內容；引用時請保留文章標題、作者 AceYKN 與原始網址。
+
+## Collections
+
+- 課程筆記：https://aceykn-blog.pages.dev/library
+- 技術文章：https://aceykn-blog.pages.dev/tech
+- 隨筆：https://aceykn-blog.pages.dev/essays
+- GitHub 專案：https://aceykn-blog.pages.dev/projects
+- 全站 sitemap：https://aceykn-blog.pages.dev/sitemap.xml
+
+## Selected articles
+
+- giffgaff 低成本啟用與保號：https://aceykn-blog.pages.dev/essays/giffgaff-low-cost-activation
+- macOS 上以 DeepSeek API 設定 Claude Code：https://aceykn-blog.pages.dev/tech/claude-code-dpsk-macos

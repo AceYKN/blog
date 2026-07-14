@@ -9,10 +9,12 @@ const slug = computed(() => (Array.isArray(route.params.slug) ? route.params.slu
 const { data: entry, status } = useAsyncData(
   () => `note:${slug.value}`,
   async () => {
-    const expectedPaths = [`/source/${slug.value}`, `/${slug.value}`]
-    return (await queryCollection('notes').all()).find((item) => expectedPaths.includes(item.path)) || null
-  },
-  { server: false }
+    // Query the document directly. Loading the whole notes collection here
+    // serializes every Markdown body into every prerendered note page and can
+    // exhaust the build worker's memory as the library grows.
+    const migratedEntry = await queryCollection('notes').path(`/source/${slug.value}`).first()
+    return migratedEntry || queryCollection('notes').path(`/${slug.value}`).first()
+  }
 )
 const note = computed(() => entry.value as LibraryEntry | null)
 const metadata = computed(() => (note.value ? noteMetadata[sourcePath(note.value)] : undefined))
@@ -32,6 +34,42 @@ const lastUpdated = computed(() =>
     : ''
 )
 const { toc, activeId } = useArticleToc()
+const { siteUrl } = useRuntimeConfig().public
+const renderedNote = computed(() => {
+  if (!note.value) return null
+
+  const body = note.value.body as { value?: unknown[] } | undefined
+  const nodes = body?.value
+  const firstNode = nodes?.[0]
+  if (body && nodes && Array.isArray(firstNode) && firstNode[0] === 'h1') {
+    return { ...note.value, body: { ...body, value: nodes.slice(1) } }
+  }
+
+  return note.value
+})
+
+useHead(() => {
+  if (!note.value) return {}
+
+  return {
+    script: [
+      {
+        key: 'note-structured-data',
+        type: 'application/ld+json',
+        innerHTML: JSON.stringify({
+          '@context': 'https://schema.org',
+          '@type': 'Article',
+          headline: entryTitle(note.value),
+          description: note.value.description || sourcePath(note.value),
+          dateModified: metadata.value?.updatedAt,
+          mainEntityOfPage: `${siteUrl.replace(/\/$/, '')}${route.path}`,
+          author: { '@type': 'Person', name: 'AceYKN' },
+          publisher: { '@type': 'Person', name: 'AceYKN' }
+        })
+      }
+    ]
+  }
+})
 </script>
 
 <template>
@@ -48,7 +86,7 @@ const { toc, activeId } = useArticleToc()
           >
         </div>
       </header>
-      <ContentRenderer :value="note" class="prose" />
+      <ContentRenderer v-if="renderedNote" :value="renderedNote" class="prose" />
     </div>
     <aside v-if="toc.length" class="toc" aria-label="文章目次">
       <p>目次</p>

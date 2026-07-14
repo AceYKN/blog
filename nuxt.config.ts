@@ -1,6 +1,8 @@
+import { contentRoutes } from './scripts/content-routes.mjs'
+
 export default defineNuxtConfig({
   compatibilityDate: '2026-07-12',
-  ssr: false,
+  ssr: true,
   devtools: { enabled: true },
   modules: ['@nuxt/content', '@nuxt/eslint', '@nuxtjs/sitemap', '@nuxtjs/robots'],
   css: ['~/assets/css/main.css', 'katex/dist/katex.min.css'],
@@ -58,17 +60,9 @@ export default defineNuxtConfig({
     }
   },
 
-  // Hybrid rendering: the whole site is deployed as a static export (see README).
-  // Prerendering these "shell" routes at build time gives them real server-rendered
-  // HTML, so OG/Twitter meta and text content are visible to crawlers that don't
-  // execute JS. The 100+ individual notes/essays/tech/projects pages are left to the
-  // Cloudflare Pages' native SPA fallback and are rendered client-side
-  // after hydration — crawling/prerendering all of them blows past the available
-  // memory during `nuxt generate` (@nuxt/content's SQLite-backed prerender is not
-  // cheap per route yet). If this ever moves to Cloudflare Pages Functions (nitro
-  // preset "cloudflare-pages"), swap `prerender: true` for `isr: <seconds>` below,
-  // and prerender individual content routes gradually/selectively instead of via
-  // `crawlLinks`.
+  // Static HTML is deliberate: search engines and AI crawlers can read each
+  // document without executing JavaScript. The manifest is built from Markdown
+  // filenames only, leaving the migrated note content untouched.
   routeRules: {
     '/': { prerender: true },
     '/about': { prerender: true },
@@ -84,8 +78,13 @@ export default defineNuxtConfig({
     },
     prerender: {
       crawlLinks: false,
-      failOnError: false
+      failOnError: true,
+      routes: contentRoutes.map(({ route }) => route)
     }
+  },
+
+  sitemap: {
+    urls: contentRoutes.map(({ route, lastmod }) => ({ loc: route, lastmod }))
   },
 
   // Prettier owns code formatting; disable @nuxt/eslint's stylistic rules to avoid conflicts.
@@ -100,7 +99,8 @@ export default defineNuxtConfig({
   // leave it unset locally/in dev and nothing is injected.
   runtimeConfig: {
     public: {
-      cloudflareBeaconToken: process.env.NUXT_PUBLIC_CF_BEACON_TOKEN || ''
+      cloudflareBeaconToken: process.env.NUXT_PUBLIC_CF_BEACON_TOKEN || '',
+      siteUrl: process.env.NUXT_PUBLIC_SITE_URL || 'https://aceykn-blog.pages.dev'
     }
   }
 })

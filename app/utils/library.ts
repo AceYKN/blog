@@ -5,7 +5,7 @@ export type LibraryEntry = {
   path: string
   title?: string
   description?: string
-  body?: { toc?: { links?: Array<{ id: string; text: string; depth: number }> } }
+  body?: { value?: unknown[]; toc?: { links?: Array<{ id: string; text: string; depth: number }> } }
 }
 
 export type LibraryTree = {
