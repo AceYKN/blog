@@ -1,10 +1,10 @@
 # blog
 
-一个部署到 Cloudflare Pages 的纯静态个人站。它不需要服务器；课程笔记、随笔、技术文章和项目都由 Markdown 驱动。
+一个部署到 Cloudflare Pages 的纯静态个人站，文章由 Markdown 驱动。
 
 ## 日常更新
 
-只需要新增或编辑 `content/` 下的 Markdown，然后提交并推送到 GitHub。Cloudflare Pages 会自动构建和发布。
+新增或编辑 `content/` 下的 Markdown，然后提交并推送到 GitHub。Cloudflare Pages 会自动构建和发布。
 
 | 想发布什么   | 放到哪里            | 网址会是        |
 | ------------ | ------------------- | --------------- |
@@ -18,9 +18,9 @@
 ```md
 ---
 title: 标题
-description: 一句话摘要
+description: 摘要
 date: 2026-07-12
-updated: 2026-07-12
+updated: 2026-07-14
 tags: [生活, 工具]
 draft: false
 cover: /og-image.png
@@ -47,7 +47,7 @@ npm run check:content
 
 ### GitHub Pages
 
-仓库已包含 GitHub Actions 工作流。首次使用时，在 GitHub 仓库的 **Settings → Pages** 中，把 **Build and deployment → Source** 设为 **GitHub Actions**。之后推送到 `main` 会自动发布至：
+仓库已包含 GitHub Actions 工作流。每次推送到 `main` 会自动发布至：
 
 `https://aceykn.github.io/blog/`
 
@@ -55,13 +55,4 @@ npm run check:content
 
 ### Cloudflare Pages
 
-1. 在 GitHub 新建一个仓库，把本项目推送上去。
-2. 登录 Cloudflare，进入 **Workers & Pages → Create → Pages → Connect to Git**，选择仓库。
-3. 填入构建设置：
-   - Framework preset: `Nuxt.js`
-   - Build command: `npm run generate`
-   - Build output directory: `dist`
-   - Environment variable: `NODE_VERSION` = `24.11.0`
-4. 点击部署。之后每次 `git push` 都会自动更新站点；PR/分支会得到预览链接。
-
-Cloudflare Pages 使用网站根路径，因此不需要设置 `NUXT_APP_BASE_URL`。构建过程会移除顶层 `404.html`，启用 Cloudflare Pages 原生的 SPA 回退，使访客直接打开任意文章、项目或笔记网址也能正常进入。
+每次推送都会自动更新站点；PR/分支会得到预览链接。
