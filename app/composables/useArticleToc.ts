@@ -26,6 +26,17 @@ export function useArticleToc() {
     headings.forEach((heading) => observer?.observe(heading))
   })
 
+  watch(activeId, async (id) => {
+    if (!id) return
+    await nextTick()
+    const activeLink = document.querySelector<HTMLAnchorElement>('.toc a.active')
+    activeLink?.scrollIntoView({
+      behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth',
+      block: 'nearest',
+      inline: 'nearest'
+    })
+  })
+
   onBeforeUnmount(() => observer?.disconnect())
   return { toc, activeId }
 }

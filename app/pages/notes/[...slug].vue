@@ -115,7 +115,7 @@ useHead(() => {
     <div class="reader-main">
       <header class="reader-header">
         <p class="eyebrow">原文筆記</p>
-        <CourseNavigation :entry="note" />
+        <CourseNavigation :entry="note" show-jump />
         <h1>{{ entryTitle(note) }}</h1>
         <div v-if="metadata" class="article-meta">
           <time>Last Updated · {{ lastUpdated }}</time

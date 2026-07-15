@@ -5,3 +5,5 @@ dist
 .data
 home.png
 .playwright-cli
+/output/
+/tmp/

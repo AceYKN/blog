@@ -1,5 +1,6 @@
 <script setup lang="ts">
 let sequence = 0
+let mermaidRenderQueue = Promise.resolve()
 
 async function renderMermaid(diagram: HTMLElement, source: string) {
   const mermaid = (await import('mermaid')).default
@@ -35,6 +36,12 @@ async function renderMermaid(diagram: HTMLElement, source: string) {
   diagram.innerHTML = svg
 }
 
+function queueMermaidRender(diagram: HTMLElement, source: string) {
+  const task = mermaidRenderQueue.then(() => renderMermaid(diagram, source))
+  mermaidRenderQueue = task.catch(() => undefined)
+  return task
+}
+
 async function enhance(root: ParentNode = document) {
   const blocks = [...root.querySelectorAll<HTMLElement>('.prose pre')]
   for (const block of blocks) {
@@ -52,7 +59,7 @@ async function enhance(root: ParentNode = document) {
       try {
         const diagram = document.createElement('div')
         diagram.className = 'mermaid-diagram'
-        await renderMermaid(diagram, code.textContent || '')
+        await queueMermaidRender(diagram, code.textContent || '')
         block.replaceWith(diagram)
         continue
       } catch {
@@ -85,7 +92,7 @@ async function refreshMermaid() {
       const source = diagram.dataset.source
       if (!source) return
       try {
-        await renderMermaid(diagram, source)
+        await queueMermaidRender(diagram, source)
       } catch {
         // Keep the existing diagram visible if a re-render fails.
       }
