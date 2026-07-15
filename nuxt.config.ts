@@ -96,12 +96,14 @@ export default defineNuxtConfig({
     }
   },
 
-  // Cloudflare Web Analytics is cookie-free and free on Cloudflare Pages. Set
-  // NUXT_PUBLIC_CF_BEACON_TOKEN in the Pages project settings to enable it;
-  // leave it unset locally/in dev and nothing is injected.
+  // Analytics IDs are public by design. Their environment variables let
+  // preview deployments override or disable the production defaults.
   runtimeConfig: {
     public: {
       cloudflareBeaconToken: process.env.NUXT_PUBLIC_CF_BEACON_TOKEN || '',
+      googleAnalyticsId:
+        process.env.NUXT_PUBLIC_GOOGLE_ANALYTICS_ID ??
+        (process.env.NODE_ENV === 'production' ? 'G-C62VSWXD69' : ''),
       siteUrl: process.env.NUXT_PUBLIC_SITE_URL || 'https://aceykn-blog.pages.dev'
     }
   }

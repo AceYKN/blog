@@ -1,9 +1,6 @@
 <script setup lang="ts">
-// Cloudflare Web Analytics (cookie-free). Only injected when a beacon token is
-// configured via NUXT_PUBLIC_CF_BEACON_TOKEN, so local dev stays clean.
-const { cloudflareBeaconToken } = useRuntimeConfig().public
+const { cloudflareBeaconToken, googleAnalyticsId, siteUrl } = useRuntimeConfig().public
 const route = useRoute()
-const { siteUrl } = useRuntimeConfig().public
 const canonicalUrl = computed(() => `${siteUrl.replace(/\/$/, '')}${route.path}`)
 
 useHead(() => ({
@@ -49,6 +46,24 @@ if (cloudflareBeaconToken) {
         src: 'https://static.cloudflareinsights.com/beacon.min.js',
         defer: true,
         'data-cf-beacon': JSON.stringify({ token: cloudflareBeaconToken })
+      }
+    ]
+  })
+}
+
+// Enhanced Measurement records Nuxt's browser-history route changes, so only
+// configure the tag once here to avoid duplicate page_view events.
+if (googleAnalyticsId) {
+  useHead({
+    script: [
+      {
+        key: 'google-analytics-loader',
+        src: `https://www.googletagmanager.com/gtag/js?id=${encodeURIComponent(googleAnalyticsId)}`,
+        async: true
+      },
+      {
+        key: 'google-analytics-config',
+        innerHTML: `window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config',${JSON.stringify(googleAnalyticsId)});`
       }
     ]
   })
