@@ -45,6 +45,7 @@ onBeforeUnmount(() => {
     <NuxtLink class="wordmark" to="/">blog<span>.</span></NuxtLink>
     <nav aria-label="主要導覽">
       <NuxtLink to="/">Home</NuxtLink>
+      <NuxtLink to="/schedule">日程</NuxtLink>
       <NuxtLink to="/library">課程</NuxtLink>
       <NuxtLink to="/projects">項目</NuxtLink>
       <NuxtLink to="/essays">隨筆</NuxtLink>
