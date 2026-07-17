@@ -94,6 +94,12 @@ export default defineNuxtConfig({
     urls: contentRoutes.map(({ route, lastmod }) => ({ loc: route, lastmod }))
   },
 
+  // robots.txt belongs at a domain root. Cloudflare is the canonical root
+  // deployment; the GitHub Pages project-site mirror is served under /blog/.
+  robots: {
+    robotsTxt: baseURL === '/'
+  },
+
   // Prettier owns code formatting; disable @nuxt/eslint's stylistic rules to avoid conflicts.
   eslint: {
     config: {
