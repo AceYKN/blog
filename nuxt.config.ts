@@ -1,5 +1,9 @@
 import { contentRoutes } from './scripts/content-routes.mjs'
 
+const siteUrl = (process.env.NUXT_PUBLIC_SITE_URL || 'https://aceykn-blog.pages.dev').replace(/\/+$/, '')
+const baseURL = process.env.NUXT_APP_BASE_URL || '/'
+const publicAsset = (path: string) => `${baseURL.endsWith('/') ? baseURL : `${baseURL}/`}${path.replace(/^\/+/, '')}`
+
 export default defineNuxtConfig({
   compatibilityDate: '2026-07-12',
   ssr: true,
@@ -10,7 +14,7 @@ export default defineNuxtConfig({
   // Used by @nuxtjs/sitemap, @nuxtjs/robots and OG/canonical URL generation.
   // Override in production via NUXT_PUBLIC_SITE_URL.
   site: {
-    url: process.env.NUXT_PUBLIC_SITE_URL || 'https://aceykn-blog.pages.dev',
+    url: siteUrl,
     name: 'blog',
     description: '學習筆記、文章與工作紀錄。',
     defaultLocale: 'zh-Hant'
@@ -19,12 +23,12 @@ export default defineNuxtConfig({
   app: {
     // GitHub project sites are served from /<repository>/, while Cloudflare
     // Pages and local development use the domain root.
-    baseURL: process.env.NUXT_APP_BASE_URL || '/',
+    baseURL,
     head: {
       htmlAttrs: { lang: 'zh-Hant' },
       title: 'blog',
       titleTemplate: '%s · blog',
-      link: [{ rel: 'icon', type: 'image/png', href: '/favicon.png' }],
+      link: [{ rel: 'icon', type: 'image/png', href: publicAsset('/favicon.png') }],
       meta: [
         { name: 'viewport', content: 'width=device-width, initial-scale=1' },
         { name: 'description', content: '學習筆記、文章與工作紀錄。' },
@@ -34,11 +38,11 @@ export default defineNuxtConfig({
         { property: 'og:locale', content: 'zh_Hant' },
         { property: 'og:title', content: 'blog' },
         { property: 'og:description', content: '學習筆記、文章與工作紀錄。' },
-        { property: 'og:image', content: '/og-image.png' },
+        { property: 'og:image', content: `${siteUrl}/og-image.png` },
         // No twitter:title/description: Twitter/X falls back to og:title/og:description
         // when they're absent, so pages only need to override the two og: tags above.
         { name: 'twitter:card', content: 'summary_large_image' },
-        { name: 'twitter:image', content: '/og-image.png' }
+        { name: 'twitter:image', content: `${siteUrl}/og-image.png` }
       ],
       script: [
         {
@@ -103,7 +107,7 @@ export default defineNuxtConfig({
   runtimeConfig: {
     public: {
       cloudflareBeaconToken: process.env.NUXT_PUBLIC_CF_BEACON_TOKEN || '',
-      siteUrl: process.env.NUXT_PUBLIC_SITE_URL || 'https://aceykn-blog.pages.dev'
+      siteUrl
     }
   }
 })

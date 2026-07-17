@@ -8,7 +8,6 @@ useSeoMeta({
   description: '生活、感想、读到的事，想写就写。',
   ogTitle: '隨筆 · blog',
   ogDescription: '生活、感想、读到的事，想写就写。',
-  ogImage: '/og-image.png',
   twitterCard: 'summary_large_image'
 })
 </script>

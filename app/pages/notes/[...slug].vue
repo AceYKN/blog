@@ -41,7 +41,6 @@ useSeoMeta({
   ogDescription: () => (note.value ? note.value.description || sourcePath(note.value) : '載入課程筆記中。'),
   ogType: 'article',
   ogUrl: () => `${siteUrl.replace(/\/$/, '')}${route.path}`,
-  ogImage: '/og-image.png',
   twitterCard: 'summary_large_image'
 })
 

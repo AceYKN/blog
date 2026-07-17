@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { repositoryEditUrl } from '~/config/site'
+import { absoluteSiteUrl } from '~/utils/url'
 
 const props = defineProps<{
   // eslint-disable-next-line @typescript-eslint/no-explicit-any -- mirrors ContentRenderer's own permissive `value` prop type
@@ -17,7 +18,7 @@ const githubPath = computed(() => (props.entry.path ? `content${props.entry.path
 const { toc, activeId } = useArticleToc()
 const { siteUrl } = useRuntimeConfig().public
 const route = useRoute()
-const absoluteUrl = (value: string) => (value.startsWith('http') ? value : `${siteUrl.replace(/\/$/, '')}${value}`)
+const absoluteUrl = (value: string) => (value.startsWith('http') ? value : absoluteSiteUrl(siteUrl, value))
 const breadcrumb = () => ({
   '@type': 'BreadcrumbList',
   itemListElement: [

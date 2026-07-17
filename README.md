@@ -43,6 +43,8 @@ npm run check:content
 
 打开终端提示的网址（通常是 `http://localhost:3000`）。
 
+`check:content` 校验内容源和搜索索引；完整构建会额外对生成后的 HTML、canonical、JSON-LD 与标题结构进行检查。
+
 ## 部署
 
 ### GitHub Pages

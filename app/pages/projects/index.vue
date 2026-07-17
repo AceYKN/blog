@@ -4,7 +4,6 @@ useSeoMeta({
   description: '公开仓库会自动显示在这里；点击卡片可直接前往 GitHub。',
   ogTitle: '項目 · blog',
   ogDescription: '公开仓库会自动显示在这里；点击卡片可直接前往 GitHub。',
-  ogImage: '/og-image.png',
   twitterCard: 'summary_large_image'
 })
 </script>
