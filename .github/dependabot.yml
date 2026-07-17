@@ -1,0 +1,42 @@
+version: 2
+updates:
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+      time: '09:00'
+      timezone: Asia/Taipei
+    open-pull-requests-limit: 10
+    groups:
+      nuxt-content:
+        patterns:
+          - nuxt
+          - '@nuxt/*'
+          - '@nuxtjs/*'
+      content-rendering:
+        patterns:
+          - katex
+          - mermaid
+          - 'remark-*'
+          - 'rehype-*'
+      development-tools:
+        patterns:
+          - eslint
+          - '@nuxt/eslint'
+          - prettier
+          - vitest
+          - vue-tsc
+          - '@types/*'
+      minor-and-patch:
+        update-types:
+          - minor
+          - patch
+
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+      time: '09:00'
+      timezone: Asia/Taipei

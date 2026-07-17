@@ -1,4 +1,7 @@
 <script setup lang="ts">
+import { repositoryEditUrl } from '~/config/site'
+import { absoluteSiteUrl } from '~/utils/url'
+
 const props = defineProps<{
   // eslint-disable-next-line @typescript-eslint/no-explicit-any -- mirrors ContentRenderer's own permissive `value` prop type
   entry: Record<string, any> & {
@@ -15,7 +18,7 @@ const githubPath = computed(() => (props.entry.path ? `content${props.entry.path
 const { toc, activeId } = useArticleToc()
 const { siteUrl } = useRuntimeConfig().public
 const route = useRoute()
-const absoluteUrl = (value: string) => (value.startsWith('http') ? value : `${siteUrl.replace(/\/$/, '')}${value}`)
+const absoluteUrl = (value: string) => (value.startsWith('http') ? value : absoluteSiteUrl(siteUrl, value))
 const breadcrumb = () => ({
   '@type': 'BreadcrumbList',
   itemListElement: [
@@ -98,9 +101,7 @@ useSeoMeta({
         <p v-if="entry.description" class="reader-path">{{ entry.description }}</p>
         <div class="article-meta">
           <time>Last Updated · {{ entry.updated || entry.date || '—' }}</time
-          ><a v-if="githubPath" :href="`https://github.com/AceYKN/blog/edit/main/${githubPath}`" target="_blank" rel="noreferrer"
-            >在 GitHub 編集 ↗</a
-          >
+          ><a v-if="githubPath" :href="repositoryEditUrl(githubPath)" target="_blank" rel="noreferrer">在 GitHub 編集 ↗</a>
         </div>
         <div v-if="entry.tags?.length" class="tag-list">
           <NuxtLink v-for="tag in entry.tags" :key="tag" :to="`/tags/${encodeURIComponent(tag)}`">#{{ tag }}</NuxtLink>

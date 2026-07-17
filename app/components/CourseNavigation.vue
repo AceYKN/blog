@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { entryTitle, sectionFor, sourcePath, type LibraryEntry } from '~/utils/library'
 import type { SearchDocument, SearchIndex } from '~/utils/search'
+import { withBasePath } from '~/utils/url'
 
 const props = withDefaults(
   defineProps<{
@@ -10,7 +11,8 @@ const props = withDefaults(
   }>(),
   { showBreadcrumbs: true, showJump: false }
 )
-const { data: index } = await useFetch<SearchIndex>('/search-catalog.json', { key: 'site-search-catalogue' })
+const baseURL = useRuntimeConfig().app.baseURL
+const { data: index } = await useFetch<SearchIndex>(withBasePath(baseURL, '/search-catalog.json'), { key: 'site-search-catalogue' })
 const query = ref('')
 const path = computed(() => sourcePath(props.entry).replace(/\.md$/, ''))
 const current = computed(() => index.value?.documents.find((document) => document.kind === 'notes' && document.path === path.value))

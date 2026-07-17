@@ -1,7 +1,9 @@
 <script setup lang="ts">
 import { highlightParts, searchIndex, type SearchIndex } from '~/utils/search'
+import { withBasePath } from '~/utils/url'
 
 const open = defineModel<boolean>('open', { default: false })
+const baseURL = useRuntimeConfig().app.baseURL
 const query = ref('')
 const input = ref<HTMLInputElement>()
 const catalogue = ref<SearchIndex>()
@@ -13,7 +15,7 @@ async function loadCatalogue() {
   if (catalogue.value || isLoadingCatalogue.value) return
   isLoadingCatalogue.value = true
   try {
-    catalogue.value = await $fetch<SearchIndex>('/search-catalog.json')
+    catalogue.value = await $fetch<SearchIndex>(withBasePath(baseURL, '/search-catalog.json'))
   } finally {
     isLoadingCatalogue.value = false
   }
@@ -24,7 +26,7 @@ async function loadFullIndex() {
   isLoadingFullIndex.value = true
   try {
     const indexes = await Promise.all(
-      ['notes', 'essays', 'tech', 'projects'].map((kind) => $fetch<SearchIndex>(`/search-index-${kind}.json`))
+      ['notes', 'essays', 'tech', 'projects'].map((kind) => $fetch<SearchIndex>(withBasePath(baseURL, `/search-index-${kind}.json`)))
     )
     fullIndex.value = { version: 1, documents: indexes.flatMap((index) => index.documents) }
   } finally {

@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { entryTitle, sourcePath, type LibraryEntry } from '~/utils/library'
 import { noteMetadata } from '~/data/note-metadata'
+import { repositoryEditUrl } from '~/config/site'
 
 definePageMeta({ layout: 'reading' })
 
@@ -40,7 +41,6 @@ useSeoMeta({
   ogDescription: () => (note.value ? note.value.description || sourcePath(note.value) : '載入課程筆記中。'),
   ogType: 'article',
   ogUrl: () => `${siteUrl.replace(/\/$/, '')}${route.path}`,
-  ogImage: '/og-image.png',
   twitterCard: 'summary_large_image'
 })
 
@@ -119,9 +119,7 @@ useHead(() => {
         <h1>{{ entryTitle(note) }}</h1>
         <div v-if="metadata" class="article-meta">
           <time>Last Updated · {{ lastUpdated }}</time
-          ><a :href="`https://github.com/AceYKN/my-note/edit/main/${metadata.githubPath}`" target="_blank" rel="noreferrer"
-            >在 GitHub 編集 ↗</a
-          >
+          ><a :href="repositoryEditUrl(metadata.githubPath)" target="_blank" rel="noreferrer">在 GitHub 編集 ↗</a>
         </div>
       </header>
       <ContentRenderer v-if="renderedNote" :value="renderedNote" class="prose" />

@@ -19,7 +19,6 @@ useSeoMeta({
   description: '課程筆記、項目、隨筆與技術實踐，一個由 Markdown 驅動的個人站。',
   ogTitle: 'blog — 學習筆記、文章與工作紀錄',
   ogDescription: '課程筆記、項目、隨筆與技術實踐，一個由 Markdown 驅動的個人站。',
-  ogImage: '/og-image.png',
   twitterCard: 'summary_large_image'
 })
 </script>

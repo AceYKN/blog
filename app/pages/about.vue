@@ -4,7 +4,6 @@ useSeoMeta({
   description: '學習筆記、文章與工作紀錄。',
   ogTitle: '關於 · blog',
   ogDescription: '學習筆記、文章與工作紀錄。',
-  ogImage: '/og-image.png',
   twitterCard: 'summary_large_image'
 })
 </script>

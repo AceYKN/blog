@@ -31,7 +31,7 @@ cover: /og-image.png
 正文写在这里。
 ```
 
-也可使用 `npm run new -- --type tech --slug my-post` 创建带完整 frontmatter 的草稿。可选类型是 `essays`、`tech` 与 `projects`；草稿不会进入搜索或 sitemap。课程原文在 `content/source/`；迁移完成前不要在这里改动它们。
+也可使用 `npm run new -- --type tech --slug my-post` 创建带完整 frontmatter 的草稿。可选类型是 `essays`、`tech` 与 `projects`；草稿不会进入搜索或 sitemap。课程笔记以 `content/source/` 为唯一来源，页面上的编辑链接也会回到本仓库。
 
 ## 本地预览
 
@@ -42,6 +42,8 @@ npm run check:content
 ```
 
 打开终端提示的网址（通常是 `http://localhost:3000`）。
+
+`check:content` 校验内容源和搜索索引；完整构建会额外对生成后的 HTML、canonical、JSON-LD 与标题结构进行检查。
 
 ## 部署
 

@@ -1,7 +1,9 @@
 <script setup lang="ts">
 import { catalogue, entryTitle, entryUrl, type LibraryEntry } from '~/utils/library'
 import { highlightParts, searchIndex, type SearchIndex } from '~/utils/search'
+import { withBasePath } from '~/utils/url'
 
+const baseURL = useRuntimeConfig().app.baseURL
 const { data: entries } = await useAsyncData('library-notes', () => queryCollection('notes').all())
 const allEntries = computed(() => (entries.value || []) as LibraryEntry[])
 const groups = computed(() => catalogue(allEntries.value))
@@ -15,7 +17,7 @@ async function loadNotesIndex() {
   if (index.value || isLoadingIndex.value) return
   isLoadingIndex.value = true
   try {
-    index.value = await $fetch<SearchIndex>('/search-index-notes.json')
+    index.value = await $fetch<SearchIndex>(withBasePath(baseURL, '/search-index-notes.json'))
   } finally {
     isLoadingIndex.value = false
   }
@@ -28,7 +30,7 @@ watch(keyword, (value) => {
 onMounted(async () => {
   try {
     const saved = JSON.parse(localStorage.getItem('blog:reading-progress-v1') || 'null') as { url?: string } | null
-    const catalogue = await $fetch<SearchIndex>('/search-catalog.json')
+    const catalogue = await $fetch<SearchIndex>(withBasePath(baseURL, '/search-catalog.json'))
     const entry = catalogue.documents.find((document) => document.url === saved?.url && document.kind === 'notes')
     if (entry) continueReading.value = { url: entry.url, title: entry.title }
   } catch {
@@ -41,7 +43,6 @@ useSeoMeta({
   description: '操作系統、資料庫系統、演算法、軟體工程、數學等課程筆記與過去問。',
   ogTitle: '課程筆記 · blog',
   ogDescription: '操作系統、資料庫系統、演算法、軟體工程、數學等課程筆記與過去問。',
-  ogImage: '/og-image.png',
   twitterCard: 'summary_large_image'
 })
 </script>
