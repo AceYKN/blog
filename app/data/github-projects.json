@@ -1,10 +1,90 @@
 [
   {
-    "id": 0,
+    "id": 1298242468,
     "name": "blog",
-    "description": "Markdown 驅動的靜態個人站。",
+    "description": "个人博客",
     "language": "Vue",
     "html_url": "https://github.com/AceYKN/blog",
-    "updated_at": "2026-07-14T00:00:00Z"
+    "updated_at": "2026-07-17T07:42:15Z"
+  },
+  {
+    "id": 1265156683,
+    "name": "aceykn.github.io",
+    "description": null,
+    "language": "HTML",
+    "html_url": "https://github.com/AceYKN/aceykn.github.io",
+    "updated_at": "2026-06-10T14:37:02Z"
+  },
+  {
+    "id": 1263734628,
+    "name": "zenflow",
+    "description": null,
+    "language": "TypeScript",
+    "html_url": "https://github.com/AceYKN/zenflow",
+    "updated_at": "2026-06-10T13:34:15Z"
+  },
+  {
+    "id": 1249265216,
+    "name": "PaperMD",
+    "description": "A pure frontend Vue 3 Markdown editor with live preview, local drafts, and configurable PDF export.",
+    "language": "JavaScript",
+    "html_url": "https://github.com/AceYKN/PaperMD",
+    "updated_at": "2026-05-26T06:06:00Z"
+  },
+  {
+    "id": 1248273888,
+    "name": "world-time",
+    "description": "React world clock with map timezone selection",
+    "language": "JavaScript",
+    "html_url": "https://github.com/AceYKN/world-time",
+    "updated_at": "2026-05-25T14:14:59Z"
+  },
+  {
+    "id": 1242260459,
+    "name": "news-admin",
+    "description": "使用 node.js + vue3 构建",
+    "language": "Vue",
+    "html_url": "https://github.com/AceYKN/news-admin",
+    "updated_at": "2026-05-24T08:53:57Z"
+  },
+  {
+    "id": 1233859010,
+    "name": "uniprocessor-schedule",
+    "description": "单处理器进程调度模拟，采用时间片轮询算法",
+    "language": "C++",
+    "html_url": "https://github.com/AceYKN/uniprocessor-schedule",
+    "updated_at": "2026-05-13T14:25:03Z"
+  },
+  {
+    "id": 1164383767,
+    "name": "notems-enhance",
+    "description": null,
+    "language": "JavaScript",
+    "html_url": "https://github.com/AceYKN/notems-enhance",
+    "updated_at": "2026-04-27T05:22:26Z"
+  },
+  {
+    "id": 1191679598,
+    "name": "bilibiliplaylistlength",
+    "description": null,
+    "language": "Vue",
+    "html_url": "https://github.com/AceYKN/bilibiliplaylistlength",
+    "updated_at": "2026-03-26T11:22:15Z"
+  },
+  {
+    "id": 1115147052,
+    "name": "CitationRemover",
+    "description": "删除Gemini生成的文本中的cite标签",
+    "language": "Python",
+    "html_url": "https://github.com/AceYKN/CitationRemover",
+    "updated_at": "2025-12-12T12:10:28Z"
+  },
+  {
+    "id": 597806155,
+    "name": "htmllearning",
+    "description": null,
+    "language": "HTML",
+    "html_url": "https://github.com/AceYKN/htmllearning",
+    "updated_at": "2025-12-08T13:54:58Z"
   }
 ]
