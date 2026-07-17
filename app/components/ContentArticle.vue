@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { repositoryEditUrl } from '~/config/site'
+
 const props = defineProps<{
   // eslint-disable-next-line @typescript-eslint/no-explicit-any -- mirrors ContentRenderer's own permissive `value` prop type
   entry: Record<string, any> & {
@@ -98,9 +100,7 @@ useSeoMeta({
         <p v-if="entry.description" class="reader-path">{{ entry.description }}</p>
         <div class="article-meta">
           <time>Last Updated · {{ entry.updated || entry.date || '—' }}</time
-          ><a v-if="githubPath" :href="`https://github.com/AceYKN/blog/edit/main/${githubPath}`" target="_blank" rel="noreferrer"
-            >在 GitHub 編集 ↗</a
-          >
+          ><a v-if="githubPath" :href="repositoryEditUrl(githubPath)" target="_blank" rel="noreferrer">在 GitHub 編集 ↗</a>
         </div>
         <div v-if="entry.tags?.length" class="tag-list">
           <NuxtLink v-for="tag in entry.tags" :key="tag" :to="`/tags/${encodeURIComponent(tag)}`">#{{ tag }}</NuxtLink>

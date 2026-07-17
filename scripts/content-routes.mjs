@@ -1,5 +1,6 @@
-import { readFileSync, readdirSync, statSync } from 'node:fs'
+import { readFileSync, readdirSync } from 'node:fs'
 import { join, relative, sep } from 'node:path'
+import { contentLastUpdated } from './content-last-updated.mjs'
 
 const contentRoot = join(process.cwd(), 'content')
 
@@ -20,7 +21,7 @@ function collectMarkdown(directory, rootDirectory = directory) {
 
 /**
  * The site's content is stored as Markdown, but its public routes intentionally
- * use a different prefix for the migrated my-note collection (`/notes`).
+ * use a dedicated prefix for the learning-note collection (`/notes`).
  * Keeping this manifest at build time lets Nitro render every document to HTML
  * and lets the sitemap describe every public document without changing source
  * files or relying on a client-side crawler.
@@ -38,7 +39,7 @@ export const contentRoutes = [
       .filter(({ absolutePath, relativePath }) => !relativePath.startsWith('.') && !isDraft(absolutePath))
       .map(({ absolutePath, relativePath }) => ({
         route: `${prefix}/${relativePath.slice(0, -3).split(sep).join('/')}`,
-        lastmod: statSync(absolutePath).mtime.toISOString()
+        lastmod: contentLastUpdated(absolutePath)
       }))
   })
   .sort((left, right) => left.route.localeCompare(right.route))

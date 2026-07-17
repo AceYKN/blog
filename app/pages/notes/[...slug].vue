@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { entryTitle, sourcePath, type LibraryEntry } from '~/utils/library'
 import { noteMetadata } from '~/data/note-metadata'
+import { repositoryEditUrl } from '~/config/site'
 
 definePageMeta({ layout: 'reading' })
 
@@ -119,9 +120,7 @@ useHead(() => {
         <h1>{{ entryTitle(note) }}</h1>
         <div v-if="metadata" class="article-meta">
           <time>Last Updated · {{ lastUpdated }}</time
-          ><a :href="`https://github.com/AceYKN/my-note/edit/main/${metadata.githubPath}`" target="_blank" rel="noreferrer"
-            >在 GitHub 編集 ↗</a
-          >
+          ><a :href="repositoryEditUrl(metadata.githubPath)" target="_blank" rel="noreferrer">在 GitHub 編集 ↗</a>
         </div>
       </header>
       <ContentRenderer v-if="renderedNote" :value="renderedNote" class="prose" />
