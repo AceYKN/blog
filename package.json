@@ -30,7 +30,7 @@
     "@nuxtjs/robots": "^6.1.2",
     "@nuxtjs/sitemap": "^8.2.2",
     "better-sqlite3": "^12.11.1",
-    "katex": "^0.17.0",
+    "katex": "^0.18.1",
     "mermaid": "^11.16.0",
     "nuxt": "^4.4.8",
     "rehype-katex": "^7.0.1",
