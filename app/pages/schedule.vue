@@ -218,6 +218,48 @@ useSeoMeta({
       </div>
     </div>
 
+    <div class="schedule-mobile-days">
+      <article
+        v-for="(date, day) in weekDates"
+        :key="`mobile-${date}`"
+        class="schedule-mobile-day"
+        :class="`schedule-mobile-day--${getDayStatus(date).type}`"
+      >
+        <header class="schedule-mobile-day__header">
+          <div>
+            <p>{{ weekdayNames[day] }}</p>
+            <time :datetime="date">{{ getDateLabel(date) }}</time>
+          </div>
+          <span v-if="getStatusLabel(date)" class="schedule-mobile-day__status">{{ getStatusLabel(date) }}</span>
+          <span v-else class="schedule-mobile-day__count">{{ getCoursesForDate(date).length }} 門課</span>
+        </header>
+
+        <div v-if="getCoursesForDate(date).length" class="schedule-mobile-day__courses">
+          <button
+            v-for="course in getCoursesForDate(date)"
+            :key="`mobile-${course.id}`"
+            class="schedule-mobile-course"
+            :class="`schedule-course--${courseTone(course.title)}`"
+            :aria-label="`${displayCourseText(course.title)}，${courseTime(course.startSection, course.endSection)}，${displayCourseText(course.campus)}，${displayCourseText(course.room)}，${displayCourseText(course.teacher)}`"
+            type="button"
+            @click="selectedCourse = course"
+          >
+            <span class="schedule-mobile-course__time">
+              <strong>{{ courseTime(course.startSection, course.endSection) }}</strong>
+              <small>第 {{ course.startSection }}–{{ course.endSection }} 節</small>
+            </span>
+            <span class="schedule-mobile-course__body">
+              <strong>{{ displayCourseText(course.title) }}</strong>
+              <span>{{ displayCourseText(course.room) }} · {{ displayCourseText(course.teacher) }}</span>
+              <em>{{ formatWeekRules(course.weekRules) }} · {{ courseKindLabels[course.kind] }}</em>
+            </span>
+            <span class="schedule-mobile-course__arrow" aria-hidden="true">↗</span>
+          </button>
+        </div>
+        <p v-else class="schedule-mobile-day__empty">今日沒有安排課程</p>
+      </article>
+    </div>
+
     <aside class="schedule-legend" aria-label="日程提示">
       <p>每門課使用固定的獨立顏色；假期不顯示常規課程，調課日則按校曆執行指定日期的課表。</p>
     </aside>
