@@ -73,7 +73,7 @@ export const courses: Course[] = [
     endSection: 4,
     campus: '長安校區',
     room: '3406',
-    teacher: '蘇临之',
+    teacher: '蘇峙之',
     kind: 'theory',
     weekRules: [{ start: 1, end: 18 }]
   },
@@ -85,7 +85,7 @@ export const courses: Course[] = [
     endSection: 10,
     campus: '長安校區',
     room: '計算機技術實驗室 321',
-    teacher: '蘇临之',
+    teacher: '蘇峙之',
     kind: 'computer',
     weekRules: [{ start: 3, end: 12 }]
   },

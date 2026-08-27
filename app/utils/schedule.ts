@@ -54,6 +54,8 @@ export function isCourseWeek(course: Course, week: number) {
 }
 
 export function getTeachingWeek(key: string) {
+  if (key < semester.start || key > semester.end) return null
+
   const difference = Math.floor((parseKey(key).getTime() - parseKey(semester.start).getTime()) / 86_400_000)
   const week = Math.floor(difference / 7) + 1
   return week >= 1 && week <= semester.totalWeeks ? week : null
