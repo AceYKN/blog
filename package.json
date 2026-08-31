@@ -26,21 +26,21 @@
     "test:watch": "vitest"
   },
   "dependencies": {
-    "@nuxt/content": "^3.15.0",
+    "@nuxt/content": "^3.16.0",
     "@nuxtjs/robots": "^6.1.2",
     "@nuxtjs/sitemap": "^8.2.2",
     "better-sqlite3": "^12.11.1",
-    "katex": "^0.17.0",
-    "mermaid": "^11.16.0",
+    "katex": "^0.18.4",
+    "mermaid": "^11.17.2",
     "nuxt": "^4.5.2",
     "rehype-katex": "^7.0.1",
     "remark-math": "^6.0.0"
   },
   "devDependencies": {
     "@nuxt/eslint": "^1.16.0",
-    "@types/node": "^26.1.1",
-    "@vue/test-utils": "^2.4.11",
-    "eslint": "^10.7.0",
+    "@types/node": "^26.4.0",
+    "@vue/test-utils": "^2.5.0",
+    "eslint": "^10.9.1",
     "prettier": "^3.9.5",
     "vitest": "^4.1.10",
     "vue-tsc": "^3.3.7"
