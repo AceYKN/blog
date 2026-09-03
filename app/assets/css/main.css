@@ -304,6 +304,26 @@ main {
 .now-panel small {
   color: var(--muted);
 }
+.now-location {
+  margin-top: 0.55rem;
+  padding: 0.05rem 0;
+  border: 0;
+  border-bottom: 1px solid currentColor;
+  background: transparent;
+  color: var(--moss);
+  font: 0.65rem var(--font-mono);
+}
+.now-location:hover {
+  color: var(--vermilion);
+}
+.now-location:disabled {
+  cursor: wait;
+  opacity: 0.65;
+}
+.now-panel .now-location__message {
+  color: var(--vermilion);
+  line-height: 1.45;
+}
 .analogue-clock {
   position: relative;
   width: 6.3rem;
