@@ -61,6 +61,22 @@ jobs:
           GITHUB_TOKEN: ${{ github.token }}
           NUXT_APP_BASE_URL: /${{ github.event.repository.name }}/
 
+      - name: Verify root deployment PWA config
+        shell: bash
+        run: |
+          NUXT_APP_BASE_URL=/ NUXT_OUTPUT_DIR=dist-root npx nuxt generate
+          NUXT_APP_BASE_URL=/ PWA_DIST_DIR=dist-root npm run generate:pwa
+          NUXT_APP_BASE_URL=/ PWA_DIST_DIR=dist-root npm run check:pwa
+          rm -rf dist-root
+
+      - name: Install Playwright Chromium
+        run: npx playwright install --with-deps chromium
+
+      - name: PWA E2E
+        run: npm run test:pwa
+        env:
+          NUXT_APP_BASE_URL: /${{ github.event.repository.name }}/
+
       - name: Add fallback for direct links
         if: github.event_name != 'pull_request'
         run: cp dist/index.html dist/404.html
