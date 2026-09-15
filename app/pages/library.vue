@@ -4,7 +4,9 @@ import { highlightParts, searchIndex, type SearchIndex } from '~/utils/search'
 import { withBasePath } from '~/utils/url'
 
 const baseURL = useRuntimeConfig().app.baseURL
-const { data: entries } = await useAsyncData('library-notes', () => queryCollection('notes').all())
+const { data: entries } = await useAsyncData('library-notes', () =>
+  queryCollection('notes').select('id', 'path', 'title', 'description').all()
+)
 const allEntries = computed(() => (entries.value || []) as LibraryEntry[])
 const groups = computed(() => catalogue(allEntries.value))
 const keyword = ref('')
