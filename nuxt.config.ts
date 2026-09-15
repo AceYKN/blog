@@ -2,6 +2,7 @@ import { contentRoutes } from './scripts/content-routes.mjs'
 
 const siteUrl = (process.env.NUXT_PUBLIC_SITE_URL || 'https://aceykn-blog.pages.dev').replace(/\/+$/, '')
 const baseURL = process.env.NUXT_APP_BASE_URL || '/'
+const pwaEnabled = process.env.NUXT_PUBLIC_PWA_ENABLED !== 'false'
 const publicAsset = (path: string) => `${baseURL.endsWith('/') ? baseURL : `${baseURL}/`}${path.replace(/^\/+/, '')}`
 
 export default defineNuxtConfig({
@@ -28,10 +29,21 @@ export default defineNuxtConfig({
       htmlAttrs: { lang: 'zh-Hant' },
       title: 'blog',
       titleTemplate: '%s · blog',
-      link: [{ rel: 'icon', type: 'image/png', href: publicAsset('/favicon.png') }],
+      link: [
+        { rel: 'icon', type: 'image/svg+xml', href: publicAsset('/favicon.svg') },
+        { rel: 'icon', type: 'image/png', sizes: '64x64', href: publicAsset('/favicon.png') },
+        { rel: 'icon', type: 'image/x-icon', href: publicAsset('/favicon.ico') },
+        ...(pwaEnabled
+          ? [
+              { rel: 'manifest' as const, href: publicAsset('/manifest.webmanifest') },
+              { rel: 'apple-touch-icon' as const, sizes: '180x180', href: publicAsset('/pwa/apple-touch-icon.png') }
+            ]
+          : [])
+      ],
       meta: [
         { name: 'viewport', content: 'width=device-width, initial-scale=1' },
         { name: 'description', content: '學習筆記、文章與工作紀錄。' },
+        { name: 'theme-color', content: '#f5f1e6' },
         { name: 'google-site-verification', content: 'fK_ZazKGBmk9Zu5OsiJAVEoaJCHqy4os1J3_6CmJyLo' },
         { property: 'og:type', content: 'website' },
         { property: 'og:site_name', content: 'blog' },
@@ -47,7 +59,7 @@ export default defineNuxtConfig({
       script: [
         {
           innerHTML:
-            "try { const saved = localStorage.getItem('theme'); document.documentElement.dataset.theme = saved === 'light' || saved === 'dark' ? saved : (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') } catch {}"
+            "try { const saved = localStorage.getItem('theme'); const theme = saved === 'light' || saved === 'dark' ? saved : (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'); document.documentElement.dataset.theme = theme; document.querySelector('meta[name=theme-color]')?.setAttribute('content', theme === 'dark' ? '#161914' : '#f5f1e6') } catch {}"
         }
       ]
     }
@@ -81,7 +93,7 @@ export default defineNuxtConfig({
 
   nitro: {
     output: {
-      publicDir: 'dist'
+      publicDir: process.env.NUXT_OUTPUT_DIR || 'dist'
     },
     prerender: {
       crawlLinks: false,
@@ -113,7 +125,9 @@ export default defineNuxtConfig({
   runtimeConfig: {
     public: {
       cloudflareBeaconToken: process.env.NUXT_PUBLIC_CF_BEACON_TOKEN || '',
-      siteUrl
+      siteUrl,
+      pwaEnabled,
+      pwaDev: process.env.NUXT_PUBLIC_PWA_DEV === 'true'
     }
   }
 })
