@@ -2,7 +2,8 @@
 import { site } from '~/config/site'
 
 const offset = ref(0)
-const now = ref(new Date())
+const now = ref(new Date(0))
+const isReady = ref(false)
 const weather = ref<{ temperature: number; label: string; location: string } | null>(null)
 let timer: number | undefined
 const current = computed(() => new Date(now.value.getTime() + offset.value))
@@ -79,6 +80,8 @@ async function locationName(latitude: number, longitude: number) {
 }
 
 onMounted(async () => {
+  now.value = new Date()
+  isReady.value = true
   timer = window.setInterval(() => {
     now.value = new Date()
   }, 1_000)
@@ -122,10 +125,17 @@ onBeforeUnmount(() => {
       />
     </div>
     <div>
-      <p class="eyebrow">いま · 臺北時間</p>
-      <time>{{ timeText }}</time
-      ><span>{{ dateText }}</span
-      ><small>{{ weather ? `${weather.location} · ${weather.label} ${weather.temperature}°C` : '空模様を読み込み中' }}</small>
+      <p class="now-label">現在 · 臺北時間</p>
+      <template v-if="isReady">
+        <time>{{ timeText }}</time>
+        <span>{{ dateText }}</span>
+        <small>{{ weather ? `${weather.location} · ${weather.label} ${weather.temperature}°C` : '空模様を読み込み中' }}</small>
+      </template>
+      <template v-else>
+        <time aria-label="目前時間">--:--</time>
+        <span>臺北時間</span>
+        <small>時間載入中</small>
+      </template>
     </div>
   </aside>
 </template>
