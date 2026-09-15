@@ -4,6 +4,7 @@ import { contentRoutes } from './content-routes.mjs'
 
 const root = process.cwd()
 const contentRoot = join(root, 'content')
+const outputDirectory = join(root, process.env.NUXT_OUTPUT_DIR || 'dist')
 const required = ['title', 'description', 'date', 'updated', 'tags', 'draft', 'cover']
 const failures = []
 const scope = process.argv[2] || '--source'
@@ -66,7 +67,7 @@ if (scope === '--source') {
 if (scope === '--dist') {
   for (const { route } of contentRoutes) {
     const path = route.replace(/^\//, '')
-    const candidates = [join(root, 'dist', path, 'index.html'), join(root, 'dist', `${path}.html`)]
+    const candidates = [join(outputDirectory, path, 'index.html'), join(outputDirectory, `${path}.html`)]
     let html
     for (const candidate of candidates) {
       try {

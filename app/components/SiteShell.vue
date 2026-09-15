@@ -15,6 +15,7 @@ watch(
   <ReadingProgress v-if="props.reading" />
   <a class="skip-link" href="#main">跳至主要內容</a>
   <AppHeader />
+  <PwaStatusStack />
   <main id="main"><slot /></main>
   <AppFooter />
   <SearchOverlay v-model:open="searchOpen" />

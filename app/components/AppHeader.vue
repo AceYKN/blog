@@ -11,6 +11,7 @@ const setTheme = (value: 'light' | 'dark') => {
   theme.value = value
   document.documentElement.dataset.theme = value
   localStorage.setItem('theme', value)
+  document.querySelector<HTMLMetaElement>('meta[name="theme-color"]')?.setAttribute('content', value === 'dark' ? '#161914' : '#f5f1e6')
   window.dispatchEvent(new CustomEvent('blog:themechange'))
 }
 
@@ -52,6 +53,7 @@ onBeforeUnmount(() => {
       <NuxtLink to="/tech">技術</NuxtLink>
     </nav>
     <div class="header-actions">
+      <PwaInstallAction />
       <button class="theme-toggle" type="button" :title="isDark ? '切換至明亮模式' : '切換至深色模式'" @click="toggleTheme">
         <svg v-if="isDark" viewBox="0 0 24 24" aria-hidden="true">
           <circle cx="12" cy="12" r="4" />
