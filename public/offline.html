@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="zh-Hant">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#f5f1e6" />
+    <title>離線 · AceYKN Notes</title>
+    <style>
+      :root {
+        color-scheme: light;
+        background: #f5f1e6;
+        color: #20251e;
+        font-family: Georgia, 'Noto Serif TC', serif;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        min-width: 320px;
+        margin: 0;
+      }
+      main {
+        width: min(40rem, calc(100% - 3rem));
+        margin: calc(18vh + env(safe-area-inset-top)) auto 0;
+        padding-right: env(safe-area-inset-right);
+        padding-bottom: env(safe-area-inset-bottom);
+        padding-left: env(safe-area-inset-left);
+      }
+      p {
+        color: #6b6c65;
+        line-height: 1.8;
+      }
+      .eyebrow {
+        color: #b84d39;
+        font:
+          0.72rem/1.4 ui-monospace,
+          monospace;
+        letter-spacing: 0.08em;
+      }
+      h1 {
+        margin: 0;
+        font-size: clamp(2.2rem, 8vw, 4.4rem);
+        font-weight: 500;
+      }
+      .actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.75rem;
+        margin-top: 2rem;
+      }
+      a,
+      button {
+        border: 1px solid #cfc6b5;
+        padding: 0.65rem 0.85rem;
+        background: transparent;
+        color: inherit;
+        font: inherit;
+        text-decoration: none;
+        cursor: pointer;
+      }
+      a:hover,
+      button:hover {
+        border-color: #b84d39;
+        color: #b84d39;
+      }
+      @media (prefers-color-scheme: dark) {
+        :root {
+          color-scheme: dark;
+          background: #161914;
+          color: #ece9dd;
+        }
+        p {
+          color: #b5b5a8;
+        }
+        a,
+        button {
+          border-color: #464a40;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <p class="eyebrow">ACEYKN NOTES · OFFLINE</p>
+      <h1>離線</h1>
+      <p>目前沒有網絡連線，而這個頁面尚未被儲存在本機。</p>
+      <div class="actions">
+        <button type="button" onclick="location.reload()">重新整理</button>
+        <a href="__PWA_BASE_URL__">返回首頁</a>
+      </div>
+    </main>
+  </body>
+</html>

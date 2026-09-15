@@ -8,9 +8,12 @@
   "scripts": {
     "dev": "nuxt dev",
     "build": "nuxt build",
-    "generate": "npm run sync:projects && npm run generate:note-meta && npm run generate:search-index && npm run check:source && nuxt generate && node scripts/prepare-cloudflare-pages.mjs && npm run check:dist",
+    "generate": "npm run sync:projects && npm run generate:note-meta && npm run generate:search-index && npm run check:source && nuxt generate && node scripts/prepare-cloudflare-pages.mjs && npm run generate:pwa && npm run check:dist && npm run check:pwa",
     "generate:note-meta": "node scripts/generate-note-meta.mjs",
     "generate:search-index": "node scripts/generate-search-index.mjs",
+    "generate:pwa": "node scripts/generate-pwa.mjs",
+    "check:pwa": "node scripts/check-pwa.mjs",
+    "test:pwa": "playwright test tests/e2e/pwa.spec.ts",
     "sync:projects": "node scripts/sync-github-projects.mjs",
     "check:content": "npm run generate:note-meta && npm run generate:search-index && npm run check:source",
     "check:source": "node scripts/check-content.mjs --source",
@@ -38,11 +41,13 @@
   },
   "devDependencies": {
     "@nuxt/eslint": "^1.16.0",
+    "@playwright/test": "^1.63.0",
     "@types/node": "^26.1.1",
     "@vue/test-utils": "^2.4.11",
     "eslint": "^10.7.0",
     "prettier": "^3.9.5",
     "vitest": "^4.1.10",
-    "vue-tsc": "^3.3.7"
+    "vue-tsc": "^3.3.7",
+    "workbox-build": "^7.4.1"
   }
 }
