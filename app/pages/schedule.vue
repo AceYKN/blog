@@ -369,7 +369,7 @@ watch(
 )
 
 onMounted(() => {
-  if (!requestedView.value) storedView.value = readStoredView()
+  storedView.value = readStoredView()
   refreshNow()
   isMounted.value = true
   normalizeRoute()

@@ -53,6 +53,15 @@ test.describe('AceYKN schedule', () => {
     await expect(page.locator('.schedule-view-switch button.active')).toHaveText('月曆')
   })
 
+  test('restores the stored preference after leaving a shared explicit URL', async ({ page }) => {
+    await page.addInitScript(() => localStorage.setItem('schedule:view', 'today'))
+    await page.goto('./schedule?view=month&month=2026-10')
+    await expect(page.locator('.schedule-view-switch button.active')).toHaveText('月曆')
+    await page.getByRole('link', { name: '日程' }).click()
+    await expect(page).toHaveURL(/\/schedule\/?\?view=today$/)
+    await expect(page.locator('.schedule-view-switch button.active')).toHaveText('今日')
+  })
+
   test('keeps a user-selected view when returning to the bare schedule route', async ({ page }) => {
     await page.goto('./schedule')
     await page.getByRole('button', { name: '月曆' }).click()
