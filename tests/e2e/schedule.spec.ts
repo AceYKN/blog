@@ -57,8 +57,13 @@ test.describe('AceYKN schedule', () => {
     await page.goto('./schedule')
     await page.getByRole('button', { name: '月曆' }).click()
     await expect(page.locator('.schedule-view-switch button.active')).toHaveText('月曆')
-    await page.getByRole('link', { name: '日程' }).click()
-    await expect(page).toHaveURL(/\/schedule\/?$/)
+    await page.evaluate(() => {
+      const url = new URL(window.location.href)
+      url.search = ''
+      window.history.pushState(window.history.state, '', url)
+      window.dispatchEvent(new PopStateEvent('popstate'))
+    })
+    await expect(page).toHaveURL(/\/schedule\/?\?view=month&month=\d{4}-\d{2}$/)
     await expect(page.locator('.schedule-view-switch button.active')).toHaveText('月曆')
   })
 
