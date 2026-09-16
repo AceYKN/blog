@@ -17,6 +17,14 @@ export interface Course {
   teacher: string
   kind: CourseKind
   weekRules: WeekRule[]
+
+  courseCode?: string
+  studentGroups?: string[]
+  assessment?: string
+  theoryHours?: number
+  weeklyHours?: number
+  totalHours?: number
+  credits?: number
 }
 
 export const semester = {
@@ -307,5 +315,24 @@ export const courses: Course[] = [
     teacher: '孫霞',
     kind: 'lab',
     weekRules: [{ start: 16, end: 18 }]
+  },
+  {
+    id: 'college-chinese',
+    title: '大學語文★',
+    day: 2,
+    startSection: 9,
+    endSection: 10,
+    campus: '長安校區',
+    room: '1210',
+    teacher: '李斌',
+    kind: 'theory',
+    weekRules: [{ start: 1, end: 18 }],
+    courseCode: '大學語文-0013',
+    studentGroups: ['化学类202501', '化学类202502', '化学类202503', '化学类202504'],
+    assessment: '考試',
+    theoryHours: 36,
+    weeklyHours: 2,
+    totalHours: 36,
+    credits: 2.0
   }
 ]

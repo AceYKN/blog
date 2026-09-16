@@ -1259,6 +1259,13 @@ main {
   font: 0.88rem var(--font-mono);
   text-align: center;
 }
+.schedule-toolbar__today {
+  min-height: 2.4rem;
+  padding: 0.45rem 0.65rem;
+  color: var(--vermilion);
+  font: 0.68rem/1.5 var(--font-mono);
+  text-align: right;
+}
 .schedule-week {
   padding: 2.75rem 0 5rem;
 }
@@ -1277,6 +1284,48 @@ main {
   margin: 0;
   color: var(--muted);
   font: 0.72rem var(--font-mono);
+}
+.schedule-now-summary {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  gap: 1rem;
+  align-items: center;
+  margin: 0 0 1.25rem;
+  padding: 0.85rem 1rem;
+  border: 1px solid var(--line);
+  border-left: 3px solid var(--vermilion);
+  background: color-mix(in srgb, var(--paper) 88%, var(--surface-rose));
+}
+.schedule-now-summary__eyebrow {
+  margin: 0;
+  color: var(--vermilion);
+  font: 0.67rem var(--font-mono);
+  letter-spacing: 0.08em;
+}
+.schedule-now-summary__body {
+  min-width: 0;
+}
+.schedule-now-summary__body strong,
+.schedule-now-summary__body span {
+  display: block;
+}
+.schedule-now-summary__body strong {
+  overflow: hidden;
+  font: 600 0.9rem/1.25 var(--font-base);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.schedule-now-summary__body span {
+  margin-top: 0.2rem;
+  color: var(--muted);
+  font: 0.63rem var(--font-mono);
+}
+.schedule-now-summary__countdown {
+  margin: 0;
+  color: var(--ink);
+  font: 0.68rem var(--font-mono);
+  text-align: right;
+  white-space: nowrap;
 }
 .schedule-week__scroll {
   overflow-x: auto;
@@ -1362,6 +1411,9 @@ main {
 .schedule-day--makeup .schedule-day__header {
   background: var(--surface-indigo);
 }
+.schedule-day--today .schedule-day__header {
+  box-shadow: inset 0 2px var(--vermilion);
+}
 .schedule-day__slots {
   grid-row: 2;
   position: relative;
@@ -1438,6 +1490,24 @@ main {
   --course-accent: #3d748f;
   --course-surface: color-mix(in srgb, #3d748f 16%, var(--paper));
 }
+.schedule-course--college-chinese {
+  --course-accent: #657c69;
+  --course-surface: color-mix(in srgb, #657c69 16%, var(--paper));
+}
+.schedule-course--ended {
+  opacity: 0.58;
+}
+.schedule-course--current {
+  border-left-width: 5px;
+  background: color-mix(in srgb, var(--course-accent) 21%, var(--paper));
+  box-shadow: 0 0.35rem 0.8rem rgb(42 50 38 / 10%);
+}
+.schedule-course--next {
+  border-color: color-mix(in srgb, var(--course-accent) 58%, var(--line));
+}
+.schedule-course--later {
+  opacity: 0.74;
+}
 .schedule-course strong,
 .schedule-course span,
 .schedule-course small,
@@ -1472,6 +1542,44 @@ main {
   margin-top: 0.4rem;
   color: var(--course-accent);
   font-style: normal;
+}
+.schedule-course__status::before {
+  content: '';
+}
+.schedule-course--next .schedule-course__status::before {
+  margin-right: 0.25rem;
+  color: var(--vermilion);
+  content: '●';
+}
+.schedule-now-marker-row {
+  position: relative;
+  z-index: 5;
+  min-width: 0;
+  pointer-events: none;
+}
+.schedule-now-marker {
+  position: absolute;
+  z-index: 5;
+  top: calc(var(--progress) * 100%);
+  right: 0.45rem;
+  left: 0.45rem;
+  display: flex;
+  align-items: center;
+  color: var(--vermilion);
+  transform: translateY(-50%);
+}
+.schedule-now-marker::before {
+  flex: 1;
+  border-top: 1px solid currentcolor;
+  content: '';
+}
+.schedule-now-marker span {
+  order: -1;
+  margin-right: 0.25rem;
+  padding: 0 0.2rem;
+  background: var(--paper);
+  font: 0.58rem var(--font-mono);
+  line-height: 1.25;
 }
 .schedule-legend {
   display: flex;
@@ -1555,6 +1663,20 @@ main {
 .schedule-course-dialog__card dd {
   margin: 0;
 }
+.schedule-course-dialog__groups,
+.schedule-course-dialog__hours {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+.schedule-course-dialog__groups {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.schedule-course-dialog__hours span {
+  display: block;
+}
 .schedule-month {
   padding: 2.75rem 0 5rem;
 }
@@ -1597,6 +1719,7 @@ main {
 }
 .schedule-month-day time,
 .schedule-month-day__label,
+.schedule-month-day__dots,
 .schedule-month-day__courses,
 .schedule-month-day__empty {
   display: block;
@@ -1612,6 +1735,20 @@ main {
 }
 .schedule-month-day__courses {
   color: var(--moss);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+.schedule-month-day__dots {
+  display: flex;
+  gap: 0.22rem;
+  min-height: 0.34rem;
+  margin-top: 0.55rem;
+}
+.schedule-month-day__dots i {
+  width: 0.32rem;
+  height: 0.32rem;
+  border-radius: 50%;
+  background: var(--moss);
 }
 .schedule-month-day__empty {
   color: color-mix(in srgb, var(--muted) 38%, transparent);
@@ -1631,6 +1768,9 @@ main {
 .schedule-month-day.muted {
   background: color-mix(in srgb, var(--paper) 68%, transparent);
   color: var(--muted);
+}
+.schedule-month-day.today {
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--vermilion) 70%, transparent);
 }
 .schedule-month__help {
   margin: 0.9rem 0 0;
@@ -1869,6 +2009,10 @@ main {
   .schedule-week-select span {
     white-space: nowrap;
   }
+  .schedule-toolbar__today {
+    grid-column: 1 / -1;
+    text-align: center;
+  }
   .schedule-week__intro {
     display: block;
   }
@@ -1885,6 +2029,17 @@ main {
   .schedule-month-day {
     min-height: 7rem;
   }
+  .schedule-now-summary {
+    grid-template-columns: 1fr;
+    gap: 0.35rem;
+    align-items: start;
+  }
+  .schedule-now-summary__countdown {
+    text-align: left;
+  }
+  .schedule-now-summary__body strong {
+    white-space: normal;
+  }
   .schedule-week__scroll {
     width: 100vw;
     margin-left: calc((100vw - 100%) / -2);
@@ -1895,9 +2050,9 @@ main {
   .schedule-week__grid {
     --slot-height: 4.8rem;
     --period-gap: 1rem;
-    width: calc(140vw - 1.3rem);
-    min-width: 0;
-    grid-template-columns: 3.25rem repeat(7, calc(20vw - 0.65rem));
+    width: max-content;
+    min-width: 50.5rem;
+    grid-template-columns: 3.25rem repeat(7, 6.75rem);
   }
   .schedule-time-axis {
     position: sticky;
@@ -1913,14 +2068,33 @@ main {
     padding: 0.48rem;
   }
   .schedule-course strong {
-    font-size: 0.64rem;
+    font-size: 0.66rem;
   }
   .schedule-course span {
     font-size: 0.54rem;
   }
-  .schedule-course small,
-  .schedule-course em {
-    display: none;
+  .schedule-course__campus,
+  .schedule-course__weeks {
+    display: none !important;
+  }
+  .schedule-course__room,
+  .schedule-course__teacher {
+    display: -webkit-box;
+    max-height: 2.6em;
+    font-size: 0.51rem;
+    line-height: 1.3;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+  }
+  .schedule-course__status {
+    font-size: 0.51rem;
+  }
+  .schedule-now-marker {
+    right: 0.3rem;
+    left: 0.3rem;
+  }
+  .schedule-now-marker span {
+    font-size: 0.52rem;
   }
   .schedule-legend {
     display: block;

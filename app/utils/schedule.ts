@@ -1,8 +1,42 @@
-import { courses, semester, type Course, type WeekRule } from '~/config/schedule'
+import { courses, sectionTimes, semester, type Course, type WeekRule } from '~/config/schedule'
 
 export const weekdayNames = ['月曜日', '火曜日', '水曜日', '木曜日', '金曜日', '土曜日', '日曜日'] as const
 
 export type DayStatus = { type: 'normal' } | { type: 'holiday'; label: string } | { type: 'makeup'; label: string; lessonDate: string }
+
+export interface CurrentClock {
+  date: string
+  hour: number
+  minute: number
+  minutes: number
+  label: string
+}
+
+export interface CourseTimeRange {
+  startMinute: number
+  endMinute: number
+  startLabel: string
+  endLabel: string
+}
+
+export type CourseTemporalState = 'ended' | 'current' | 'next' | 'later'
+
+export interface CourseTemporalStateEntry {
+  course: Course
+  state: CourseTemporalState
+}
+
+export type TodayScheduleState =
+  | { type: 'current'; course: Course; remainingMinutes: number }
+  | { type: 'next'; course: Course; startsInMinutes: number }
+  | { type: 'finished' }
+  | { type: 'empty' }
+
+export interface CurrentTimeMarker {
+  row: number
+  progress: number
+  label: string
+}
 
 const holidays: Record<string, string> = {
   '2026-09-25': '中秋節放假',
@@ -131,4 +165,167 @@ export function formatWeekRules(rules: WeekRule[]) {
 
 export function getGridRow(section: number) {
   return section + (section >= 5 ? 1 : 0) + (section >= 9 ? 1 : 0)
+}
+
+const clockFormatter = new Intl.DateTimeFormat('en-CA', {
+  year: 'numeric',
+  month: '2-digit',
+  day: '2-digit',
+  hour: '2-digit',
+  minute: '2-digit',
+  hourCycle: 'h23',
+  timeZone: 'Asia/Taipei'
+})
+
+function clockPart(parts: Intl.DateTimeFormatPart[], type: Intl.DateTimeFormatPartTypes) {
+  return parts.find((part) => part.type === type)?.value || ''
+}
+
+function minutesFromLabel(label: string) {
+  const [hour = 0, minute = 0] = label.split(':').map(Number)
+  return hour * 60 + minute
+}
+
+function formatClockLabel(minutes: number) {
+  const hour = Math.floor(minutes / 60)
+  const minute = minutes % 60
+  return `${String(hour).padStart(2, '0')}:${String(minute).padStart(2, '0')}`
+}
+
+export function getTaipeiClock(date: Date = new Date()): CurrentClock {
+  const parts = clockFormatter.formatToParts(date)
+  const year = clockPart(parts, 'year')
+  const month = clockPart(parts, 'month')
+  const day = clockPart(parts, 'day')
+  const hour = Number(clockPart(parts, 'hour'))
+  const minute = Number(clockPart(parts, 'minute'))
+
+  return {
+    date: `${year}-${month}-${day}`,
+    hour,
+    minute,
+    minutes: hour * 60 + minute,
+    label: `${String(hour).padStart(2, '0')}:${String(minute).padStart(2, '0')}`
+  }
+}
+
+export function getCourseTimeRange(course: Pick<Course, 'startSection' | 'endSection'>): CourseTimeRange {
+  const start = sectionTimes.find((item) => item.section === course.startSection)!
+  const end = sectionTimes.find((item) => item.section === course.endSection)!
+
+  return {
+    startMinute: minutesFromLabel(start.start),
+    endMinute: minutesFromLabel(end.end),
+    startLabel: start.start,
+    endLabel: end.end
+  }
+}
+
+export function getCourseTemporalStates(coursesForDay: Course[], currentMinutes: number): CourseTemporalStateEntry[] {
+  const sortedCourses = [...coursesForDay].sort((first, second) => {
+    const startDifference = getCourseTimeRange(first).startMinute - getCourseTimeRange(second).startMinute
+    return startDifference || first.id.localeCompare(second.id)
+  })
+  let foundNext = false
+
+  return sortedCourses.map((course) => {
+    const { startMinute, endMinute } = getCourseTimeRange(course)
+    let state: CourseTemporalState
+
+    if (currentMinutes >= endMinute) {
+      state = 'ended'
+    } else if (currentMinutes >= startMinute) {
+      state = 'current'
+    } else if (!foundNext) {
+      state = 'next'
+      foundNext = true
+    } else {
+      state = 'later'
+    }
+
+    return { course, state }
+  })
+}
+
+export function getTodayScheduleState(coursesForDay: Course[], currentMinutes: number): TodayScheduleState {
+  if (!coursesForDay.length) return { type: 'empty' }
+
+  const states = getCourseTemporalStates(coursesForDay, currentMinutes)
+  const current = states.find((entry) => entry.state === 'current')
+  if (current) {
+    return {
+      type: 'current',
+      course: current.course,
+      remainingMinutes: Math.max(0, getCourseTimeRange(current.course).endMinute - currentMinutes)
+    }
+  }
+
+  const next = states.find((entry) => entry.state === 'next')
+  if (next) {
+    return {
+      type: 'next',
+      course: next.course,
+      startsInMinutes: Math.max(0, getCourseTimeRange(next.course).startMinute - currentMinutes)
+    }
+  }
+
+  return { type: 'finished' }
+}
+
+export function formatScheduleDuration(minutes: number) {
+  if (minutes < 1) return '不足 1 分钟'
+  const roundedMinutes = Math.ceil(minutes)
+
+  const hours = Math.floor(roundedMinutes / 60)
+  const remainingMinutes = roundedMinutes % 60
+  if (!hours) return `${roundedMinutes} 分钟`
+  if (!remainingMinutes) return `${hours} 小时`
+  return `${hours} 小时 ${remainingMinutes} 分钟`
+}
+
+export function formatDuration(minutes: number) {
+  return formatScheduleDuration(minutes)
+}
+
+export function getCurrentTimeMarker(minutes: number): CurrentTimeMarker | null {
+  const firstStart = minutesFromLabel(sectionTimes[0]!.start)
+  const lastEnd = minutesFromLabel(sectionTimes.at(-1)!.end)
+  if (minutes < firstStart || minutes > lastEnd) return null
+
+  const sectionRanges = sectionTimes.map((section) => ({
+    row: getGridRow(section.section),
+    startMinute: minutesFromLabel(section.start),
+    endMinute: minutesFromLabel(section.end)
+  }))
+
+  for (const [index, section] of sectionTimes.entries()) {
+    const nextSection = sectionTimes[index + 1]
+    if (!nextSection) continue
+
+    const gapStart = minutesFromLabel(section.end)
+    const gapEnd = minutesFromLabel(nextSection.start)
+    if (getGridRow(nextSection.section) - getGridRow(section.section) > 1 && minutes >= gapStart && minutes < gapEnd) {
+      return {
+        row: getGridRow(section.section) + 1,
+        progress: Math.min(1, Math.max(0, (minutes - gapStart) / (gapEnd - gapStart))),
+        label: formatClockLabel(minutes)
+      }
+    }
+  }
+
+  const activeSection = sectionRanges.find(({ startMinute, endMinute }) => minutes >= startMinute && minutes <= endMinute)
+  if (activeSection) {
+    return {
+      row: activeSection.row,
+      progress: Math.min(1, Math.max(0, (minutes - activeSection.startMinute) / (activeSection.endMinute - activeSection.startMinute))),
+      label: formatClockLabel(minutes)
+    }
+  }
+
+  const previousSection = [...sectionRanges].reverse().find(({ endMinute }) => endMinute < minutes)
+  if (previousSection) {
+    return { row: previousSection.row, progress: 1, label: formatClockLabel(minutes) }
+  }
+
+  return null
 }
