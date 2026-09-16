@@ -1416,6 +1416,7 @@ main {
 }
 .schedule-day__slots {
   grid-row: 2;
+  grid-template-columns: minmax(0, 1fr);
   position: relative;
   background-image: linear-gradient(var(--line), var(--line));
   background-position: 0 calc(var(--slot-height) * 4);
@@ -1423,6 +1424,7 @@ main {
   background-size: 100% 1px;
 }
 .schedule-day__slots::before {
+  grid-column: 1;
   grid-row: 1 / -1;
   border-bottom: 1px solid var(--line);
   content: '';
@@ -1431,6 +1433,7 @@ main {
 .schedule-course {
   --course-accent: var(--moss);
   --course-surface: var(--surface-moss);
+  grid-column: 1;
   z-index: 1;
   display: flex;
   min-width: 0;
@@ -1552,6 +1555,7 @@ main {
   content: '●';
 }
 .schedule-now-marker-row {
+  grid-column: 1;
   position: relative;
   z-index: 5;
   min-width: 0;

@@ -289,6 +289,7 @@ function normalizeRoute() {
 }
 
 function selectView(nextView: View) {
+  storedView.value = nextView
   if (import.meta.client) localStorage.setItem(SCHEDULE_VIEW_KEY, nextView)
   const query = baseQueryForView(nextView)
   if (!queryMatches(query)) void router.push({ query })

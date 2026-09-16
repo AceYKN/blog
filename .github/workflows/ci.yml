@@ -87,6 +87,9 @@ jobs:
       - name: PWA E2E
         run: npm run test:pwa
 
+      - name: Schedule E2E
+        run: npm run test:schedule
+
       - name: Add fallback for direct links
         if: github.event_name != 'pull_request'
         run: cp dist/index.html dist/404.html

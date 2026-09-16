@@ -53,6 +53,48 @@ test.describe('AceYKN schedule', () => {
     await expect(page.locator('.schedule-view-switch button.active')).toHaveText('月曆')
   })
 
+  test('keeps a user-selected view when returning to the bare schedule route', async ({ page }) => {
+    await page.goto('./schedule')
+    await page.getByRole('button', { name: '月曆' }).click()
+    await expect(page.locator('.schedule-view-switch button.active')).toHaveText('月曆')
+    await page.getByRole('link', { name: '日程' }).click()
+    await expect(page).toHaveURL(/\/schedule\/?$/)
+    await expect(page.locator('.schedule-view-switch button.active')).toHaveText('月曆')
+  })
+
+  test('places the Taipei current-time marker over the Today column', async ({ page }) => {
+    await page.clock.install({ time: new Date('2026-09-16T07:37:00.000Z') })
+    await page.goto('./schedule?view=today')
+
+    const today = page.locator('.schedule-day[aria-current="date"]')
+    const aiCard = today.locator('.schedule-course').filter({ hasText: '人工智能（双语）' })
+    const collegeCard = today.locator('.schedule-course').filter({ hasText: '大学语文★' })
+    await expect(page.locator('.schedule-now-summary')).toContainText('距离下课 13 分钟')
+    await expect(aiCard).toHaveClass(/schedule-course--current/)
+    await expect(aiCard.locator('.schedule-course__status')).toHaveText('正在上课')
+    await expect(collegeCard).toHaveClass(/schedule-course--next/)
+    await expect(collegeCard.locator('.schedule-course__status')).toHaveText('下一节')
+
+    const marker = today.locator('.schedule-now-marker-row')
+    await expect(marker).toBeVisible()
+    const geometry = await marker.evaluate((element) => {
+      const markerBox = element.getBoundingClientRect()
+      const slotsBox = element.parentElement?.getBoundingClientRect()
+      if (!slotsBox) throw new Error('Schedule slots are missing')
+      return {
+        markerLeft: markerBox.left,
+        markerRight: markerBox.right,
+        markerWidth: markerBox.width,
+        slotsLeft: slotsBox.left,
+        slotsRight: slotsBox.right,
+        slotsWidth: slotsBox.width
+      }
+    })
+    expect(geometry.markerLeft).toBeGreaterThanOrEqual(geometry.slotsLeft - 1)
+    expect(geometry.markerRight).toBeLessThanOrEqual(geometry.slotsRight + 1)
+    expect(geometry.markerWidth).toBeGreaterThan(geometry.slotsWidth * 0.95)
+  })
+
   test('keeps month course dots and the expanded mobile week grid', async ({ page }) => {
     await page.goto('./schedule?view=month&month=2026-09')
     const monthDay = page.locator('button.schedule-month-day').filter({ has: page.locator('time[datetime="2026-09-02"]') })
