@@ -120,12 +120,16 @@ test.describe('AceYKN schedule', () => {
     const scheduleScroll = page.locator('.schedule-week__scroll')
     const geometry = await scheduleScroll.evaluate((element) => {
       const scrollBox = element.getBoundingClientRect()
-      const days = Array.from(element.querySelectorAll<HTMLElement>('.schedule-day')).map((day) => day.getBoundingClientRect())
+      const dayElements = Array.from(element.querySelectorAll<HTMLElement>('.schedule-day'))
+      if (dayElements.length < 6) {
+        throw new Error(`Expected at least 6 day columns, found ${dayElements.length}`)
+      }
+      const days = dayElements.map((day) => day.getBoundingClientRect())
       return {
         scrollable: element.scrollWidth > element.clientWidth,
         viewportRight: scrollBox.right,
-        fridayRight: days[4]?.right ?? 0,
-        saturdayLeft: days[5]?.left ?? 0
+        fridayRight: days[4].right,
+        saturdayLeft: days[5].left
       }
     })
 
