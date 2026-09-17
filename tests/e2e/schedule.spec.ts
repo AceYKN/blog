@@ -109,7 +109,7 @@ test.describe('AceYKN schedule', () => {
     expect(geometry.markerWidth).toBeGreaterThan(geometry.slotsWidth * 0.95)
   })
 
-  test('keeps month course dots and the expanded mobile week grid', async ({ page }) => {
+  test('keeps month course dots and shows five weekdays before horizontal scrolling on mobile', async ({ page }) => {
     await page.goto('./schedule?view=month&month=2026-09')
     const monthDay = page.locator('button.schedule-month-day').filter({ has: page.locator('time[datetime="2026-09-02"]') })
     await expect(monthDay.locator('.schedule-month-day__dots i')).toHaveCount(3)
@@ -118,8 +118,21 @@ test.describe('AceYKN schedule', () => {
     await page.setViewportSize({ width: 390, height: 844 })
     await page.goto('./schedule?view=week&week=3')
     const scheduleScroll = page.locator('.schedule-week__scroll')
-    const isHorizontallyScrollable = await scheduleScroll.evaluate((element) => element.scrollWidth > element.clientWidth)
-    expect(isHorizontallyScrollable).toBe(true)
+    const geometry = await scheduleScroll.evaluate((element) => {
+      const scrollBox = element.getBoundingClientRect()
+      const days = Array.from(element.querySelectorAll<HTMLElement>('.schedule-day')).map((day) => day.getBoundingClientRect())
+      return {
+        scrollable: element.scrollWidth > element.clientWidth,
+        viewportRight: scrollBox.right,
+        fridayRight: days[4]?.right ?? 0,
+        saturdayLeft: days[5]?.left ?? 0
+      }
+    })
+
+    expect(geometry.scrollable).toBe(true)
+    expect(geometry.fridayRight).toBeLessThanOrEqual(geometry.viewportRight + 1)
+    expect(geometry.saturdayLeft).toBeGreaterThanOrEqual(geometry.viewportRight - 1)
+
     const collegeCard = page.locator('[data-schedule-date="2026-09-16"] .schedule-course').filter({ hasText: '大学语文★' })
     await expect(collegeCard).toContainText('1210')
     await expect(collegeCard).toContainText('李斌')
