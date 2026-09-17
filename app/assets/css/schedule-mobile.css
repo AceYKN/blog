@@ -1,0 +1,28 @@
+@media (max-width: 780px) {
+  .schedule-week__grid {
+    /* Keep the time axis visible and fit Monday through Friday in one viewport. */
+    --mobile-day-width: calc((100vw - 3.25rem) / 5);
+
+    width: max-content;
+    min-width: 0;
+    grid-template-columns: 3.25rem repeat(7, var(--mobile-day-width));
+  }
+
+  .schedule-day__header {
+    padding-inline: 0.35rem;
+  }
+
+  .schedule-course {
+    margin: 0.16rem;
+    padding: 0.35rem;
+  }
+
+  .schedule-course strong {
+    font-size: 0.62rem;
+    line-height: 1.25;
+  }
+
+  .schedule-course span {
+    font-size: 0.51rem;
+  }
+}

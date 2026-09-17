@@ -10,7 +10,7 @@ export default defineNuxtConfig({
   ssr: true,
   devtools: { enabled: true },
   modules: ['@nuxt/content', '@nuxt/eslint', '@nuxtjs/sitemap', '@nuxtjs/robots'],
-  css: ['~/assets/css/main.css', 'katex/dist/katex.min.css'],
+  css: ['~/assets/css/main.css', '~/assets/css/schedule-mobile.css', 'katex/dist/katex.min.css'],
 
   // Used by @nuxtjs/sitemap, @nuxtjs/robots and OG/canonical URL generation.
   // Override in production via NUXT_PUBLIC_SITE_URL.
