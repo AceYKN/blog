@@ -1,9 +1,11 @@
 <script setup lang="ts">
-import { entryTitle, sourcePath, type LibraryEntry } from '~/utils/library'
+import { entryTitle, entryUrl, sourcePath, type LibraryEntry } from '~/utils/library'
 import { noteMetadata } from '~/data/note-metadata'
 import { repositoryEditUrl } from '~/config/site'
+import { readerBody } from '~/utils/content'
 
-definePageMeta({ layout: 'reading' })
+definePageMeta({ layout: 'reading', key: (route) => route.path })
+useReadingPosition()
 
 const route = useRoute()
 const { siteUrl } = useRuntimeConfig().public
@@ -21,17 +23,26 @@ const breadcrumb = () => ({
   ]
 })
 const slug = computed(() => (Array.isArray(route.params.slug) ? route.params.slug.join('/') : route.params.slug))
-const { data: entry, status } = useAsyncData(
+const {
+  data: entry,
+  status,
+  error
+} = await useAsyncData(
   () => `note:${slug.value}`,
   async () => {
     // Query the document directly. Loading the whole notes collection here
     // serializes every Markdown body into every prerendered note page and can
     // exhaust the build worker's memory as the library grows.
-    const migratedEntry = await queryCollection('notes').path(`/source/${slug.value}`).first()
-    return migratedEntry || queryCollection('notes').path(`/${slug.value}`).first()
+    const originalEntry = await queryCollection('notes').where('stem', '=', `source/${slug.value}`).first()
+    return originalEntry || queryCollection('notes').path(`/source/${slug.value}`).first()
   }
 )
 const note = computed(() => entry.value as LibraryEntry | null)
+if (error.value) throw error.value
+if (!note.value && status.value === 'success') throw createError({ statusCode: 404, statusMessage: '找不到這篇筆記' })
+if (note.value && decodeURIComponent(route.path).replace(/\/$/, '') !== entryUrl(note.value)) {
+  await navigateTo({ path: entryUrl(note.value), query: route.query, hash: route.hash }, { redirectCode: 301, replace: true })
+}
 const metadata = computed(() => (note.value ? noteMetadata[sourcePath(note.value)] : undefined))
 
 useSeoMeta({
@@ -50,35 +61,7 @@ const lastUpdated = computed(() =>
     : ''
 )
 const { toc, activeId } = useArticleToc()
-const renderedNote = computed(() => {
-  if (!note.value) return null
-
-  const body = note.value.body as { value?: unknown[] } | undefined
-  const nodes = body?.value
-  const firstNode = nodes?.[0]
-  if (body && nodes) {
-    const withoutDuplicateTitle = Array.isArray(firstNode) && firstNode[0] === 'h1' ? nodes.slice(1) : nodes
-    return {
-      ...note.value,
-      body: {
-        ...body,
-        value: withoutDuplicateTitle.map((node) => (Array.isArray(node) && node[0] === 'h1' ? ['h2', ...node.slice(1)] : node))
-      }
-    }
-  }
-
-  return note.value
-})
-
-onMounted(async () => {
-  await nextTick()
-  try {
-    const saved = JSON.parse(localStorage.getItem('blog:reading-progress-v1') || 'null') as { url?: string; y?: number } | null
-    if (saved?.url === route.path && typeof saved.y === 'number' && saved.y > 80) window.scrollTo({ top: saved.y, behavior: 'auto' })
-  } catch {
-    // Restoring a position is optional when browser storage is unavailable.
-  }
-})
+const renderedNote = computed(() => (note.value ? readerBody(note.value) : null))
 
 useHead(() => {
   if (!note.value) return {}
@@ -111,7 +94,7 @@ useHead(() => {
 </script>
 
 <template>
-  <article v-if="note" class="reader-layout">
+  <article v-if="note" class="reader-layout" :data-content-path="entryUrl(note)">
     <div class="reader-main">
       <header class="reader-header">
         <p class="eyebrow">原文筆記</p>
@@ -122,7 +105,11 @@ useHead(() => {
           ><a :href="repositoryEditUrl(metadata.githubPath)" target="_blank" rel="noreferrer">在 GitHub 編集 ↗</a>
         </div>
       </header>
-      <ContentRenderer v-if="renderedNote" :value="renderedNote" class="prose" />
+      <ContentRenderer v-if="renderedNote" :value="renderedNote" class="prose">
+        <template #empty>
+          <div class="prose" data-content-empty="true"><p>這篇筆記尚未補上正文。</p></div>
+        </template>
+      </ContentRenderer>
       <ContentEnhancements />
       <CourseNavigation :entry="note" :show-breadcrumbs="false" />
     </div>

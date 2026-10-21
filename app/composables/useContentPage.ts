@@ -1,4 +1,5 @@
 import type { Ref } from 'vue'
+import { publicContentUrl } from '../../lib/content-identity.mjs'
 
 type ContentPageCollection = 'essays' | 'tech' | 'projects'
 
@@ -7,12 +8,24 @@ type ContentPageCollection = 'essays' | 'tech' | 'projects'
  * Awaiting this query during SSR is important: each Markdown document is
  * prerendered to readable HTML for search engines and readers without JS.
  */
-export function useContentPage(collection: ContentPageCollection) {
+export async function useContentPage(collection: ContentPageCollection) {
   const route = useRoute()
   const slug = computed(() => (Array.isArray(route.params.slug) ? route.params.slug.join('/') : route.params.slug))
-  const { data: entry, status } = useAsyncData(
+  const {
+    data: entry,
+    status,
+    error
+  } = await useAsyncData(
     () => `${collection}:${slug.value}`,
-    () => queryCollection(collection).path(`/${collection}/${slug.value}`).first()
+    async () =>
+      (await queryCollection(collection).where('draft', '=', false).where('stem', '=', `${collection}/${slug.value}`).first()) ||
+      queryCollection(collection).where('draft', '=', false).path(`/${collection}/${slug.value}`).first()
   )
+  if (error.value) throw error.value
+  if (!entry.value) throw createError({ statusCode: 404, statusMessage: '找不到這篇文章' })
+  const url = publicContentUrl(entry.value)
+  if (decodeURIComponent(route.path).replace(/\/$/, '') !== url) {
+    await navigateTo({ path: url, query: route.query, hash: route.hash }, { redirectCode: 301, replace: true })
+  }
   return { entry: entry as Ref<NonNullable<(typeof entry)['value']> | null>, status }
 }

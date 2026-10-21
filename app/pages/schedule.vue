@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { readStorage, writeStorage } from '~/utils/storage'
 import { sectionTimes, semester, type Course, type CourseKind } from '~/config/schedule'
 import {
   formatScheduleDuration,
@@ -240,7 +241,7 @@ function monthCourseCount(date: string) {
 
 function readStoredView(): View | null {
   if (!import.meta.client) return null
-  return parseView(localStorage.getItem(SCHEDULE_VIEW_KEY) || undefined)
+  return parseView(readStorage(SCHEDULE_VIEW_KEY) || undefined)
 }
 
 function baseQueryForView(nextView: View): Record<string, string> {
@@ -290,7 +291,7 @@ function normalizeRoute() {
 
 function selectView(nextView: View) {
   storedView.value = nextView
-  if (import.meta.client) localStorage.setItem(SCHEDULE_VIEW_KEY, nextView)
+  if (import.meta.client) writeStorage(SCHEDULE_VIEW_KEY, nextView)
   const query = baseQueryForView(nextView)
   if (!queryMatches(query)) void router.push({ query })
 }
@@ -555,75 +556,71 @@ useSeoMeta({
     <p class="schedule-month__help">點選教學期內的日期，即可查看所在教學週的完整課表。</p>
   </section>
 
-  <Teleport to="body">
-    <div v-if="selectedCourse" class="schedule-course-dialog" role="presentation" @click.self="closeCourse">
-      <section
-        class="schedule-course-dialog__card"
-        role="dialog"
-        aria-modal="true"
-        :aria-label="`${displayCourseText(selectedCourse.title)} 課程詳情`"
-      >
-        <button class="schedule-course-dialog__close" type="button" aria-label="關閉課程詳情" @click="closeCourse">×</button>
-        <p class="eyebrow">{{ courseKindLabels[selectedCourse.kind] }} / {{ formatWeekRules(selectedCourse.weekRules) }}</p>
-        <h2>{{ displayCourseText(selectedCourse.title) }}</h2>
-        <dl>
-          <div>
-            <dt>時間</dt>
-            <dd>
-              {{ courseTime(selectedCourse.startSection, selectedCourse.endSection) }} · 第 {{ selectedCourse.startSection }}–{{
-                selectedCourse.endSection
-              }}
-              節
-            </dd>
-          </div>
-          <div>
-            <dt>校區</dt>
-            <dd>{{ displayCourseText(selectedCourse.campus) }}</dd>
-          </div>
-          <div>
-            <dt>場地</dt>
-            <dd>{{ displayCourseText(selectedCourse.room) }}</dd>
-          </div>
-          <div>
-            <dt>教師</dt>
-            <dd>{{ displayCourseText(selectedCourse.teacher) }}</dd>
-          </div>
-          <div v-if="selectedCourse.courseCode">
-            <dt>课程号</dt>
-            <dd>{{ displayCourseText(selectedCourse.courseCode) }}</dd>
-          </div>
-          <div v-if="selectedCourse.studentGroups?.length">
-            <dt>教学班</dt>
-            <dd>
-              <ul class="schedule-course-dialog__groups">
-                <li v-for="group in selectedCourse.studentGroups" :key="group">{{ group }}</li>
-              </ul>
-            </dd>
-          </div>
-          <div v-if="selectedCourse.assessment">
-            <dt>考核</dt>
-            <dd>{{ displayCourseText(selectedCourse.assessment) }}</dd>
-          </div>
-          <div
-            v-if="
-              selectedCourse.theoryHours !== undefined ||
-              selectedCourse.weeklyHours !== undefined ||
-              selectedCourse.totalHours !== undefined
-            "
-          >
-            <dt>学时</dt>
-            <dd class="schedule-course-dialog__hours">
-              <span v-if="selectedCourse.theoryHours !== undefined">理论 {{ selectedCourse.theoryHours }}</span>
-              <span v-if="selectedCourse.weeklyHours !== undefined">周学时 {{ selectedCourse.weeklyHours }}</span>
-              <span v-if="selectedCourse.totalHours !== undefined">总学时 {{ selectedCourse.totalHours }}</span>
-            </dd>
-          </div>
-          <div v-if="selectedCourse.credits !== undefined">
-            <dt>学分</dt>
-            <dd>{{ selectedCourse.credits.toFixed(1) }}</dd>
-          </div>
-        </dl>
-      </section>
-    </div>
-  </Teleport>
+  <ModalDialog
+    v-if="selectedCourse"
+    class="schedule-course-dialog"
+    :label="`${displayCourseText(selectedCourse.title)} 課程詳情`"
+    @close="closeCourse"
+  >
+    <section class="schedule-course-dialog__card">
+      <button class="schedule-course-dialog__close" type="button" aria-label="關閉課程詳情" @click="closeCourse">×</button>
+      <p class="eyebrow">{{ courseKindLabels[selectedCourse.kind] }} / {{ formatWeekRules(selectedCourse.weekRules) }}</p>
+      <h2>{{ displayCourseText(selectedCourse.title) }}</h2>
+      <dl>
+        <div>
+          <dt>時間</dt>
+          <dd>
+            {{ courseTime(selectedCourse.startSection, selectedCourse.endSection) }} · 第 {{ selectedCourse.startSection }}–{{
+              selectedCourse.endSection
+            }}
+            節
+          </dd>
+        </div>
+        <div>
+          <dt>校區</dt>
+          <dd>{{ displayCourseText(selectedCourse.campus) }}</dd>
+        </div>
+        <div>
+          <dt>場地</dt>
+          <dd>{{ displayCourseText(selectedCourse.room) }}</dd>
+        </div>
+        <div>
+          <dt>教師</dt>
+          <dd>{{ displayCourseText(selectedCourse.teacher) }}</dd>
+        </div>
+        <div v-if="selectedCourse.courseCode">
+          <dt>课程号</dt>
+          <dd>{{ displayCourseText(selectedCourse.courseCode) }}</dd>
+        </div>
+        <div v-if="selectedCourse.studentGroups?.length">
+          <dt>教学班</dt>
+          <dd>
+            <ul class="schedule-course-dialog__groups">
+              <li v-for="group in selectedCourse.studentGroups" :key="group">{{ group }}</li>
+            </ul>
+          </dd>
+        </div>
+        <div v-if="selectedCourse.assessment">
+          <dt>考核</dt>
+          <dd>{{ displayCourseText(selectedCourse.assessment) }}</dd>
+        </div>
+        <div
+          v-if="
+            selectedCourse.theoryHours !== undefined || selectedCourse.weeklyHours !== undefined || selectedCourse.totalHours !== undefined
+          "
+        >
+          <dt>学时</dt>
+          <dd class="schedule-course-dialog__hours">
+            <span v-if="selectedCourse.theoryHours !== undefined">理论 {{ selectedCourse.theoryHours }}</span>
+            <span v-if="selectedCourse.weeklyHours !== undefined">周学时 {{ selectedCourse.weeklyHours }}</span>
+            <span v-if="selectedCourse.totalHours !== undefined">总学时 {{ selectedCourse.totalHours }}</span>
+          </dd>
+        </div>
+        <div v-if="selectedCourse.credits !== undefined">
+          <dt>学分</dt>
+          <dd>{{ selectedCourse.credits.toFixed(1) }}</dd>
+        </div>
+      </dl>
+    </section>
+  </ModalDialog>
 </template>

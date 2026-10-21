@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { repositoryEditUrl } from '~/config/site'
 import { absoluteSiteUrl } from '~/utils/url'
+import { readerBody } from '~/utils/content'
+import { sourceFileForEntry, publicContentUrl } from '../../lib/content-identity.mjs'
 
 const props = defineProps<{
   // eslint-disable-next-line @typescript-eslint/no-explicit-any -- mirrors ContentRenderer's own permissive `value` prop type
@@ -12,9 +14,10 @@ const props = defineProps<{
     updated?: string
     cover?: string
     tags?: string[]
+    body?: unknown
   }
 }>()
-const githubPath = computed(() => (props.entry.path ? `content${props.entry.path}.md` : ''))
+const githubPath = computed(() => (props.entry.path ? `content/${sourceFileForEntry(props.entry)}` : ''))
 const { toc, activeId } = useArticleToc()
 const { siteUrl } = useRuntimeConfig().public
 const route = useRoute()
@@ -32,27 +35,7 @@ const breadcrumb = () => ({
     { '@type': 'ListItem', position: 3, name: props.entry.title, item: `${siteUrl.replace(/\/$/, '')}${route.path}` }
   ]
 })
-const renderedEntry = computed(() => {
-  const body = props.entry.body as { value?: unknown[] } | undefined
-  const nodes = body?.value
-  const firstNode = nodes?.[0]
-
-  // The reader header already supplies the document's single visible H1.
-  // Most Markdown files repeat that title as their first node, so omit only
-  // that node from the rendered body without changing the source Markdown.
-  if (body && nodes) {
-    const withoutDuplicateTitle = Array.isArray(firstNode) && firstNode[0] === 'h1' ? nodes.slice(1) : nodes
-    return {
-      ...props.entry,
-      body: {
-        ...body,
-        value: withoutDuplicateTitle.map((node) => (Array.isArray(node) && node[0] === 'h1' ? ['h2', ...node.slice(1)] : node))
-      }
-    }
-  }
-
-  return props.entry
-})
+const renderedEntry = computed(() => readerBody(props.entry))
 
 useHead(() => ({
   script: [
@@ -93,7 +76,7 @@ useSeoMeta({
 </script>
 
 <template>
-  <article class="reader-layout standalone-article">
+  <article class="reader-layout standalone-article" :data-content-path="publicContentUrl(entry)">
     <div class="reader-main">
       <header class="reader-header">
         <p class="eyebrow">個人站內容</p>

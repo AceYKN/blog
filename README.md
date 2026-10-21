@@ -31,7 +31,11 @@ cover: /og-image.png
 正文写在这里。
 ```
 
-也可使用 `npm run new -- --type tech --slug my-post` 创建带完整 frontmatter 的草稿。可选类型是 `essays`、`tech` 与 `projects`；草稿不会进入搜索或 sitemap。课程笔记以 `content/source/` 为唯一来源，页面上的编辑链接也会回到本仓库。
+也可使用 `npm run new -- --type tech --slug my-post` 创建带完整 frontmatter 的草稿。可选类型是 `essays`、`tech` 与 `projects`；草稿在内容入库前被排除，不进入公开数据库、列表、搜索或 sitemap。修改 `draft` 状态后重新启动开发服务或重新构建。课程笔记以 `content/source/` 为唯一来源，页面上的编辑链接也会回到本仓库。
+
+内容网址保留源文件的大小写、中文文件名及 `index`，通过 `stem` 定位正文。搜索、课程导航、标签页和 sitemap 使用同一份发布清单。构建依赖完整 Git 历史计算更新时间；`npm ci` 和 `npm run generate` 会从 `origin` 补全浅克隆的历史，无法获取时明确报错。CI 检出使用 `fetch-depth: 0`。
+
+`npm run test:content` 验证生产页面及阅读操作；`npm run test:publication` 在构建时插入临时草稿并检查公开产物，结束后清理测试文件。依赖门禁使用 `npm run check:audit`，当前两项未修复的上游构建依赖、适用条件和到期时间见 [依赖审计说明](docs/dependency-audit.md)。
 
 ## 本地预览
 

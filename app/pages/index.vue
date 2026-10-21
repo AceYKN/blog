@@ -1,17 +1,17 @@
 <script setup lang="ts">
-import { newestFirst, type PersonalEntry } from '~/utils/content'
+import catalogue from '~/data/content-catalogue.json'
 
-const { data: essays } = await useAsyncData('home-essays', () =>
-  queryCollection('essays').select('id', 'path', 'title', 'description', 'date', 'tags').all()
-)
-const { data: tech } = await useAsyncData('home-tech', () =>
-  queryCollection('tech').select('id', 'path', 'title', 'description', 'date', 'tags').all()
-)
-const recent = computed(() => newestFirst([...(essays.value || []), ...(tech.value || [])] as PersonalEntry[]).slice(0, 6))
+const recent = catalogue.documents
+  .filter((entry) => !/(^|\/)index$/.test(entry.path))
+  .toSorted((left, right) => right.updated.localeCompare(left.updated))
+  .slice(0, 6)
+const continueReading = useContinueReading()
 const search = ref('')
+const searchOpen = useSearchOverlay()
+const overlayQuery = useState('search-overlay-query', () => '')
 const submitSearch = () => {
-  const query = search.value.trim()
-  if (query) window.open(`https://www.google.com/search?q=${encodeURIComponent(query)}`, '_blank', 'noopener,noreferrer')
+  overlayQuery.value = search.value.trim()
+  searchOpen.value = true
 }
 
 useSeoMeta({
@@ -32,7 +32,10 @@ useSeoMeta({
         <svg viewBox="0 0 24 24" aria-hidden="true">
           <circle cx="11" cy="11" r="6" />
           <path d="m16 16 4 4" /></svg
-        ><input id="global-search" v-model="search" type="search" placeholder="Google 搜尋" /><button type="submit" aria-label="搜尋">
+        ><input id="global-search" v-model="search" type="search" placeholder="搜尋本站筆記與文章" /><button
+          type="submit"
+          aria-label="搜尋"
+        >
           ↗
         </button>
       </div>
@@ -50,14 +53,18 @@ useSeoMeta({
     </form>
   </section>
 
+  <NuxtLink v-if="continueReading" :to="continueReading.url" class="continue-reading"
+    >繼續閱讀 <strong>{{ continueReading.title }}</strong> →</NuxtLink
+  >
+
   <section class="home-feed">
     <header>
       <p class="eyebrow">RECENTLY UPDATED</p>
       <h2>最近更新</h2>
     </header>
     <div v-if="recent.length" class="editorial-list">
-      <NuxtLink v-for="entry in recent" :key="entry.id" :to="entry.path"
-        ><time>{{ entry.date || '未標日期' }}</time
+      <NuxtLink v-for="entry in recent" :key="entry.id" :to="entry.url"
+        ><time>{{ entry.updated.slice(0, 10) }}</time
         ><strong>{{ entry.title }}</strong
         ><span>{{ entry.description }}</span></NuxtLink
       >

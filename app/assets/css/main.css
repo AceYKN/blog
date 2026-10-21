@@ -806,6 +806,29 @@ main {
   gap: 4rem;
   padding: 4.5rem 0 6rem;
 }
+.reader-main,
+.reader-main .prose {
+  min-width: 0;
+}
+.reader-main .prose {
+  overflow-wrap: anywhere;
+}
+.reader-main pre,
+.reader-main table,
+.reader-main .katex-display {
+  max-width: 100%;
+  overflow-x: auto;
+}
+.reader-main table {
+  display: block;
+}
+.prose :not(.katex-display) > .katex {
+  display: inline-block;
+  max-width: 100%;
+  overflow-x: auto;
+  vertical-align: middle;
+  padding-block: 0.15em;
+}
 .reader-header {
   padding-bottom: 2.5rem;
   border-bottom: 1px solid var(--line);
@@ -1618,18 +1641,12 @@ main {
   margin: 0.2rem 0 0;
 }
 .schedule-course-dialog {
-  position: fixed;
-  z-index: 80;
-  inset: 0;
-  display: grid;
-  place-items: center;
-  padding: 1rem;
-  background: rgb(24 28 22 / 48%);
-  backdrop-filter: blur(3px);
+  width: min(28rem, calc(100% - 2rem));
+  padding: 0;
 }
 .schedule-course-dialog__card {
   position: relative;
-  width: min(28rem, 100%);
+  width: 100%;
   padding: 1.6rem;
   border: 1px solid var(--line);
   border-top: 3px solid var(--vermilion);
@@ -1876,22 +1893,47 @@ main {
   cursor: wait;
   opacity: 0.6;
 }
-.search-backdrop {
-  position: fixed;
-  z-index: 70;
-  inset: 0;
-  display: grid;
-  place-items: start center;
-  padding-top: 12vh;
+.modal-dialog {
+  max-height: calc(100dvh - 2rem);
+  margin: auto;
+  border: 1px solid var(--line);
+  color: var(--ink);
+  background: var(--paper);
+  overscroll-behavior: contain;
+}
+.modal-dialog::backdrop {
   background: rgb(24 28 22 / 45%);
   backdrop-filter: blur(3px);
 }
 .search-dialog {
   width: min(42rem, calc(100% - 2rem));
+  max-height: 80dvh;
   padding: 1rem;
   border: 1px solid var(--line);
   background: var(--paper);
   box-shadow: 0 2rem 5rem rgb(20 24 18 / 30%);
+}
+.search-dialog[open] {
+  display: flex;
+  flex-direction: column;
+}
+.search-dialog-header {
+  display: flex;
+  gap: 1rem;
+  flex-shrink: 0;
+}
+.search-dialog-header button {
+  border: 0;
+  background: transparent;
+  color: var(--ink);
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+.search-results {
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  overflow-wrap: anywhere;
 }
 .search-dialog input {
   width: 100%;
@@ -1978,7 +2020,7 @@ main {
   .course-layout,
   .reader-layout,
   .about-me {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
   }
   .schedule-heading {
     grid-template-columns: 1fr;

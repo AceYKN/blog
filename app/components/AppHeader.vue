@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { readStorage, writeStorage } from '~/utils/storage'
 const searchOpen = useSearchOverlay()
 const theme = ref<'light' | 'dark'>('light')
 const isDark = computed(() => theme.value === 'dark')
@@ -10,7 +11,7 @@ let updateHeader: (() => void) | undefined
 const setTheme = (value: 'light' | 'dark') => {
   theme.value = value
   document.documentElement.dataset.theme = value
-  localStorage.setItem('theme', value)
+  writeStorage('theme', value)
   document.querySelector<HTMLMetaElement>('meta[name="theme-color"]')?.setAttribute('content', value === 'dark' ? '#161914' : '#f5f1e6')
   window.dispatchEvent(new CustomEvent('blog:themechange'))
 }
@@ -18,7 +19,7 @@ const setTheme = (value: 'light' | 'dark') => {
 const toggleTheme = () => setTheme(isDark.value ? 'light' : 'dark')
 
 onMounted(() => {
-  const stored = localStorage.getItem('theme')
+  const stored = readStorage('theme')
   const preferred = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
   setTheme(stored === 'dark' || stored === 'light' ? stored : preferred)
 

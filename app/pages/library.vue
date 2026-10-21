@@ -13,13 +13,17 @@ const keyword = ref('')
 const index = ref<SearchIndex>()
 const isLoadingIndex = ref(false)
 const matches = computed(() => searchIndex(index.value, keyword.value))
-const continueReading = ref<{ url: string; title: string } | null>(null)
+const continueReading = useContinueReading()
+const indexError = ref(false)
 
 async function loadNotesIndex() {
   if (index.value || isLoadingIndex.value) return
   isLoadingIndex.value = true
+  indexError.value = false
   try {
     index.value = await $fetch<SearchIndex>(withBasePath(baseURL, '/search-index-notes.json'))
+  } catch {
+    indexError.value = true
   } finally {
     isLoadingIndex.value = false
   }
@@ -27,17 +31,6 @@ async function loadNotesIndex() {
 
 watch(keyword, (value) => {
   if (value.trim()) void loadNotesIndex()
-})
-
-onMounted(async () => {
-  try {
-    const saved = JSON.parse(localStorage.getItem('blog:reading-progress-v1') || 'null') as { url?: string } | null
-    const catalogue = await $fetch<SearchIndex>(withBasePath(baseURL, '/search-catalog.json'))
-    const entry = catalogue.documents.find((document) => document.url === saved?.url && document.kind === 'notes')
-    if (entry) continueReading.value = { url: entry.url, title: entry.title }
-  } catch {
-    continueReading.value = null
-  }
 })
 
 useSeoMeta({
@@ -83,6 +76,7 @@ useSeoMeta({
       </label>
       <div v-if="keyword" class="course-results">
         <p v-if="isLoadingIndex">正在讀取課程筆記索引…</p>
+        <p v-else-if="indexError" role="status">索引讀取失敗。<button type="button" @click="loadNotesIndex">重新載入</button></p>
         <template v-else>
           <p>{{ matches.length }} 件の結果</p>
           <NuxtLink v-for="entry in matches" :key="entry.id" :to="entry.url"

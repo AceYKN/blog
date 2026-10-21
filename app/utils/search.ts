@@ -5,6 +5,9 @@ export type SearchDocument = {
   title: string
   path: string
   url: string
+  order?: number
+  updated?: string
+  description?: string
   headings?: string[]
   text?: string
 }
@@ -38,10 +41,28 @@ function editDistance(left: string, right: string) {
   return previous[right.length] ?? 0
 }
 
-function includesOrFuzzy(haystack: string, term: string) {
-  if (haystack.includes(term)) return true
-  if (term.length < 4) return false
-  return haystack.split(/[^\p{L}\p{N}]+/u).some((word) => word.length >= term.length - 1 && editDistance(normalize(word), term) <= 1)
+const prepared = new WeakMap<SearchDocument, { fields: string[]; words: string[] }>()
+
+function prepare(document: SearchDocument) {
+  const cached = prepared.get(document)
+  if (cached) return cached
+  const originals = [document.title, document.path, document.headings?.join(' ') || '', document.text || '']
+  const value = {
+    fields: originals.map(normalize),
+    // Split before normalization; punctuation/whitespace removal must not turn an
+    // entire chapter into a single word for quadratic edit-distance comparisons.
+    words: [
+      ...new Set(
+        originals
+          .join(' ')
+          .split(/[^\p{L}\p{N}]+/u)
+          .filter((word) => word.length <= 64)
+          .map(normalize)
+      )
+    ]
+  }
+  prepared.set(document, value)
+  return value
 }
 
 function excerpt(text: string, terms: string[]) {
@@ -63,13 +84,14 @@ export function searchIndex(
   return index.documents
     .filter((document) => (!options.kind || document.kind === options.kind) && (!options.course || document.course === options.course))
     .map((document) => {
-      const title = normalize(document.title)
-      const path = normalize(document.path)
-      const headings = normalize(document.headings?.join(' ') || '')
-      const text = normalize(document.text || '')
+      const { fields, words } = prepare(document)
+      const [title = '', path = '', headings = '', text = ''] = fields
       const matches = terms.every(
         (term) =>
-          includesOrFuzzy(title, term) || includesOrFuzzy(path, term) || includesOrFuzzy(headings, term) || includesOrFuzzy(text, term)
+          fields.some((field) => field.includes(term)) ||
+          (term.length >= 4 &&
+            term.length <= 64 &&
+            words.some((word) => Math.abs(word.length - term.length) <= 1 && editDistance(word, term) <= 1))
       )
       const score = terms.reduce(
         (total, term) =>
@@ -80,11 +102,12 @@ export function searchIndex(
           (text.includes(term) ? 10 : 0),
         0
       )
-      return { ...document, score, matches, snippet: excerpt(document.text || '', terms) }
+      return { document, score, matches }
     })
     .filter((result) => result.matches)
-    .sort((left, right) => right.score - left.score || left.title.localeCompare(right.title, 'zh-Hant'))
+    .sort((left, right) => right.score - left.score || left.document.title.localeCompare(right.document.title, 'zh-Hant'))
     .slice(0, 30)
+    .map(({ document, score }) => ({ ...document, score, snippet: excerpt(document.text || '', terms) }))
 }
 
 export function highlightParts(value: string, query: string) {

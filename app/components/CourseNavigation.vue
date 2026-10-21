@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { entryTitle, sectionFor, sourcePath, type LibraryEntry } from '~/utils/library'
 import type { SearchDocument, SearchIndex } from '~/utils/search'
-import { withBasePath } from '~/utils/url'
+import catalogue from '~/data/content-catalogue.json'
+import { compareContentOrder } from '../../lib/content-identity.mjs'
 
 const props = withDefaults(
   defineProps<{
@@ -11,19 +12,18 @@ const props = withDefaults(
   }>(),
   { showBreadcrumbs: true, showJump: false }
 )
-const baseURL = useRuntimeConfig().app.baseURL
-const { data: index } = await useFetch<SearchIndex>(withBasePath(baseURL, '/search-catalog.json'), { key: 'site-search-catalogue' })
+const index = catalogue as SearchIndex
 const query = ref('')
 const path = computed(() => sourcePath(props.entry).replace(/\.md$/, ''))
-const current = computed(() => index.value?.documents.find((document) => document.kind === 'notes' && document.path === path.value))
+const current = computed(() => index.documents.find((document) => document.kind === 'notes' && document.path === path.value))
 const courseNotes = computed(() => {
   const course = current.value?.course
   if (!course) return []
-  return (index.value?.documents || [])
+  return index.documents
     .filter(
       (document): document is SearchDocument => document.kind === 'notes' && document.course === course && !document.path.endsWith('/index')
     )
-    .sort((left, right) => left.path.localeCompare(right.path, 'zh-Hant'))
+    .sort(compareContentOrder)
 })
 const position = computed(() => courseNotes.value.findIndex((document) => document.url === current.value?.url))
 const previous = computed(() => (position.value > 0 ? courseNotes.value[position.value - 1] : undefined))

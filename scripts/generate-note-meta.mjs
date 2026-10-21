@@ -1,25 +1,15 @@
-import { mkdir, readdir, writeFile } from 'node:fs/promises'
-import { join, relative, sep } from 'node:path'
+import { mkdir, writeFile } from 'node:fs/promises'
+import { join } from 'node:path'
 import { format, resolveConfig } from 'prettier'
 import { contentLastUpdated } from './content-last-updated.mjs'
+import { collectContent } from './content-manifest.mjs'
 
-const root = join(process.cwd(), 'content', 'source')
 const output = join(process.cwd(), 'app', 'data', 'note-metadata.ts')
 
-async function collect(directory) {
-  const entries = await readdir(directory, { withFileTypes: true })
-  const files = await Promise.all(
-    entries.map(async (entry) => (entry.isDirectory() ? collect(join(directory, entry.name)) : [join(directory, entry.name)]))
-  )
-  return files.flat()
-}
-
-const metadata = (await collect(root))
-  .filter((file) => file.endsWith('.md'))
-  .map(async (file) => {
-    const source = relative(root, file).split(sep).join('/')
-    const key = source.replace(/\.md$/, '')
-    return [key, { updatedAt: contentLastUpdated(file), githubPath: `content/source/${source}` }]
+const metadata = collectContent()
+  .filter((document) => document.kind === 'notes')
+  .map(({ file, path, sourceFile }) => {
+    return [path, { updatedAt: contentLastUpdated(file), githubPath: `content/${sourceFile}` }]
   })
 
 const resolved = Object.fromEntries(await Promise.all(metadata))

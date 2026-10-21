@@ -2,10 +2,10 @@
 import { site } from '~/config/site'
 
 const offset = ref(0)
-const now = ref(new Date())
+const now = ref<Date | null>(null)
 const weather = ref<{ temperature: number; label: string; location: string } | null>(null)
 let timer: number | undefined
-const current = computed(() => new Date(now.value.getTime() + offset.value))
+const current = computed(() => new Date((now.value?.getTime() || 0) + offset.value))
 const weekdayNames = ['日', '月', '火', '水', '木', '金', '土']
 const weekday = computed(
   () =>
@@ -79,11 +79,15 @@ async function locationName(latitude: number, longitude: number) {
 }
 
 onMounted(async () => {
+  now.value = new Date()
   timer = window.setInterval(() => {
     now.value = new Date()
   }, 1_000)
   try {
-    const remote = await $fetch<{ dateTime?: string }>('https://timeapi.io/api/time/current/zone?timeZone=Asia%2FTaipei')
+    const remote = await $fetch<{ dateTime?: string }>('https://timeapi.io/api/time/current/zone?timeZone=Asia%2FTaipei', {
+      timeout: 5000,
+      retry: 0
+    })
     if (remote.dateTime) {
       const time = Date.parse(`${remote.dateTime}+08:00`)
       if (!Number.isNaN(time)) offset.value = time - Date.now()
@@ -123,8 +127,8 @@ onBeforeUnmount(() => {
     </div>
     <div>
       <p class="eyebrow">いま · 臺北時間</p>
-      <time>{{ timeText }}</time
-      ><span>{{ dateText }}</span
+      <time>{{ now ? timeText : '--:--' }}</time
+      ><span>{{ now ? dateText : '臺北時間' }}</span
       ><small>{{ weather ? `${weather.location} · ${weather.label} ${weather.temperature}°C` : '空模様を読み込み中' }}</small>
     </div>
   </aside>

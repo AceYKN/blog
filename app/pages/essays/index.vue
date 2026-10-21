@@ -1,6 +1,6 @@
 <script setup lang="ts">
 const { data: entries } = await useAsyncData('essays', () =>
-  queryCollection('essays').select('id', 'path', 'title', 'description', 'date', 'tags').all()
+  queryCollection('essays').where('draft', '=', false).select('id', 'stem', 'path', 'title', 'description', 'date', 'updated', 'tags').all()
 )
 
 useSeoMeta({

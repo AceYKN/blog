@@ -1,8 +1,10 @@
 import { courseAliases, courseLabels, directoryLabels, topLevelLabels } from '~/config/courses'
+import { sourceFileForEntry, publicContentUrl } from '../../lib/content-identity.mjs'
 
 export type LibraryEntry = {
   id: string
   path: string
+  stem?: string
   title?: string
   description?: string
   body?: { value?: unknown[]; toc?: { links?: Array<{ id: string; text: string; depth: number }> } }
@@ -23,7 +25,9 @@ export type LibraryGroup = {
 }
 
 export function sourcePath(entry: LibraryEntry) {
-  return entry.path.replace(/^\/source\//, '').replace(/^\//, '')
+  return sourceFileForEntry(entry)
+    .replace(/^source\//, '')
+    .replace(/\.md$/, '')
 }
 
 export function entryTitle(entry: LibraryEntry) {
@@ -31,7 +35,7 @@ export function entryTitle(entry: LibraryEntry) {
 }
 
 export function entryUrl(entry: LibraryEntry) {
-  return `/notes/${sourcePath(entry).replace(/\.md$/, '')}`
+  return publicContentUrl(entry)
 }
 
 export function isCourseIndex(entry: LibraryEntry) {
@@ -57,7 +61,7 @@ function indexTitlesByDirectory(entries: LibraryEntry[]) {
   const map = new Map<string, string>()
   for (const entry of entries) {
     if (!isCourseIndex(entry) || !entry.title) continue
-    map.set(sourcePath(entry), entry.title)
+    map.set(sourcePath(entry).replace(/\/index$/, ''), entry.title)
   }
   return map
 }
@@ -102,14 +106,14 @@ export function catalogue(entries: LibraryEntry[]): LibraryGroup[] {
   }
 
   const sortTree = (node: LibraryTree) => {
-    node.children.sort((left, right) => left.name.localeCompare(right.name, 'zh-Hant'))
-    node.entries.sort((left, right) => entryTitle(left).localeCompare(entryTitle(right), 'zh-Hant'))
+    node.children.sort((left, right) => left.name.localeCompare(right.name, 'zh-Hant', { numeric: true }))
+    node.entries.sort((left, right) => entryTitle(left).localeCompare(entryTitle(right), 'zh-Hant', { numeric: true }))
     node.children.forEach(sortTree)
   }
 
   const result = [...groups.values()]
   result.forEach((group) => sortTree(group.tree))
-  return result.sort((left, right) => left.name.localeCompare(right.name, 'zh-Hant'))
+  return result.sort((left, right) => left.name.localeCompare(right.name, 'zh-Hant', { numeric: true }))
 }
 
 function flat(value: string) {

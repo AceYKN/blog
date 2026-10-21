@@ -1,4 +1,7 @@
 import { defineCollection, defineContentConfig, z } from '@nuxt/content'
+import { draftSourceFiles } from './scripts/content-manifest.mjs'
+
+const exclude = draftSourceFiles()
 
 const articleSchema = z.object({
   title: z.string().min(1),
@@ -14,21 +17,21 @@ export default defineContentConfig({
   collections: {
     notes: defineCollection({
       type: 'page',
-      source: 'source/**/*.md'
+      source: { include: 'source/**/*.md', exclude }
     }),
     essays: defineCollection({
       type: 'page',
-      source: 'essays/**/*.md',
+      source: { include: 'essays/**/*.md', exclude },
       schema: articleSchema
     }),
     projects: defineCollection({
       type: 'page',
-      source: 'projects/**/*.md',
+      source: { include: 'projects/**/*.md', exclude },
       schema: articleSchema
     }),
     tech: defineCollection({
       type: 'page',
-      source: 'tech/**/*.md',
+      source: { include: 'tech/**/*.md', exclude },
       schema: articleSchema
     })
   }

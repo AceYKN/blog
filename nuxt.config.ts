@@ -1,14 +1,25 @@
-import { contentRoutes } from './scripts/content-routes.mjs'
+import { contentRoutes, tagRoutes } from './scripts/content-routes.mjs'
+import { staticDependencyBoundary } from './scripts/audit-policy.mjs'
 
 const siteUrl = (process.env.NUXT_PUBLIC_SITE_URL || 'https://aceykn-blog.pages.dev').replace(/\/+$/, '')
 const baseURL = process.env.NUXT_APP_BASE_URL || '/'
 const pwaEnabled = process.env.NUXT_PUBLIC_PWA_ENABLED !== 'false'
 const publicAsset = (path: string) => `${baseURL.endsWith('/') ? baseURL : `${baseURL}/`}${path.replace(/^\/+/, '')}`
+const sitePageRoutes = ['/', '/about', '/schedule', '/library', '/essays', '/tech', '/projects']
+const canonical = (path: string) => new URL(`${siteUrl}${path}`).href
 
 export default defineNuxtConfig({
   compatibilityDate: '2026-07-12',
   ssr: true,
   devtools: { enabled: true },
+  hooks: {
+    'vite:extendConfig'(config, { isClient }) {
+      if (isClient) {
+        if (!config.plugins) throw new Error('Missing client plugin list for dependency boundary')
+        config.plugins.push(staticDependencyBoundary())
+      }
+    }
+  },
   modules: ['@nuxt/content', '@nuxt/eslint', '@nuxtjs/sitemap', '@nuxtjs/robots'],
   css: ['~/assets/css/main.css', '~/assets/css/schedule-mobile.css', 'katex/dist/katex.min.css'],
 
@@ -81,15 +92,7 @@ export default defineNuxtConfig({
   // Static HTML is deliberate: search engines and AI crawlers can read each
   // document without executing JavaScript. The manifest is built from Markdown
   // filenames only, leaving the migrated note content untouched.
-  routeRules: {
-    '/': { prerender: true },
-    '/about': { prerender: true },
-    '/schedule': { prerender: true },
-    '/library': { prerender: true },
-    '/essays': { prerender: true },
-    '/tech': { prerender: true },
-    '/projects': { prerender: true }
-  },
+  routeRules: Object.fromEntries(sitePageRoutes.map((route) => [route, { prerender: true }])),
 
   nitro: {
     output: {
@@ -98,12 +101,19 @@ export default defineNuxtConfig({
     prerender: {
       crawlLinks: false,
       failOnError: true,
-      routes: contentRoutes.map(({ route }) => route)
+      routes: [...contentRoutes.map(({ route }) => route), ...tagRoutes]
     }
   },
 
   sitemap: {
-    urls: contentRoutes.map(({ route, lastmod }) => ({ loc: route, lastmod }))
+    excludeAppSources: true,
+    urls: [
+      // Absolute canonical URLs keep the /blog/ mirror's sitemap aligned with
+      // its canonical tags instead of adding the mirror base to the primary host.
+      ...sitePageRoutes.map((route) => ({ loc: canonical(route), _encoded: true })),
+      ...contentRoutes.map(({ route, lastmod }) => ({ loc: canonical(route), lastmod, _encoded: true })),
+      ...tagRoutes.map((route) => ({ loc: canonical(route), _encoded: true }))
+    ]
   },
 
   // robots.txt belongs at a domain root. Cloudflare is the canonical root

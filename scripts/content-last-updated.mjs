@@ -3,6 +3,8 @@ import { relative } from 'node:path'
 import { execFileSync } from 'node:child_process'
 
 const cache = new Map()
+const historyChecks = new Set()
+const historyDates = new Map()
 
 function frontmatterDate(file) {
   const source = readFileSync(file, 'utf8')
@@ -20,14 +22,30 @@ function frontmatterDate(file) {
 }
 
 function gitDate(file, repositoryRoot) {
+  if (!historyChecks.has(repositoryRoot)) {
+    const shallow = execFileSync('git', ['rev-parse', '--is-shallow-repository'], { cwd: repositoryRoot, encoding: 'utf8' }).trim()
+    if (shallow === 'true')
+      throw new Error('Content timestamps require complete Git history. Use checkout fetch-depth: 0 or git fetch --unshallow.')
+    historyChecks.add(repositoryRoot)
+  }
   const repositoryPath = relative(repositoryRoot, file).replaceAll('\\', '/')
   try {
-    const value = execFileSync('git', ['log', '-1', '--follow', '--format=%cI', '--', repositoryPath], {
-      cwd: repositoryRoot,
-      encoding: 'utf8',
-      stdio: ['ignore', 'pipe', 'ignore']
-    }).trim()
-    return value ? new Date(value).toISOString() : null
+    if (!historyDates.has(repositoryRoot)) {
+      const log = execFileSync('git', ['-c', 'core.quotepath=false', 'log', '--format=%x00%cI', '--name-only', '--no-renames'], {
+        cwd: repositoryRoot,
+        encoding: 'utf8',
+        maxBuffer: 16 * 1024 * 1024,
+        stdio: ['ignore', 'pipe', 'ignore']
+      })
+      const dates = new Map()
+      let date
+      for (const line of log.split(/\r?\n/)) {
+        if (line.startsWith('\0')) date = new Date(line.slice(1)).toISOString()
+        else if (line && date && !dates.has(line)) dates.set(line, date)
+      }
+      historyDates.set(repositoryRoot, dates)
+    }
+    return historyDates.get(repositoryRoot).get(repositoryPath) || null
   } catch {
     return null
   }

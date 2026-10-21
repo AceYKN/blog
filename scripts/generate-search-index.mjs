@@ -1,37 +1,8 @@
-import { mkdir, readdir, readFile, writeFile } from 'node:fs/promises'
-import { join, relative, sep } from 'node:path'
+import { mkdir, writeFile } from 'node:fs/promises'
+import { join } from 'node:path'
 import { format, resolveConfig } from 'prettier'
-
-const root = join(process.cwd(), 'content')
-const outputDirectory = join(process.cwd(), 'public')
-const sources = [
-  { directory: 'source', kind: 'notes', prefix: '/notes' },
-  { directory: 'essays', kind: 'essays', prefix: '/essays' },
-  { directory: 'tech', kind: 'tech', prefix: '/tech' },
-  { directory: 'projects', kind: 'projects', prefix: '/projects' }
-]
-
-async function collect(directory) {
-  const entries = await readdir(directory, { withFileTypes: true })
-  const files = await Promise.all(
-    entries.map((entry) =>
-      entry.isDirectory() ? collect(join(directory, entry.name)) : entry.name.endsWith('.md') ? [join(directory, entry.name)] : []
-    )
-  )
-  return files.flat()
-}
-
-function frontmatter(source) {
-  const match = source.match(/^---\r?\n([\s\S]*?)\r?\n---\r?\n?/)
-  const fields = Object.fromEntries(
-    (match?.[1] || '')
-      .split(/\r?\n/)
-      .map((line) => line.match(/^([\w-]+):\s*(.*)$/))
-      .filter(Boolean)
-      .map(([, key, value]) => [key, value.trim().replace(/^['"]|['"]$/g, '')])
-  )
-  return { fields, content: source.slice(match?.[0].length || 0) }
-}
+import { collectContent } from './content-manifest.mjs'
+import { contentLastUpdated } from './content-last-updated.mjs'
 
 function plainText(markdown) {
   return markdown
@@ -44,53 +15,36 @@ function plainText(markdown) {
     .trim()
 }
 
-function courseFor(path) {
-  const parts = path.split('/')
-  return parts.length >= 2 ? parts.slice(0, 2).join('/') : parts[0]
-}
-
-const documents = []
-for (const source of sources) {
-  const directory = join(root, source.directory)
-  for (const file of await collect(directory)) {
-    const raw = await readFile(file, 'utf8')
-    const { fields, content } = frontmatter(raw)
-    if (fields.draft === 'true') continue
-    const relativePath = relative(directory, file).split(sep).join('/').replace(/\.md$/, '')
-    const headings = [...content.matchAll(/^#{1,6}\s+(.+)$/gm)].map((match) => match[1].trim())
-    const title = fields.title || headings[0] || relativePath.split('/').at(-1)
-    documents.push({
-      id: `${source.kind}:${relativePath}`,
-      kind: source.kind,
-      course: source.kind === 'notes' ? courseFor(relativePath) : undefined,
-      title,
-      path: relativePath,
-      url: `${source.prefix}/${relativePath}`,
-      headings,
-      text: plainText(content)
-    })
-  }
-}
-
-documents.sort((left, right) => left.url.localeCompare(right.url, 'zh-Hant'))
-await mkdir(outputDirectory, { recursive: true })
-
-async function writeIndex(filename, index) {
-  const output = join(outputDirectory, filename)
-  const prettierOptions = (await resolveConfig(output)) ?? {}
-  await writeFile(output, await format(`${JSON.stringify(index, null, 2)}\n`, { ...prettierOptions, filepath: output }), 'utf8')
-}
-
-const catalogue = documents.map((document) => ({
-  id: document.id,
+const documents = collectContent().map((document) => ({
+  id: `${document.kind}:${document.path}`,
   kind: document.kind,
-  course: document.course,
+  course: document.kind === 'notes' ? document.path.split('/').slice(0, 2).join('/') : undefined,
   title: document.title,
   path: document.path,
-  url: document.url
+  url: document.url,
+  order: typeof document.fields.order === 'number' ? document.fields.order : undefined,
+  description: String(document.fields.description || ''),
+  updated: contentLastUpdated(document.file),
+  tags: document.tags,
+  headings: [...document.content.matchAll(/^#{1,6}\s+(.+)$/gm)].map((match) => match[1].trim()),
+  text: plainText(document.content)
 }))
-await writeIndex('search-catalog.json', { version: 1, documents: catalogue })
-for (const kind of sources.map((source) => source.kind)) {
-  await writeIndex(`search-index-${kind}.json`, { version: 1, documents: documents.filter((document) => document.kind === kind) })
+
+async function writeIndex(relativePath, index) {
+  const output = join(process.cwd(), relativePath)
+  const prettierOptions = (await resolveConfig(output)) ?? {}
+  await writeFile(output, await format(JSON.stringify(index), { ...prettierOptions, filepath: output }), 'utf8')
 }
-console.log(`Generated a search catalogue and ${sources.length} scoped indexes for ${documents.length} published documents.`)
+
+await mkdir('public', { recursive: true })
+await mkdir('app/data', { recursive: true })
+const catalogue = documents.map((document) =>
+  Object.fromEntries(Object.entries(document).filter(([key]) => !['headings', 'text'].includes(key)))
+)
+await writeIndex('public/search-catalog.json', { version: 1, documents: catalogue })
+// Navigation must also be available to SSR, where fetching public files can fail.
+await writeIndex('app/data/content-catalogue.json', { version: 1, documents: catalogue })
+for (const kind of ['notes', 'essays', 'tech', 'projects']) {
+  await writeIndex(`public/search-index-${kind}.json`, { version: 1, documents: documents.filter((document) => document.kind === kind) })
+}
+console.log(`Generated catalogue and scoped indexes for ${documents.length} published documents.`)

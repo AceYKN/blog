@@ -7,6 +7,9 @@
       "title": "在 macOS 配置 Claude Code 与 DeepSeek API：从终端到项目目录",
       "path": "claude-code-dpsk-macos",
       "url": "/tech/claude-code-dpsk-macos",
+      "description": "用 DeepSeek 的 Anthropic 兼容端点接入 Claude Code；一份可重复执行的 macOS 配置记录。",
+      "updated": "2026-07-14T00:00:00.000Z",
+      "tags": ["Claude Code", "macOS", "DeepSeek"],
       "headings": [
         "在 macOS 配置 Claude Code 与 DeepSeek API：从终端到项目目录",
         "0. 准备",

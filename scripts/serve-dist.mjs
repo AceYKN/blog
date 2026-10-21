@@ -4,7 +4,7 @@ import { createServer } from 'node:http'
 import { extname, join, normalize, relative, resolve } from 'node:path'
 import { normalizeBaseURL } from './pwa-config.mjs'
 
-const root = resolve(process.cwd(), 'dist')
+const root = resolve(process.cwd(), process.env.PWA_DIST_DIR || process.env.NUXT_OUTPUT_DIR || 'dist')
 const baseURL = normalizeBaseURL(process.env.NUXT_APP_BASE_URL || '/')
 const port = Number(process.env.PORT || 4173)
 

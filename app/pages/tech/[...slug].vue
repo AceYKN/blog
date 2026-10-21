@@ -1,7 +1,8 @@
 <script setup lang="ts">
-definePageMeta({ layout: 'reading' })
+definePageMeta({ layout: 'reading', key: (route) => route.path })
+useReadingPosition()
 
-const { entry, status } = useContentPage('tech')
+const { entry, status } = await useContentPage('tech')
 </script>
 <template>
   <ContentArticle v-if="entry" :entry="entry" />

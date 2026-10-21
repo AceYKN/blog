@@ -8,11 +8,12 @@
   "scripts": {
     "dev": "nuxt dev",
     "build": "nuxt build",
-    "generate": "npm run sync:projects && npm run generate:note-meta && npm run generate:search-index && npm run check:source && nuxt generate && node scripts/prepare-cloudflare-pages.mjs && npm run generate:pwa && npm run check:dist && npm run check:pwa",
+    "generate": "node scripts/prepare-content-history.mjs && npm run sync:projects && npm run generate:note-meta && npm run generate:search-index && npm run check:source && nuxt generate && node scripts/prepare-cloudflare-pages.mjs && npm run generate:pwa && npm run check:dist && npm run check:pwa",
     "generate:note-meta": "node scripts/generate-note-meta.mjs",
     "generate:search-index": "node scripts/generate-search-index.mjs",
     "generate:pwa": "node scripts/generate-pwa.mjs",
     "check:pwa": "node scripts/check-pwa.mjs",
+    "check:audit": "node scripts/check-audit.mjs",
     "test:pwa": "playwright test tests/e2e/pwa.spec.ts",
     "test:schedule": "playwright test tests/e2e/schedule.spec.ts",
     "sync:projects": "node scripts/sync-github-projects.mjs",
@@ -20,25 +21,28 @@
     "check:source": "node scripts/check-content.mjs --source",
     "check:dist": "node scripts/check-content.mjs --dist",
     "new": "node scripts/new-content.mjs",
-    "prepare": "nuxt prepare",
+    "prepare": "node scripts/prepare-content-history.mjs && nuxt prepare",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "typecheck": "nuxt typecheck",
     "test": "vitest run",
-    "test:watch": "vitest"
+    "test:watch": "vitest",
+    "test:content": "playwright test tests/e2e/content.spec.ts",
+    "test:publication": "node scripts/test-draft-publication.mjs"
   },
   "dependencies": {
-    "@nuxt/content": "^3.15.0",
+    "@nuxt/content": "^3.16.2",
     "@nuxtjs/robots": "^6.1.2",
     "@nuxtjs/sitemap": "^8.2.2",
     "better-sqlite3": "^12.11.1",
-    "katex": "^0.17.0",
+    "katex": "^0.19.0",
     "mermaid": "^11.16.0",
-    "nuxt": "^4.5.2",
+    "nuxt": "^4.6.2",
     "rehype-katex": "^7.0.1",
-    "remark-math": "^6.0.0"
+    "remark-math": "^6.0.0",
+    "yaml": "^2.9.1"
   },
   "devDependencies": {
     "@nuxt/eslint": "^1.16.0",
@@ -50,5 +54,8 @@
     "vitest": "^4.1.10",
     "vue-tsc": "^3.3.7",
     "workbox-build": "^7.4.1"
+  },
+  "overrides": {
+    "katex": "$katex"
   }
 }

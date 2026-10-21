@@ -6,7 +6,10 @@
       "kind": "essays",
       "title": "giffgaff：一次低成本激活与保号的记录",
       "path": "giffgaff-low-cost-activation",
-      "url": "/essays/giffgaff-low-cost-activation"
+      "url": "/essays/giffgaff-low-cost-activation",
+      "description": "不追求囤卡，只把激活、首次使用与后续保号拆成几个清楚的小步骤。",
+      "updated": "2026-07-14T00:00:00.000Z",
+      "tags": ["生活", "通讯", "英国"]
     },
     {
       "id": "notes:code/cpp-start",
@@ -14,7 +17,10 @@
       "course": "code/cpp-start",
       "title": "C++ 学习笔记",
       "path": "code/cpp-start",
-      "url": "/notes/code/cpp-start"
+      "url": "/notes/code/cpp-start",
+      "description": "",
+      "updated": "2026-07-12T12:10:29.000Z",
+      "tags": []
     },
     {
       "id": "notes:code/index",
@@ -22,7 +28,11 @@
       "course": "code/index",
       "title": "開発",
       "path": "code/index",
-      "url": "/notes/code/index"
+      "url": "/notes/code/index",
+      "order": 1,
+      "description": "",
+      "updated": "2026-07-12T12:10:29.000Z",
+      "tags": []
     },
     {
       "id": "notes:code/vue/01-js-from-zero",
@@ -30,7 +40,11 @@
       "course": "code/vue",
       "title": "01 JavaScript 必备基础",
       "path": "code/vue/01-js-from-zero",
-      "url": "/notes/code/vue/01-js-from-zero"
+      "url": "/notes/code/vue/01-js-from-zero",
+      "order": 1,
+      "description": "",
+      "updated": "2026-07-12T12:10:29.000Z",
+      "tags": []
     },
     {
       "id": "notes:code/vue/02-dom-to-vue",
@@ -38,7 +52,11 @@
       "course": "code/vue",
       "title": "02 DOM 到 Vue 的心智模型",
       "path": "code/vue/02-dom-to-vue",
-      "url": "/notes/code/vue/02-dom-to-vue"
+      "url": "/notes/code/vue/02-dom-to-vue",
+      "order": 2,
+      "description": "",
+      "updated": "2026-07-12T12:10:29.000Z",
+      "tags": []
     },
     {
       "id": "notes:code/vue/03-vue-core",
@@ -46,7 +64,11 @@
       "course": "code/vue",
       "title": "03 Vue 核心语法和响应式",
       "path": "code/vue/03-vue-core",
-      "url": "/notes/code/vue/03-vue-core"
+      "url": "/notes/code/vue/03-vue-core",
+      "order": 3,
+      "description": "",
+      "updated": "2026-07-12T12:10:29.000Z",
+      "tags": []
     },
     {
       "id": "notes:code/vue/04-components",
@@ -54,7 +76,11 @@
       "course": "code/vue",
       "title": "04 组件、Props、事件和插槽",
       "path": "code/vue/04-components",
-      "url": "/notes/code/vue/04-components"
+      "url": "/notes/code/vue/04-components",
+      "order": 4,
+      "description": "",
+      "updated": "2026-07-12T12:10:29.000Z",
+      "tags": []
     },
     {
       "id": "notes:code/vue/05-forms-lists-styles",
@@ -62,7 +88,11 @@
       "course": "code/vue",
       "title": "05 列表、表单、样式和用户输入",
       "path": "code/vue/05-forms-lists-styles",
-      "url": "/notes/code/vue/05-forms-lists-styles"
+      "url": "/notes/code/vue/05-forms-lists-styles",
+      "order": 5,
+      "description": "",
+      "updated": "2026-07-12T12:10:29.000Z",
+      "tags": []
     },
     {
       "id": "notes:code/vue/06-composition-composables",
@@ -70,7 +100,11 @@
       "course": "code/vue",
       "title": "06 Composition API 和组合式函数",
       "path": "code/vue/06-composition-composables",
-      "url": "/notes/code/vue/06-composition-composables"
+      "url": "/notes/code/vue/06-composition-composables",
+      "order": 6,
+      "description": "",
+      "updated": "2026-07-12T12:10:29.000Z",
+      "tags": []
     },
     {
       "id": "notes:code/vue/07-router",
@@ -78,7 +112,11 @@
       "course": "code/vue",
       "title": "07 Vue Router 路由",
       "path": "code/vue/07-router",
-      "url": "/notes/code/vue/07-router"
+      "url": "/notes/code/vue/07-router",
+      "order": 7,
+      "description": "",
+      "updated": "2026-07-12T12:10:29.000Z",
+      "tags": []
     },
     {
       "id": "notes:code/vue/08-pinia",
@@ -86,7 +124,11 @@
       "course": "code/vue",
       "title": "08 Pinia 状态管理",
       "path": "code/vue/08-pinia",
-      "url": "/notes/code/vue/08-pinia"
+      "url": "/notes/code/vue/08-pinia",
+      "order": 8,
+      "description": "",
+      "updated": "2026-07-12T12:10:29.000Z",
+      "tags": []
     },
     {
       "id": "notes:code/vue/09-http-async",
@@ -94,7 +136,11 @@
       "course": "code/vue",
       "title": "09 异步请求和错误处理",
       "path": "code/vue/09-http-async",
-      "url": "/notes/code/vue/09-http-async"
+      "url": "/notes/code/vue/09-http-async",
+      "order": 9,
+      "description": "",
+      "updated": "2026-07-12T12:10:29.000Z",
+      "tags": []
     },
     {
       "id": "notes:code/vue/10-testing-debugging",
@@ -102,7 +148,11 @@
       "course": "code/vue",
       "title": "10 测试、调试和质量保障",
       "path": "code/vue/10-testing-debugging",
-      "url": "/notes/code/vue/10-testing-debugging"
+      "url": "/notes/code/vue/10-testing-debugging",
+      "order": 10,
+      "description": "",
+      "updated": "2026-07-12T12:10:29.000Z",
+      "tags": []
     },
     {
       "id": "notes:code/vue/11-typescript-production",
@@ -110,7 +160,11 @@
       "course": "code/vue",
       "title": "11 TypeScript 和生产级代码",
       "path": "code/vue/11-typescript-production",
-      "url": "/notes/code/vue/11-typescript-production"
+      "url": "/notes/code/vue/11-typescript-production",
+      "order": 11,
+      "description": "",
+      "updated": "2026-07-12T12:10:29.000Z",
+      "tags": []
     },
     {
       "id": "notes:code/vue/12-performance-a11y-security",
@@ -118,7 +172,11 @@
       "course": "code/vue",
       "title": "12 性能、可访问性和安全",
       "path": "code/vue/12-performance-a11y-security",
-      "url": "/notes/code/vue/12-performance-a11y-security"
+      "url": "/notes/code/vue/12-performance-a11y-security",
+      "order": 12,
+      "description": "",
+      "updated": "2026-07-12T12:10:29.000Z",
+      "tags": []
     },
     {
       "id": "notes:code/vue/13-build-deploy-engineering",
@@ -126,7 +184,11 @@
       "course": "code/vue",
       "title": "13 构建、部署和工程化",
       "path": "code/vue/13-build-deploy-engineering",
-      "url": "/notes/code/vue/13-build-deploy-engineering"
+      "url": "/notes/code/vue/13-build-deploy-engineering",
+      "order": 13,
+      "description": "",
+      "updated": "2026-07-12T12:10:29.000Z",
+      "tags": []
     },
     {
       "id": "notes:code/vue/14-capstone",
@@ -134,7 +196,11 @@
       "course": "code/vue",
       "title": "14 毕业项目：课程任务管理器",
       "path": "code/vue/14-capstone",
-      "url": "/notes/code/vue/14-capstone"
+      "url": "/notes/code/vue/14-capstone",
+      "order": 14,
+      "description": "",
+      "updated": "2026-07-12T12:10:29.000Z",
+      "tags": []
     },
     {
       "id": "notes:code/vue/index",
@@ -142,7 +208,11 @@
       "course": "code/vue",
       "title": "Vue.js 完整课程",
       "path": "code/vue/index",
-      "url": "/notes/code/vue/index"
+      "url": "/notes/code/vue/index",
+      "order": 1,
+      "description": "",
+      "updated": "2026-07-12T12:10:29.000Z",
+      "tags": []
     },
     {
       "id": "notes:cs/algo/index",
@@ -150,7 +220,10 @@
       "course": "cs/algo",
       "title": "Algorithm Design & Analysis",
       "path": "cs/algo/index",
-      "url": "/notes/cs/algo/index"
+      "url": "/notes/cs/algo/index",
+      "description": "算法设计与分析学习笔记，涵盖递归、分治、动态规划等核心算法策略，附历年期末考试真题。",
+      "updated": "2026-07-12T12:10:29.000Z",
+      "tags": []
     },
     {
       "id": "notes:cs/algo/notes/chap2",
@@ -158,7 +231,10 @@
       "course": "cs/algo",
       "title": "第二章：递归（Recursion）",
       "path": "cs/algo/notes/chap2",
-      "url": "/notes/cs/algo/notes/chap2"
+      "url": "/notes/cs/algo/notes/chap2",
+      "description": "",
+      "updated": "2026-07-12T12:10:29.000Z",
+      "tags": []
     },
     {
       "id": "notes:cs/algo/notes/chap3",
@@ -166,7 +242,10 @@
       "course": "cs/algo",
       "title": "第三章：分治（Divide and Conquer）",
       "path": "cs/algo/notes/chap3",
-      "url": "/notes/cs/algo/notes/chap3"
+      "url": "/notes/cs/algo/notes/chap3",
+      "description": "",
+      "updated": "2026-07-12T12:10:29.000Z",
+      "tags": []
     },
     {
       "id": "notes:cs/algo/notes/chap4",
@@ -174,7 +253,10 @@
       "course": "cs/algo",
       "title": "第四章：动态规划（Dynamic Programming）",
       "path": "cs/algo/notes/chap4",
-      "url": "/notes/cs/algo/notes/chap4"
+      "url": "/notes/cs/algo/notes/chap4",
+      "description": "",
+      "updated": "2026-07-12T12:10:29.000Z",
+      "tags": []
     },
     {
       "id": "notes:cs/algo/pastpapers/2024-2025-se2",
@@ -182,7 +264,10 @@
       "course": "cs/algo",
       "title": "2024-2025 第二学期 算法设计与分析",
       "path": "cs/algo/pastpapers/2024-2025-se2",
-      "url": "/notes/cs/algo/pastpapers/2024-2025-se2"
+      "url": "/notes/cs/algo/pastpapers/2024-2025-se2",
+      "description": "",
+      "updated": "2026-07-12T12:10:29.000Z",
+      "tags": []
     },
     {
       "id": "notes:cs/db/100+70/00-复习索引",
@@ -190,7 +275,10 @@
       "course": "cs/db",
       "title": "数据库补充习题 70+100 复习索引",
       "path": "cs/db/100+70/00-复习索引",
-      "url": "/notes/cs/db/100+70/00-复习索引"
+      "url": "/notes/cs/db/100+70/00-复习索引",
+      "description": "",
+      "updated": "2026-07-12T12:10:29.000Z",
+      "tags": []
     },
     {
       "id": "notes:cs/db/100+70/Day01-数据库100题-选择01-20",
@@ -198,7 +286,10 @@
       "course": "cs/db",
       "title": "Day 01 - 数据库100题：单项选择 1-20",
       "path": "cs/db/100+70/Day01-数据库100题-选择01-20",
-      "url": "/notes/cs/db/100+70/Day01-数据库100题-选择01-20"
+      "url": "/notes/cs/db/100+70/Day01-数据库100题-选择01-20",
+      "description": "",
+      "updated": "2026-07-12T12:10:29.000Z",
+      "tags": []
     },
     {
       "id": "notes:cs/db/100+70/Day02-数据库100题-选择21-40",
@@ -206,7 +297,10 @@
       "course": "cs/db",
       "title": "Day 02 - 数据库100题：单项选择 21-40",
       "path": "cs/db/100+70/Day02-数据库100题-选择21-40",
-      "url": "/notes/cs/db/100+70/Day02-数据库100题-选择21-40"
+      "url": "/notes/cs/db/100+70/Day02-数据库100题-选择21-40",
+      "description": "",
+      "updated": "2026-07-12T12:10:29.000Z",
+      "tags": []
     },
     {
       "id": "notes:cs/db/100+70/Day03-数据库100题-选择41-50填空51-60",
@@ -214,7 +308,10 @@
       "course": "cs/db",
       "title": "Day 03 - 数据库100题：单选 41-50，填空 51-60",
       "path": "cs/db/100+70/Day03-数据库100题-选择41-50填空51-60",
-      "url": "/notes/cs/db/100+70/Day03-数据库100题-选择41-50填空51-60"
+      "url": "/notes/cs/db/100+70/Day03-数据库100题-选择41-50填空51-60",
+      "description": "",
+      "updated": "2026-07-12T12:10:29.000Z",
+      "tags": []
     },
     {
       "id": "notes:cs/db/100+70/Day04-数据库100题-填空61-80",
@@ -222,7 +319,10 @@
       "course": "cs/db",
       "title": "Day 04 - 数据库100题：填空 61-80",
       "path": "cs/db/100+70/Day04-数据库100题-填空61-80",
-      "url": "/notes/cs/db/100+70/Day04-数据库100题-填空61-80"
+      "url": "/notes/cs/db/100+70/Day04-数据库100题-填空61-80",
+      "description": "",
+      "updated": "2026-07-12T12:10:29.000Z",
+      "tags": []
     },
     {
       "id": "notes:cs/db/100+70/Day05-数据库100题-填空81-100",
@@ -230,7 +330,10 @@
       "course": "cs/db",
       "title": "Day 05 - 数据库100题：填空 81-100",
       "path": "cs/db/100+70/Day05-数据库100题-填空81-100",
-      "url": "/notes/cs/db/100+70/Day05-数据库100题-填空81-100"
+      "url": "/notes/cs/db/100+70/Day05-数据库100题-填空81-100",
+      "description": "",
+      "updated": "2026-07-12T12:10:29.000Z",
+      "tags": []
     },
     {
       "id": "notes:cs/db/100+70/Day06-数据库70题-试题01-11",
@@ -238,7 +341,10 @@
       "course": "cs/db",
       "title": "Day 06 - 数据库70题：试题 1-11",
       "path": "cs/db/100+70/Day06-数据库70题-试题01-11",
-      "url": "/notes/cs/db/100+70/Day06-数据库70题-试题01-11"
+      "url": "/notes/cs/db/100+70/Day06-数据库70题-试题01-11",
+      "description": "",
+      "updated": "2026-07-12T12:10:29.000Z",
+      "tags": []
     },
     {
       "id": "notes:cs/db/100+70/Day07-数据库70题-试题12-25",
@@ -246,7 +352,10 @@
       "course": "cs/db",
       "title": "Day 07 - 数据库70题：试题 12-25",
       "path": "cs/db/100+70/Day07-数据库70题-试题12-25",
-      "url": "/notes/cs/db/100+70/Day07-数据库70题-试题12-25"
+      "url": "/notes/cs/db/100+70/Day07-数据库70题-试题12-25",
+      "description": "",
+      "updated": "2026-07-12T12:10:29.000Z",
+      "tags": []
     },
     {
       "id": "notes:cs/db/100+70/Day08-数据库70题-综合01-08",
@@ -254,7 +363,10 @@
       "course": "cs/db",
       "title": "Day 08 - 数据库70题：综合题 1-8",
       "path": "cs/db/100+70/Day08-数据库70题-综合01-08",
-      "url": "/notes/cs/db/100+70/Day08-数据库70题-综合01-08"
+      "url": "/notes/cs/db/100+70/Day08-数据库70题-综合01-08",
+      "description": "",
+      "updated": "2026-07-12T12:10:29.000Z",
+      "tags": []
     },
     {
       "id": "notes:cs/db/100+70/Day09-数据库70题-综合22-33",
@@ -262,7 +374,10 @@
       "course": "cs/db",
       "title": "Day 09 - 数据库70题：综合题 22-33",
       "path": "cs/db/100+70/Day09-数据库70题-综合22-33",
-      "url": "/notes/cs/db/100+70/Day09-数据库70题-综合22-33"
+      "url": "/notes/cs/db/100+70/Day09-数据库70题-综合22-33",
+      "description": "",
+      "updated": "2026-07-12T12:10:29.000Z",
+      "tags": []
     },
     {
       "id": "notes:cs/db/100+70/Day10-数据库70题-综合37-47",
@@ -270,7 +385,10 @@
       "course": "cs/db",
       "title": "Day 10 - 数据库70题：综合题 37-47",
       "path": "cs/db/100+70/Day10-数据库70题-综合37-47",
-      "url": "/notes/cs/db/100+70/Day10-数据库70题-综合37-47"
+      "url": "/notes/cs/db/100+70/Day10-数据库70题-综合37-47",
+      "description": "",
+      "updated": "2026-07-12T12:10:29.000Z",
+      "tags": []
     },
     {
       "id": "notes:cs/db/100+70/Day11-数据库70题-综合48-61",
@@ -278,7 +396,10 @@
       "course": "cs/db",
       "title": "Day 11 - 数据库70题：综合题 48-61",
       "path": "cs/db/100+70/Day11-数据库70题-综合48-61",
-      "url": "/notes/cs/db/100+70/Day11-数据库70题-综合48-61"
+      "url": "/notes/cs/db/100+70/Day11-数据库70题-综合48-61",
+      "description": "",
+      "updated": "2026-07-12T12:10:29.000Z",
+      "tags": []
     },
     {
       "id": "notes:cs/db/100+70/Day12-数据库70题-综合62-71",
@@ -286,7 +407,10 @@
       "course": "cs/db",
       "title": "Day 12 - 数据库70题：综合题 62-71",
       "path": "cs/db/100+70/Day12-数据库70题-综合62-71",
-      "url": "/notes/cs/db/100+70/Day12-数据库70题-综合62-71"
+      "url": "/notes/cs/db/100+70/Day12-数据库70题-综合62-71",
+      "description": "",
+      "updated": "2026-07-12T12:10:29.000Z",
+      "tags": []
     },
     {
       "id": "notes:cs/db/index",
@@ -294,7 +418,10 @@
       "course": "cs/db",
       "title": "Database Systems",
       "path": "cs/db/index",
-      "url": "/notes/cs/db/index"
+      "url": "/notes/cs/db/index",
+      "description": "数据库系统学习笔记，包含数据库规范化（BCNF）、E-R图设计、SQL、关系代数等内容，附历年练习题。",
+      "updated": "2026-07-12T12:10:29.000Z",
+      "tags": []
     },
     {
       "id": "notes:cs/db/notes/01-基础概念与题型全文",
@@ -302,7 +429,10 @@
       "course": "cs/db",
       "title": "基础概念与题型全文",
       "path": "cs/db/notes/01-基础概念与题型全文",
-      "url": "/notes/cs/db/notes/01-基础概念与题型全文"
+      "url": "/notes/cs/db/notes/01-基础概念与题型全文",
+      "description": "",
+      "updated": "2026-07-12T12:10:29.000Z",
+      "tags": []
     },
     {
       "id": "notes:cs/db/notes/02-SQL语句与数据库操作全文",
@@ -310,7 +440,10 @@
       "course": "cs/db",
       "title": "SQL语句与数据库操作全文",
       "path": "cs/db/notes/02-SQL语句与数据库操作全文",
-      "url": "/notes/cs/db/notes/02-SQL语句与数据库操作全文"
+      "url": "/notes/cs/db/notes/02-SQL语句与数据库操作全文",
+      "description": "",
+      "updated": "2026-07-12T12:10:29.000Z",
+      "tags": []
     },
     {
       "id": "notes:cs/db/notes/03-数据库编程全文",
@@ -318,7 +451,10 @@
       "course": "cs/db",
       "title": "数据库编程全文",
       "path": "cs/db/notes/03-数据库编程全文",
-      "url": "/notes/cs/db/notes/03-数据库编程全文"
+      "url": "/notes/cs/db/notes/03-数据库编程全文",
+      "description": "",
+      "updated": "2026-07-12T12:10:29.000Z",
+      "tags": []
     },
     {
       "id": "notes:cs/db/notes/04-数据库设计与规范化全文",
@@ -326,7 +462,10 @@
       "course": "cs/db",
       "title": "数据库设计与规范化全文",
       "path": "cs/db/notes/04-数据库设计与规范化全文",
-      "url": "/notes/cs/db/notes/04-数据库设计与规范化全文"
+      "url": "/notes/cs/db/notes/04-数据库设计与规范化全文",
+      "description": "",
+      "updated": "2026-07-12T12:10:29.000Z",
+      "tags": []
     },
     {
       "id": "notes:cs/db/notes/05-查询优化恢复并发控制全文",
@@ -334,7 +473,10 @@
       "course": "cs/db",
       "title": "查询优化、恢复、并发控制全文",
       "path": "cs/db/notes/05-查询优化恢复并发控制全文",
-      "url": "/notes/cs/db/notes/05-查询优化恢复并发控制全文"
+      "url": "/notes/cs/db/notes/05-查询优化恢复并发控制全文",
+      "description": "",
+      "updated": "2026-07-12T12:10:29.000Z",
+      "tags": []
     },
     {
       "id": "notes:cs/db/notes/normalization",
@@ -342,7 +484,10 @@
       "course": "cs/db",
       "title": "数据库规范化流程",
       "path": "cs/db/notes/normalization",
-      "url": "/notes/cs/db/notes/normalization"
+      "url": "/notes/cs/db/notes/normalization",
+      "description": "",
+      "updated": "2026-07-12T12:10:29.000Z",
+      "tags": []
     },
     {
       "id": "notes:cs/db/pastpapers/25-26cs",
@@ -350,7 +495,10 @@
       "course": "cs/db",
       "title": "2025-2026-2 计科数据库系统期末",
       "path": "cs/db/pastpapers/25-26cs",
-      "url": "/notes/cs/db/pastpapers/25-26cs"
+      "url": "/notes/cs/db/pastpapers/25-26cs",
+      "description": "",
+      "updated": "2026-07-12T12:10:29.000Z",
+      "tags": []
     },
     {
       "id": "notes:cs/db/pastpapers/db-pastpaper-1",
@@ -358,7 +506,10 @@
       "course": "cs/db",
       "title": "2024-2025-2 计科数据库系统期末",
       "path": "cs/db/pastpapers/db-pastpaper-1",
-      "url": "/notes/cs/db/pastpapers/db-pastpaper-1"
+      "url": "/notes/cs/db/pastpapers/db-pastpaper-1",
+      "description": "",
+      "updated": "2026-07-12T12:10:29.000Z",
+      "tags": []
     },
     {
       "id": "notes:cs/db/tutorial/00-总览与考试题型地图",
@@ -366,7 +517,10 @@
       "course": "cs/db",
       "title": "数据库系统完整讲义总览与考试题型地图",
       "path": "cs/db/tutorial/00-总览与考试题型地图",
-      "url": "/notes/cs/db/tutorial/00-总览与考试题型地图"
+      "url": "/notes/cs/db/tutorial/00-总览与考试题型地图",
+      "description": "",
+      "updated": "2026-07-12T12:10:29.000Z",
+      "tags": []
     },
     {
       "id": "notes:cs/db/tutorial/01-数据库基础与关系模型",
@@ -374,7 +528,10 @@
       "course": "cs/db",
       "title": "01 数据库基础与关系模型",
       "path": "cs/db/tutorial/01-数据库基础与关系模型",
-      "url": "/notes/cs/db/tutorial/01-数据库基础与关系模型"
+      "url": "/notes/cs/db/tutorial/01-数据库基础与关系模型",
+      "description": "",
+      "updated": "2026-07-12T12:10:29.000Z",
+      "tags": []
     },
     {
       "id": "notes:cs/db/tutorial/02-SQL与关系代数",
@@ -382,7 +539,10 @@
       "course": "cs/db",
       "title": "02 SQL 与关系代数",
       "path": "cs/db/tutorial/02-SQL与关系代数",
-      "url": "/notes/cs/db/tutorial/02-SQL与关系代数"
+      "url": "/notes/cs/db/tutorial/02-SQL与关系代数",
+      "description": "",
+      "updated": "2026-07-12T12:10:29.000Z",
+      "tags": []
     },
     {
       "id": "notes:cs/db/tutorial/03-数据库编程专项",
@@ -390,7 +550,10 @@
       "course": "cs/db",
       "title": "03 数据库编程专项：存储过程、触发器、游标、嵌入式 SQL",
       "path": "cs/db/tutorial/03-数据库编程专项",
-      "url": "/notes/cs/db/tutorial/03-数据库编程专项"
+      "url": "/notes/cs/db/tutorial/03-数据库编程专项",
+      "description": "",
+      "updated": "2026-07-12T12:10:29.000Z",
+      "tags": []
     },
     {
       "id": "notes:cs/db/tutorial/04-数据库设计ER与规范化",
@@ -398,7 +561,10 @@
       "course": "cs/db",
       "title": "04 数据库设计、E-R 图与规范化",
       "path": "cs/db/tutorial/04-数据库设计ER与规范化",
-      "url": "/notes/cs/db/tutorial/04-数据库设计ER与规范化"
+      "url": "/notes/cs/db/tutorial/04-数据库设计ER与规范化",
+      "description": "",
+      "updated": "2026-07-12T12:10:29.000Z",
+      "tags": []
     },
     {
       "id": "notes:cs/db/tutorial/05-查询优化专项",
@@ -406,7 +572,10 @@
       "course": "cs/db",
       "title": "05 查询优化专项：关系代数、查询树、优化树",
       "path": "cs/db/tutorial/05-查询优化专项",
-      "url": "/notes/cs/db/tutorial/05-查询优化专项"
+      "url": "/notes/cs/db/tutorial/05-查询优化专项",
+      "description": "",
+      "updated": "2026-07-12T12:10:29.000Z",
+      "tags": []
     },
     {
       "id": "notes:cs/db/tutorial/06-事务并发控制与恢复",
@@ -414,7 +583,10 @@
       "course": "cs/db",
       "title": "06 事务、并发控制与数据库恢复",
       "path": "cs/db/tutorial/06-事务并发控制与恢复",
-      "url": "/notes/cs/db/tutorial/06-事务并发控制与恢复"
+      "url": "/notes/cs/db/tutorial/06-事务并发控制与恢复",
+      "description": "",
+      "updated": "2026-07-12T12:10:29.000Z",
+      "tags": []
     },
     {
       "id": "notes:cs/db/tutorial/07-填空选择速记清单",
@@ -422,7 +594,10 @@
       "course": "cs/db",
       "title": "07 填空选择速记清单",
       "path": "cs/db/tutorial/07-填空选择速记清单",
-      "url": "/notes/cs/db/tutorial/07-填空选择速记清单"
+      "url": "/notes/cs/db/tutorial/07-填空选择速记清单",
+      "description": "",
+      "updated": "2026-07-12T12:10:29.000Z",
+      "tags": []
     },
     {
       "id": "notes:cs/db/tutorial/08-大题答题模板",
@@ -430,7 +605,10 @@
       "course": "cs/db",
       "title": "08 大题答题模板",
       "path": "cs/db/tutorial/08-大题答题模板",
-      "url": "/notes/cs/db/tutorial/08-大题答题模板"
+      "url": "/notes/cs/db/tutorial/08-大题答题模板",
+      "description": "",
+      "updated": "2026-07-12T12:10:29.000Z",
+      "tags": []
     },
     {
       "id": "notes:cs/dm/index",
@@ -438,7 +616,10 @@
       "course": "cs/dm",
       "title": "Discrete Math",
       "path": "cs/dm/index",
-      "url": "/notes/cs/dm/index"
+      "url": "/notes/cs/dm/index",
+      "description": "",
+      "updated": "2026-07-12T12:10:29.000Z",
+      "tags": []
     },
     {
       "id": "notes:cs/dm/note/chap12",
@@ -446,7 +627,10 @@
       "course": "cs/dm",
       "title": "第十二章总线索",
       "path": "cs/dm/note/chap12",
-      "url": "/notes/cs/dm/note/chap12"
+      "url": "/notes/cs/dm/note/chap12",
+      "description": "",
+      "updated": "2026-07-12T12:10:29.000Z",
+      "tags": []
     },
     {
       "id": "notes:cs/index",
@@ -454,7 +638,10 @@
       "course": "cs/index",
       "title": "Computer Science",
       "path": "cs/index",
-      "url": "/notes/cs/index"
+      "url": "/notes/cs/index",
+      "description": "计算机科学课程笔记汇总，包含操作系统、算法设计与分析、数据库系统、软件工程等科目的课程内容、作业与历年考题。",
+      "updated": "2026-07-12T12:10:29.000Z",
+      "tags": []
     },
     {
       "id": "notes:cs/os/HW/chap11-hw",
@@ -462,7 +649,11 @@
       "course": "cs/os",
       "title": "Chap. 11 HW",
       "path": "cs/os/HW/chap11-hw",
-      "url": "/notes/cs/os/HW/chap11-hw"
+      "url": "/notes/cs/os/HW/chap11-hw",
+      "order": 11,
+      "description": "",
+      "updated": "2026-07-12T12:10:29.000Z",
+      "tags": []
     },
     {
       "id": "notes:cs/os/HW/chap12-hw",
@@ -470,7 +661,11 @@
       "course": "cs/os",
       "title": "Chap. 12 HW",
       "path": "cs/os/HW/chap12-hw",
-      "url": "/notes/cs/os/HW/chap12-hw"
+      "url": "/notes/cs/os/HW/chap12-hw",
+      "order": 12,
+      "description": "",
+      "updated": "2026-07-12T12:10:29.000Z",
+      "tags": []
     },
     {
       "id": "notes:cs/os/HW/chap2-hw",
@@ -478,7 +673,11 @@
       "course": "cs/os",
       "title": "Chap. 2 HW",
       "path": "cs/os/HW/chap2-hw",
-      "url": "/notes/cs/os/HW/chap2-hw"
+      "url": "/notes/cs/os/HW/chap2-hw",
+      "order": 1,
+      "description": "",
+      "updated": "2026-07-12T12:10:29.000Z",
+      "tags": []
     },
     {
       "id": "notes:cs/os/HW/chap3-hw",
@@ -486,7 +685,11 @@
       "course": "cs/os",
       "title": "Chap. 3 HW",
       "path": "cs/os/HW/chap3-hw",
-      "url": "/notes/cs/os/HW/chap3-hw"
+      "url": "/notes/cs/os/HW/chap3-hw",
+      "order": 2,
+      "description": "",
+      "updated": "2026-07-12T12:10:29.000Z",
+      "tags": []
     },
     {
       "id": "notes:cs/os/HW/chap4-hw",
@@ -494,7 +697,11 @@
       "course": "cs/os",
       "title": "Chap. 4 HW",
       "path": "cs/os/HW/chap4-hw",
-      "url": "/notes/cs/os/HW/chap4-hw"
+      "url": "/notes/cs/os/HW/chap4-hw",
+      "order": 3,
+      "description": "",
+      "updated": "2026-07-12T12:10:29.000Z",
+      "tags": []
     },
     {
       "id": "notes:cs/os/HW/chap5-hw",
@@ -502,7 +709,11 @@
       "course": "cs/os",
       "title": "Chap. 5 HW",
       "path": "cs/os/HW/chap5-hw",
-      "url": "/notes/cs/os/HW/chap5-hw"
+      "url": "/notes/cs/os/HW/chap5-hw",
+      "order": 5,
+      "description": "",
+      "updated": "2026-07-12T12:10:29.000Z",
+      "tags": []
     },
     {
       "id": "notes:cs/os/HW/chap6-hw",
@@ -510,7 +721,11 @@
       "course": "cs/os",
       "title": "Chap. 6 HW",
       "path": "cs/os/HW/chap6-hw",
-      "url": "/notes/cs/os/HW/chap6-hw"
+      "url": "/notes/cs/os/HW/chap6-hw",
+      "order": 6,
+      "description": "",
+      "updated": "2026-07-12T12:10:29.000Z",
+      "tags": []
     },
     {
       "id": "notes:cs/os/HW/chap7-hw",
@@ -518,7 +733,11 @@
       "course": "cs/os",
       "title": "Chap. 7 HW",
       "path": "cs/os/HW/chap7-hw",
-      "url": "/notes/cs/os/HW/chap7-hw"
+      "url": "/notes/cs/os/HW/chap7-hw",
+      "order": 7,
+      "description": "",
+      "updated": "2026-07-12T12:10:29.000Z",
+      "tags": []
     },
     {
       "id": "notes:cs/os/HW/chap8-hw",
@@ -526,7 +745,11 @@
       "course": "cs/os",
       "title": "Chap. 8 HW",
       "path": "cs/os/HW/chap8-hw",
-      "url": "/notes/cs/os/HW/chap8-hw"
+      "url": "/notes/cs/os/HW/chap8-hw",
+      "order": 8,
+      "description": "",
+      "updated": "2026-07-12T12:10:29.000Z",
+      "tags": []
     },
     {
       "id": "notes:cs/os/HW/chap9-hw",
@@ -534,7 +757,11 @@
       "course": "cs/os",
       "title": "Chap. 9 HW",
       "path": "cs/os/HW/chap9-hw",
-      "url": "/notes/cs/os/HW/chap9-hw"
+      "url": "/notes/cs/os/HW/chap9-hw",
+      "order": 9,
+      "description": "",
+      "updated": "2026-07-12T12:10:29.000Z",
+      "tags": []
     },
     {
       "id": "notes:cs/os/index",
@@ -542,7 +769,10 @@
       "course": "cs/os",
       "title": "Operating Systems",
       "path": "cs/os/index",
-      "url": "/notes/cs/os/index"
+      "url": "/notes/cs/os/index",
+      "description": "操作系统学习笔记、作业、复习题目，教材 William Stallings Operating Systems Internals and Design Principles 第9版，涵盖进程、线程、内存管理、文件系统等核心章节。",
+      "updated": "2026-07-12T12:10:29.000Z",
+      "tags": []
     },
     {
       "id": "notes:cs/os/note/chap11",
@@ -550,7 +780,11 @@
       "course": "cs/os",
       "title": "Chap. 11 Note",
       "path": "cs/os/note/chap11",
-      "url": "/notes/cs/os/note/chap11"
+      "url": "/notes/cs/os/note/chap11",
+      "order": 11,
+      "description": "",
+      "updated": "2026-07-12T12:10:29.000Z",
+      "tags": []
     },
     {
       "id": "notes:cs/os/note/chap12",
@@ -558,7 +792,11 @@
       "course": "cs/os",
       "title": "Chap. 12 Note",
       "path": "cs/os/note/chap12",
-      "url": "/notes/cs/os/note/chap12"
+      "url": "/notes/cs/os/note/chap12",
+      "order": 12,
+      "description": "",
+      "updated": "2026-07-12T12:10:29.000Z",
+      "tags": []
     },
     {
       "id": "notes:cs/os/note/chap2",
@@ -566,7 +804,11 @@
       "course": "cs/os",
       "title": "Chap. 2 Note",
       "path": "cs/os/note/chap2",
-      "url": "/notes/cs/os/note/chap2"
+      "url": "/notes/cs/os/note/chap2",
+      "order": 1,
+      "description": "",
+      "updated": "2026-07-12T12:10:29.000Z",
+      "tags": []
     },
     {
       "id": "notes:cs/os/note/chap3",
@@ -574,7 +816,11 @@
       "course": "cs/os",
       "title": "Chap. 3 Note",
       "path": "cs/os/note/chap3",
-      "url": "/notes/cs/os/note/chap3"
+      "url": "/notes/cs/os/note/chap3",
+      "order": 2,
+      "description": "",
+      "updated": "2026-07-12T12:10:29.000Z",
+      "tags": []
     },
     {
       "id": "notes:cs/os/note/chap4",
@@ -582,7 +828,11 @@
       "course": "cs/os",
       "title": "Chap. 4 Note",
       "path": "cs/os/note/chap4",
-      "url": "/notes/cs/os/note/chap4"
+      "url": "/notes/cs/os/note/chap4",
+      "order": 4,
+      "description": "",
+      "updated": "2026-07-12T12:10:29.000Z",
+      "tags": []
     },
     {
       "id": "notes:cs/os/note/chap5",
@@ -590,7 +840,11 @@
       "course": "cs/os",
       "title": "Chap. 5 Note",
       "path": "cs/os/note/chap5",
-      "url": "/notes/cs/os/note/chap5"
+      "url": "/notes/cs/os/note/chap5",
+      "order": 5,
+      "description": "",
+      "updated": "2026-07-12T12:10:29.000Z",
+      "tags": []
     },
     {
       "id": "notes:cs/os/note/chap6",
@@ -598,7 +852,11 @@
       "course": "cs/os",
       "title": "Chap. 6 Note",
       "path": "cs/os/note/chap6",
-      "url": "/notes/cs/os/note/chap6"
+      "url": "/notes/cs/os/note/chap6",
+      "order": 6,
+      "description": "",
+      "updated": "2026-07-12T12:10:29.000Z",
+      "tags": []
     },
     {
       "id": "notes:cs/os/note/chap7",
@@ -606,7 +864,11 @@
       "course": "cs/os",
       "title": "Chap. 7 Note",
       "path": "cs/os/note/chap7",
-      "url": "/notes/cs/os/note/chap7"
+      "url": "/notes/cs/os/note/chap7",
+      "order": 7,
+      "description": "",
+      "updated": "2026-07-12T12:10:29.000Z",
+      "tags": []
     },
     {
       "id": "notes:cs/os/note/chap8",
@@ -614,7 +876,11 @@
       "course": "cs/os",
       "title": "Chap. 8 Note",
       "path": "cs/os/note/chap8",
-      "url": "/notes/cs/os/note/chap8"
+      "url": "/notes/cs/os/note/chap8",
+      "order": 8,
+      "description": "",
+      "updated": "2026-07-12T12:10:29.000Z",
+      "tags": []
     },
     {
       "id": "notes:cs/os/note/chap9",
@@ -622,7 +888,11 @@
       "course": "cs/os",
       "title": "Chap. 9 Note",
       "path": "cs/os/note/chap9",
-      "url": "/notes/cs/os/note/chap9"
+      "url": "/notes/cs/os/note/chap9",
+      "order": 9,
+      "description": "",
+      "updated": "2026-07-12T12:10:29.000Z",
+      "tags": []
     },
     {
       "id": "notes:cs/os/review/Def",
@@ -630,7 +900,11 @@
       "course": "cs/os",
       "title": "名词解释",
       "path": "cs/os/review/Def",
-      "url": "/notes/cs/os/review/Def"
+      "url": "/notes/cs/os/review/Def",
+      "order": 2,
+      "description": "",
+      "updated": "2026-07-12T12:10:29.000Z",
+      "tags": []
     },
     {
       "id": "notes:cs/os/review/fill-in-the-blanks",
@@ -638,7 +912,11 @@
       "course": "cs/os",
       "title": "填空题",
       "path": "cs/os/review/fill-in-the-blanks",
-      "url": "/notes/cs/os/review/fill-in-the-blanks"
+      "url": "/notes/cs/os/review/fill-in-the-blanks",
+      "order": 3,
+      "description": "",
+      "updated": "2026-07-12T12:10:29.000Z",
+      "tags": []
     },
     {
       "id": "notes:cs/os/review/mcq",
@@ -646,7 +924,11 @@
       "course": "cs/os",
       "title": "选择题",
       "path": "cs/os/review/mcq",
-      "url": "/notes/cs/os/review/mcq"
+      "url": "/notes/cs/os/review/mcq",
+      "order": 4,
+      "description": "",
+      "updated": "2026-07-12T12:10:29.000Z",
+      "tags": []
     },
     {
       "id": "notes:cs/os/review/midterm-exercise",
@@ -654,7 +936,10 @@
       "course": "cs/os",
       "title": "CH1–CH6 期中复习习题",
       "path": "cs/os/review/midterm-exercise",
-      "url": "/notes/cs/os/review/midterm-exercise"
+      "url": "/notes/cs/os/review/midterm-exercise",
+      "description": "",
+      "updated": "2026-07-12T12:10:29.000Z",
+      "tags": []
     },
     {
       "id": "notes:cs/os/review/prob",
@@ -662,7 +947,10 @@
       "course": "cs/os",
       "title": "应用题",
       "path": "cs/os/review/prob",
-      "url": "/notes/cs/os/review/prob"
+      "url": "/notes/cs/os/review/prob",
+      "description": "",
+      "updated": "2026-07-12T12:10:29.000Z",
+      "tags": []
     },
     {
       "id": "notes:cs/os/review/shortans",
@@ -670,7 +958,11 @@
       "course": "cs/os",
       "title": "简答题",
       "path": "cs/os/review/shortans",
-      "url": "/notes/cs/os/review/shortans"
+      "url": "/notes/cs/os/review/shortans",
+      "order": 6,
+      "description": "",
+      "updated": "2026-07-12T12:10:29.000Z",
+      "tags": []
     },
     {
       "id": "notes:cs/os/review/TorF",
@@ -678,7 +970,10 @@
       "course": "cs/os",
       "title": "判断题",
       "path": "cs/os/review/TorF",
-      "url": "/notes/cs/os/review/TorF"
+      "url": "/notes/cs/os/review/TorF",
+      "description": "",
+      "updated": "2026-07-12T12:10:29.000Z",
+      "tags": []
     },
     {
       "id": "notes:cs/os/review202505/01-基本概念1-10",
@@ -686,7 +981,10 @@
       "course": "cs/os",
       "title": "review202505 答案讲解 01：基本概念 1-10",
       "path": "cs/os/review202505/01-基本概念1-10",
-      "url": "/notes/cs/os/review202505/01-基本概念1-10"
+      "url": "/notes/cs/os/review202505/01-基本概念1-10",
+      "description": "",
+      "updated": "2026-07-12T12:10:29.000Z",
+      "tags": []
     },
     {
       "id": "notes:cs/os/review202505/02-基本概念11-20",
@@ -694,7 +992,10 @@
       "course": "cs/os",
       "title": "review202505 答案讲解 02：基本概念 11-20",
       "path": "cs/os/review202505/02-基本概念11-20",
-      "url": "/notes/cs/os/review202505/02-基本概念11-20"
+      "url": "/notes/cs/os/review202505/02-基本概念11-20",
+      "description": "",
+      "updated": "2026-07-12T12:10:29.000Z",
+      "tags": []
     },
     {
       "id": "notes:cs/os/review202505/03-计算题1-10",
@@ -702,7 +1003,10 @@
       "course": "cs/os",
       "title": "review202505 答案讲解 03：计算题 1-10",
       "path": "cs/os/review202505/03-计算题1-10",
-      "url": "/notes/cs/os/review202505/03-计算题1-10"
+      "url": "/notes/cs/os/review202505/03-计算题1-10",
+      "description": "",
+      "updated": "2026-07-12T12:10:29.000Z",
+      "tags": []
     },
     {
       "id": "notes:cs/os/review202505/04-计算题11-20",
@@ -710,7 +1014,10 @@
       "course": "cs/os",
       "title": "review202505 答案讲解 04：计算题 11-20",
       "path": "cs/os/review202505/04-计算题11-20",
-      "url": "/notes/cs/os/review202505/04-计算题11-20"
+      "url": "/notes/cs/os/review202505/04-计算题11-20",
+      "description": "",
+      "updated": "2026-07-12T12:10:29.000Z",
+      "tags": []
     },
     {
       "id": "notes:cs/os/testbank/chap1",
@@ -718,7 +1025,11 @@
       "course": "cs/os",
       "title": "Chap. 1",
       "path": "cs/os/testbank/chap1",
-      "url": "/notes/cs/os/testbank/chap1"
+      "url": "/notes/cs/os/testbank/chap1",
+      "order": 1,
+      "description": "",
+      "updated": "2026-07-12T12:10:29.000Z",
+      "tags": []
     },
     {
       "id": "notes:cs/os/testbank/chap10",
@@ -726,7 +1037,11 @@
       "course": "cs/os",
       "title": "Chap. 10",
       "path": "cs/os/testbank/chap10",
-      "url": "/notes/cs/os/testbank/chap10"
+      "url": "/notes/cs/os/testbank/chap10",
+      "order": 10,
+      "description": "",
+      "updated": "2026-07-12T12:10:29.000Z",
+      "tags": []
     },
     {
       "id": "notes:cs/os/testbank/chap11",
@@ -734,7 +1049,11 @@
       "course": "cs/os",
       "title": "Chap. 11",
       "path": "cs/os/testbank/chap11",
-      "url": "/notes/cs/os/testbank/chap11"
+      "url": "/notes/cs/os/testbank/chap11",
+      "order": 11,
+      "description": "",
+      "updated": "2026-07-12T12:10:29.000Z",
+      "tags": []
     },
     {
       "id": "notes:cs/os/testbank/chap12",
@@ -742,7 +1061,11 @@
       "course": "cs/os",
       "title": "Chap. 12",
       "path": "cs/os/testbank/chap12",
-      "url": "/notes/cs/os/testbank/chap12"
+      "url": "/notes/cs/os/testbank/chap12",
+      "order": 12,
+      "description": "",
+      "updated": "2026-07-12T12:10:29.000Z",
+      "tags": []
     },
     {
       "id": "notes:cs/os/testbank/chap2",
@@ -750,7 +1073,11 @@
       "course": "cs/os",
       "title": "Chap. 2",
       "path": "cs/os/testbank/chap2",
-      "url": "/notes/cs/os/testbank/chap2"
+      "url": "/notes/cs/os/testbank/chap2",
+      "order": 2,
+      "description": "",
+      "updated": "2026-07-12T12:10:29.000Z",
+      "tags": []
     },
     {
       "id": "notes:cs/os/testbank/chap3",
@@ -758,7 +1085,11 @@
       "course": "cs/os",
       "title": "Chap. 3",
       "path": "cs/os/testbank/chap3",
-      "url": "/notes/cs/os/testbank/chap3"
+      "url": "/notes/cs/os/testbank/chap3",
+      "order": 3,
+      "description": "",
+      "updated": "2026-07-12T12:10:29.000Z",
+      "tags": []
     },
     {
       "id": "notes:cs/os/testbank/chap4",
@@ -766,7 +1097,11 @@
       "course": "cs/os",
       "title": "Chap. 4",
       "path": "cs/os/testbank/chap4",
-      "url": "/notes/cs/os/testbank/chap4"
+      "url": "/notes/cs/os/testbank/chap4",
+      "order": 4,
+      "description": "",
+      "updated": "2026-07-12T12:10:29.000Z",
+      "tags": []
     },
     {
       "id": "notes:cs/os/testbank/chap5",
@@ -774,7 +1109,11 @@
       "course": "cs/os",
       "title": "Chap. 5",
       "path": "cs/os/testbank/chap5",
-      "url": "/notes/cs/os/testbank/chap5"
+      "url": "/notes/cs/os/testbank/chap5",
+      "order": 5,
+      "description": "",
+      "updated": "2026-07-12T12:10:29.000Z",
+      "tags": []
     },
     {
       "id": "notes:cs/os/testbank/chap6",
@@ -782,7 +1121,11 @@
       "course": "cs/os",
       "title": "Chap. 6",
       "path": "cs/os/testbank/chap6",
-      "url": "/notes/cs/os/testbank/chap6"
+      "url": "/notes/cs/os/testbank/chap6",
+      "order": 6,
+      "description": "",
+      "updated": "2026-07-12T12:10:29.000Z",
+      "tags": []
     },
     {
       "id": "notes:cs/os/testbank/chap7",
@@ -790,7 +1133,11 @@
       "course": "cs/os",
       "title": "Chap. 7",
       "path": "cs/os/testbank/chap7",
-      "url": "/notes/cs/os/testbank/chap7"
+      "url": "/notes/cs/os/testbank/chap7",
+      "order": 7,
+      "description": "",
+      "updated": "2026-07-12T12:10:29.000Z",
+      "tags": []
     },
     {
       "id": "notes:cs/os/testbank/chap8",
@@ -798,7 +1145,11 @@
       "course": "cs/os",
       "title": "Chap. 8",
       "path": "cs/os/testbank/chap8",
-      "url": "/notes/cs/os/testbank/chap8"
+      "url": "/notes/cs/os/testbank/chap8",
+      "order": 8,
+      "description": "",
+      "updated": "2026-07-12T12:10:29.000Z",
+      "tags": []
     },
     {
       "id": "notes:cs/os/testbank/chap9",
@@ -806,7 +1157,11 @@
       "course": "cs/os",
       "title": "Chap. 9",
       "path": "cs/os/testbank/chap9",
-      "url": "/notes/cs/os/testbank/chap9"
+      "url": "/notes/cs/os/testbank/chap9",
+      "order": 9,
+      "description": "",
+      "updated": "2026-07-12T12:10:29.000Z",
+      "tags": []
     },
     {
       "id": "notes:cs/se/index",
@@ -814,7 +1169,10 @@
       "course": "cs/se",
       "title": "Software Engineering",
       "path": "cs/se/index",
-      "url": "/notes/cs/se/index"
+      "url": "/notes/cs/se/index",
+      "description": "软件工程学习笔记，基于 Ian Sommerville 教材，涵盖软件过程模型、需求获取与分析、架构模式、需求追溯矩阵（RTM）等内容。",
+      "updated": "2026-07-12T12:10:29.000Z",
+      "tags": []
     },
     {
       "id": "notes:cs/se/notes/2.1",
@@ -822,7 +1180,10 @@
       "course": "cs/se",
       "title": "軟體開發流程模型 (Software Process Models)",
       "path": "cs/se/notes/2.1",
-      "url": "/notes/cs/se/notes/2.1"
+      "url": "/notes/cs/se/notes/2.1",
+      "description": "",
+      "updated": "2026-07-12T12:10:29.000Z",
+      "tags": []
     },
     {
       "id": "notes:cs/se/notes/4.3",
@@ -830,7 +1191,10 @@
       "course": "cs/se",
       "title": "需求分析與誘導（Requirements elicitation and analysis）",
       "path": "cs/se/notes/4.3",
-      "url": "/notes/cs/se/notes/4.3"
+      "url": "/notes/cs/se/notes/4.3",
+      "description": "",
+      "updated": "2026-07-12T12:10:29.000Z",
+      "tags": []
     },
     {
       "id": "notes:cs/se/notes/6.3",
@@ -838,7 +1202,10 @@
       "course": "cs/se",
       "title": "6.3 架构模式 (Architectural patterns)",
       "path": "cs/se/notes/6.3",
-      "url": "/notes/cs/se/notes/6.3"
+      "url": "/notes/cs/se/notes/6.3",
+      "description": "",
+      "updated": "2026-07-12T12:10:29.000Z",
+      "tags": []
     },
     {
       "id": "notes:cs/se/notes/rtm",
@@ -846,7 +1213,10 @@
       "course": "cs/se",
       "title": "RTM（Requirements Traceability Matrix，需求跟踪矩阵）",
       "path": "cs/se/notes/rtm",
-      "url": "/notes/cs/se/notes/rtm"
+      "url": "/notes/cs/se/notes/rtm",
+      "description": "",
+      "updated": "2026-07-12T12:10:29.000Z",
+      "tags": []
     },
     {
       "id": "notes:cs/se/notesbychap/chap1",
@@ -854,7 +1224,10 @@
       "course": "cs/se",
       "title": "chap1",
       "path": "cs/se/notesbychap/chap1",
-      "url": "/notes/cs/se/notesbychap/chap1"
+      "url": "/notes/cs/se/notesbychap/chap1",
+      "description": "",
+      "updated": "2026-07-12T12:10:29.000Z",
+      "tags": []
     },
     {
       "id": "notes:cs/se/notesbychap/chap2",
@@ -862,7 +1235,10 @@
       "course": "cs/se",
       "title": "chap2",
       "path": "cs/se/notesbychap/chap2",
-      "url": "/notes/cs/se/notesbychap/chap2"
+      "url": "/notes/cs/se/notesbychap/chap2",
+      "description": "",
+      "updated": "2026-07-12T12:10:29.000Z",
+      "tags": []
     },
     {
       "id": "notes:cs/se/notesbychap/chap3",
@@ -870,7 +1246,10 @@
       "course": "cs/se",
       "title": "Chapter 3: Agile Software Development",
       "path": "cs/se/notesbychap/chap3",
-      "url": "/notes/cs/se/notesbychap/chap3"
+      "url": "/notes/cs/se/notesbychap/chap3",
+      "description": "",
+      "updated": "2026-07-12T12:10:29.000Z",
+      "tags": []
     },
     {
       "id": "notes:cs/se/notesbychap/chap4",
@@ -878,7 +1257,10 @@
       "course": "cs/se",
       "title": "Chapter 4 - Requirements Engineering",
       "path": "cs/se/notesbychap/chap4",
-      "url": "/notes/cs/se/notesbychap/chap4"
+      "url": "/notes/cs/se/notesbychap/chap4",
+      "description": "",
+      "updated": "2026-07-12T12:10:29.000Z",
+      "tags": []
     },
     {
       "id": "notes:cs/se/notesbychap/chap5",
@@ -886,15 +1268,21 @@
       "course": "cs/se",
       "title": "Chapter 5: System Modeling",
       "path": "cs/se/notesbychap/chap5",
-      "url": "/notes/cs/se/notesbychap/chap5"
+      "url": "/notes/cs/se/notesbychap/chap5",
+      "description": "",
+      "updated": "2026-07-12T12:10:29.000Z",
+      "tags": []
     },
     {
       "id": "notes:cs/se/notesbychap/chap6",
       "kind": "notes",
       "course": "cs/se",
-      "title": "Executive Summary",
+      "title": "chap6",
       "path": "cs/se/notesbychap/chap6",
-      "url": "/notes/cs/se/notesbychap/chap6"
+      "url": "/notes/cs/se/notesbychap/chap6",
+      "description": "",
+      "updated": "2026-07-12T12:10:29.000Z",
+      "tags": []
     },
     {
       "id": "notes:cs/se/notesbychap/chap7",
@@ -902,23 +1290,32 @@
       "course": "cs/se",
       "title": "Chapter 7: Design and Implementation",
       "path": "cs/se/notesbychap/chap7",
-      "url": "/notes/cs/se/notesbychap/chap7"
+      "url": "/notes/cs/se/notesbychap/chap7",
+      "description": "",
+      "updated": "2026-07-12T12:10:29.000Z",
+      "tags": []
     },
     {
       "id": "notes:cs/se/notesbychap/chap8",
       "kind": "notes",
       "course": "cs/se",
-      "title": "**Executive Summary**",
+      "title": "chap8",
       "path": "cs/se/notesbychap/chap8",
-      "url": "/notes/cs/se/notesbychap/chap8"
+      "url": "/notes/cs/se/notesbychap/chap8",
+      "description": "",
+      "updated": "2026-07-12T12:10:29.000Z",
+      "tags": []
     },
     {
       "id": "notes:cs/se/notesbychap/chap9",
       "kind": "notes",
       "course": "cs/se",
-      "title": "Executive Summary",
+      "title": "chap9",
       "path": "cs/se/notesbychap/chap9",
-      "url": "/notes/cs/se/notesbychap/chap9"
+      "url": "/notes/cs/se/notesbychap/chap9",
+      "description": "",
+      "updated": "2026-07-12T12:10:29.000Z",
+      "tags": []
     },
     {
       "id": "notes:index",
@@ -926,7 +1323,10 @@
       "course": "index",
       "title": "Studiorum",
       "path": "index",
-      "url": "/notes/index"
+      "url": "/notes/index",
+      "description": "學習是一段旅程，而非終點。課程原文筆記依科目與章節分類收錄於此。",
+      "updated": "2026-07-14T07:57:31.000Z",
+      "tags": []
     },
     {
       "id": "notes:language/deutsch/german-for-reading/chap2/2.10",
@@ -934,7 +1334,10 @@
       "course": "language/deutsch",
       "title": "2.10. Es gibt, es ist, es sind",
       "path": "language/deutsch/german-for-reading/chap2/2.10",
-      "url": "/notes/language/deutsch/german-for-reading/chap2/2.10"
+      "url": "/notes/language/deutsch/german-for-reading/chap2/2.10",
+      "description": "",
+      "updated": "2026-07-12T12:10:29.000Z",
+      "tags": []
     },
     {
       "id": "notes:language/deutsch/german-for-reading/chap2/2.7",
@@ -942,7 +1345,10 @@
       "course": "language/deutsch",
       "title": "2.7 动词 - 同源词 (Verbs - Cognates)",
       "path": "language/deutsch/german-for-reading/chap2/2.7",
-      "url": "/notes/language/deutsch/german-for-reading/chap2/2.7"
+      "url": "/notes/language/deutsch/german-for-reading/chap2/2.7",
+      "description": "",
+      "updated": "2026-07-12T12:10:29.000Z",
+      "tags": []
     },
     {
       "id": "notes:language/deutsch/german-for-reading/chap2/2.8",
@@ -950,7 +1356,10 @@
       "course": "language/deutsch",
       "title": "2.8 动词-部分同源和虚假同源词 (Verbs - Partial and False Cognates)",
       "path": "language/deutsch/german-for-reading/chap2/2.8",
-      "url": "/notes/language/deutsch/german-for-reading/chap2/2.8"
+      "url": "/notes/language/deutsch/german-for-reading/chap2/2.8",
+      "description": "",
+      "updated": "2026-07-12T12:10:29.000Z",
+      "tags": []
     },
     {
       "id": "notes:language/deutsch/german-for-reading/chap2/2.9",
@@ -958,7 +1367,10 @@
       "course": "language/deutsch",
       "title": "2.9 现在时动词词尾；人称代词",
       "path": "language/deutsch/german-for-reading/chap2/2.9",
-      "url": "/notes/language/deutsch/german-for-reading/chap2/2.9"
+      "url": "/notes/language/deutsch/german-for-reading/chap2/2.9",
+      "description": "",
+      "updated": "2026-07-12T12:10:29.000Z",
+      "tags": []
     },
     {
       "id": "notes:language/deutsch/german-for-reading/chap3/3.11",
@@ -966,7 +1378,10 @@
       "course": "language/deutsch",
       "title": "3.11 語序——德語句子的基本结构",
       "path": "language/deutsch/german-for-reading/chap3/3.11",
-      "url": "/notes/language/deutsch/german-for-reading/chap3/3.11"
+      "url": "/notes/language/deutsch/german-for-reading/chap3/3.11",
+      "description": "",
+      "updated": "2026-07-12T12:10:29.000Z",
+      "tags": []
     },
     {
       "id": "notes:language/deutsch/german-for-reading/chap3/3.12",
@@ -974,7 +1389,10 @@
       "course": "language/deutsch",
       "title": "将来时 - werden",
       "path": "language/deutsch/german-for-reading/chap3/3.12",
-      "url": "/notes/language/deutsch/german-for-reading/chap3/3.12"
+      "url": "/notes/language/deutsch/german-for-reading/chap3/3.12",
+      "description": "",
+      "updated": "2026-07-12T12:10:29.000Z",
+      "tags": []
     },
     {
       "id": "notes:language/deutsch/german-for-reading/chap4/4.15",
@@ -982,7 +1400,10 @@
       "course": "language/deutsch",
       "title": "4.15",
       "path": "language/deutsch/german-for-reading/chap4/4.15",
-      "url": "/notes/language/deutsch/german-for-reading/chap4/4.15"
+      "url": "/notes/language/deutsch/german-for-reading/chap4/4.15",
+      "description": "",
+      "updated": "2026-07-12T12:10:29.000Z",
+      "tags": []
     },
     {
       "id": "notes:language/deutsch/german-for-reading/index",
@@ -990,7 +1411,10 @@
       "course": "language/deutsch",
       "title": "German for Reading",
       "path": "language/deutsch/german-for-reading/index",
-      "url": "/notes/language/deutsch/german-for-reading/index"
+      "url": "/notes/language/deutsch/german-for-reading/index",
+      "description": "",
+      "updated": "2026-07-12T12:10:29.000Z",
+      "tags": []
     },
     {
       "id": "notes:language/deutsch/index",
@@ -998,7 +1422,11 @@
       "course": "language/deutsch",
       "title": "Deutsch（德語）",
       "path": "language/deutsch/index",
-      "url": "/notes/language/deutsch/index"
+      "url": "/notes/language/deutsch/index",
+      "order": 0,
+      "description": "",
+      "updated": "2026-07-12T12:10:29.000Z",
+      "tags": []
     },
     {
       "id": "notes:language/index",
@@ -1006,7 +1434,11 @@
       "course": "language/index",
       "title": "語言 · Language",
       "path": "language/index",
-      "url": "/notes/language/index"
+      "url": "/notes/language/index",
+      "order": 0,
+      "description": "",
+      "updated": "2026-07-12T12:10:29.000Z",
+      "tags": []
     },
     {
       "id": "notes:math/abstract_algebra/groupproblem",
@@ -1014,7 +1446,11 @@
       "course": "math/abstract_algebra",
       "title": "特殊类型的群 问题详解",
       "path": "math/abstract_algebra/groupproblem",
-      "url": "/notes/math/abstract_algebra/groupproblem"
+      "url": "/notes/math/abstract_algebra/groupproblem",
+      "order": 1,
+      "description": "",
+      "updated": "2026-07-12T12:10:29.000Z",
+      "tags": []
     },
     {
       "id": "notes:math/abstract_algebra/primeandmaximalideal",
@@ -1022,7 +1458,11 @@
       "course": "math/abstract_algebra",
       "title": "素理想与极大理想",
       "path": "math/abstract_algebra/primeandmaximalideal",
-      "url": "/notes/math/abstract_algebra/primeandmaximalideal"
+      "url": "/notes/math/abstract_algebra/primeandmaximalideal",
+      "order": 10,
+      "description": "",
+      "updated": "2026-07-12T12:10:29.000Z",
+      "tags": []
     },
     {
       "id": "notes:math/abstract_algebra/primeidealmaximalidealHW",
@@ -1030,7 +1470,11 @@
       "course": "math/abstract_algebra",
       "title": "素理想与极大理想 习题详解",
       "path": "math/abstract_algebra/primeidealmaximalidealHW",
-      "url": "/notes/math/abstract_algebra/primeidealmaximalidealHW"
+      "url": "/notes/math/abstract_algebra/primeidealmaximalidealHW",
+      "order": 11,
+      "description": "",
+      "updated": "2026-07-12T12:10:29.000Z",
+      "tags": []
     },
     {
       "id": "notes:math/abstract_algebra/ring",
@@ -1038,7 +1482,11 @@
       "course": "math/abstract_algebra",
       "title": "环的基本理论",
       "path": "math/abstract_algebra/ring",
-      "url": "/notes/math/abstract_algebra/ring"
+      "url": "/notes/math/abstract_algebra/ring",
+      "order": 2,
+      "description": "",
+      "updated": "2026-07-12T12:10:29.000Z",
+      "tags": []
     },
     {
       "id": "notes:math/abstract_algebra/ringdirectprod",
@@ -1046,7 +1494,11 @@
       "course": "math/abstract_algebra",
       "title": "环的直积与中国剩余定理",
       "path": "math/abstract_algebra/ringdirectprod",
-      "url": "/notes/math/abstract_algebra/ringdirectprod"
+      "url": "/notes/math/abstract_algebra/ringdirectprod",
+      "order": 8,
+      "description": "",
+      "updated": "2026-07-12T12:10:29.000Z",
+      "tags": []
     },
     {
       "id": "notes:math/abstract_algebra/ringdirectprodHW",
@@ -1054,7 +1506,11 @@
       "course": "math/abstract_algebra",
       "title": "环的直积与中国剩余定理 习题详解",
       "path": "math/abstract_algebra/ringdirectprodHW",
-      "url": "/notes/math/abstract_algebra/ringdirectprodHW"
+      "url": "/notes/math/abstract_algebra/ringdirectprodHW",
+      "order": 9,
+      "description": "",
+      "updated": "2026-07-12T12:10:29.000Z",
+      "tags": []
     },
     {
       "id": "notes:math/abstract_algebra/ringhomomorphism",
@@ -1062,7 +1518,11 @@
       "course": "math/abstract_algebra",
       "title": "环同态基本定理",
       "path": "math/abstract_algebra/ringhomomorphism",
-      "url": "/notes/math/abstract_algebra/ringhomomorphism"
+      "url": "/notes/math/abstract_algebra/ringhomomorphism",
+      "order": 6,
+      "description": "",
+      "updated": "2026-07-12T12:10:29.000Z",
+      "tags": []
     },
     {
       "id": "notes:math/abstract_algebra/ringhomomorphismHW",
@@ -1070,7 +1530,11 @@
       "course": "math/abstract_algebra",
       "title": "环同态基本定理 习题详解",
       "path": "math/abstract_algebra/ringhomomorphismHW",
-      "url": "/notes/math/abstract_algebra/ringhomomorphismHW"
+      "url": "/notes/math/abstract_algebra/ringhomomorphismHW",
+      "order": 7,
+      "description": "",
+      "updated": "2026-07-12T12:10:29.000Z",
+      "tags": []
     },
     {
       "id": "notes:math/abstract_algebra/ringHW",
@@ -1078,7 +1542,11 @@
       "course": "math/abstract_algebra",
       "title": "环的基本理论 习题详解",
       "path": "math/abstract_algebra/ringHW",
-      "url": "/notes/math/abstract_algebra/ringHW"
+      "url": "/notes/math/abstract_algebra/ringHW",
+      "order": 3,
+      "description": "",
+      "updated": "2026-07-12T12:10:29.000Z",
+      "tags": []
     },
     {
       "id": "notes:math/abstract_algebra/subringideal",
@@ -1086,7 +1554,11 @@
       "course": "math/abstract_algebra",
       "title": "子环、理想与商环",
       "path": "math/abstract_algebra/subringideal",
-      "url": "/notes/math/abstract_algebra/subringideal"
+      "url": "/notes/math/abstract_algebra/subringideal",
+      "order": 4,
+      "description": "",
+      "updated": "2026-07-12T12:10:29.000Z",
+      "tags": []
     },
     {
       "id": "notes:math/abstract_algebra/subringidealHW",
@@ -1094,7 +1566,11 @@
       "course": "math/abstract_algebra",
       "title": "子环、理想与商环 习题详解",
       "path": "math/abstract_algebra/subringidealHW",
-      "url": "/notes/math/abstract_algebra/subringidealHW"
+      "url": "/notes/math/abstract_algebra/subringidealHW",
+      "order": 5,
+      "description": "",
+      "updated": "2026-07-12T12:10:29.000Z",
+      "tags": []
     },
     {
       "id": "notes:math/math",
@@ -1102,7 +1578,10 @@
       "course": "math/math",
       "title": "数学笔记索引",
       "path": "math/math",
-      "url": "/notes/math/math"
+      "url": "/notes/math/math",
+      "description": "数学科目学习笔记，包含抽象代数（璯论、群论）、数学分析、常微分方程（ODE）等课程内容与习题解析。",
+      "updated": "2026-07-12T12:10:29.000Z",
+      "tags": []
     },
     {
       "id": "notes:math/math_analysis/11-29HW",
@@ -1110,7 +1589,11 @@
       "course": "math/math_analysis",
       "title": "11-29 作业",
       "path": "math/math_analysis/11-29HW",
-      "url": "/notes/math/math_analysis/11-29HW"
+      "url": "/notes/math/math_analysis/11-29HW",
+      "order": 2,
+      "description": "",
+      "updated": "2026-07-12T12:10:29.000Z",
+      "tags": []
     },
     {
       "id": "notes:math/math_analysis/12-5HW",
@@ -1118,7 +1601,11 @@
       "course": "math/math_analysis",
       "title": "12-5 作业",
       "path": "math/math_analysis/12-5HW",
-      "url": "/notes/math/math_analysis/12-5HW"
+      "url": "/notes/math/math_analysis/12-5HW",
+      "order": 3,
+      "description": "",
+      "updated": "2026-07-12T12:10:29.000Z",
+      "tags": []
     },
     {
       "id": "notes:math/math_analysis/12-9HW",
@@ -1126,7 +1613,11 @@
       "course": "math/math_analysis",
       "title": "12-9 作业",
       "path": "math/math_analysis/12-9HW",
-      "url": "/notes/math/math_analysis/12-9HW"
+      "url": "/notes/math/math_analysis/12-9HW",
+      "order": 4,
+      "description": "",
+      "updated": "2026-07-12T12:10:29.000Z",
+      "tags": []
     },
     {
       "id": "notes:math/math_analysis/Week13HW",
@@ -1134,7 +1625,11 @@
       "course": "math/math_analysis",
       "title": "Week 13 作业",
       "path": "math/math_analysis/Week13HW",
-      "url": "/notes/math/math_analysis/Week13HW"
+      "url": "/notes/math/math_analysis/Week13HW",
+      "order": 1,
+      "description": "",
+      "updated": "2026-07-12T12:10:29.000Z",
+      "tags": []
     },
     {
       "id": "notes:math/ode/3-2&4-1 HW",
@@ -1142,7 +1637,11 @@
       "course": "math/ode",
       "title": "3-2 4-1 作业",
       "path": "math/ode/3-2&4-1 HW",
-      "url": "/notes/math/ode/3-2&4-1 HW"
+      "url": "/notes/math/ode/3-2&4-1 HW",
+      "order": 2,
+      "description": "",
+      "updated": "2026-07-12T12:10:29.000Z",
+      "tags": []
     },
     {
       "id": "notes:math/ode/4-2HW",
@@ -1150,7 +1649,11 @@
       "course": "math/ode",
       "title": "4-2 作业",
       "path": "math/ode/4-2HW",
-      "url": "/notes/math/ode/4-2HW"
+      "url": "/notes/math/ode/4-2HW",
+      "order": 3,
+      "description": "",
+      "updated": "2026-07-12T12:10:29.000Z",
+      "tags": []
     },
     {
       "id": "notes:math/ode/prob",
@@ -1158,7 +1661,11 @@
       "course": "math/ode",
       "title": "题目内容",
       "path": "math/ode/prob",
-      "url": "/notes/math/ode/prob"
+      "url": "/notes/math/ode/prob",
+      "order": 1,
+      "description": "",
+      "updated": "2026-07-12T12:10:29.000Z",
+      "tags": []
     },
     {
       "id": "notes:math/ode/review",
@@ -1166,14 +1673,21 @@
       "course": "math/ode",
       "title": "复习总结",
       "path": "math/ode/review",
-      "url": "/notes/math/ode/review"
+      "url": "/notes/math/ode/review",
+      "order": 4,
+      "description": "",
+      "updated": "2026-07-12T12:10:29.000Z",
+      "tags": []
     },
     {
       "id": "tech:claude-code-dpsk-macos",
       "kind": "tech",
       "title": "在 macOS 配置 Claude Code 与 DeepSeek API：从终端到项目目录",
       "path": "claude-code-dpsk-macos",
-      "url": "/tech/claude-code-dpsk-macos"
+      "url": "/tech/claude-code-dpsk-macos",
+      "description": "用 DeepSeek 的 Anthropic 兼容端点接入 Claude Code；一份可重复执行的 macOS 配置记录。",
+      "updated": "2026-07-14T00:00:00.000Z",
+      "tags": ["Claude Code", "macOS", "DeepSeek"]
     }
   ]
 }

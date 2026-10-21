@@ -4,6 +4,7 @@ import { expect, test, type Page } from '@playwright/test'
 import { normalizeBaseURL } from '../../scripts/pwa-config.mjs'
 
 type NoteCandidate = { kind: string; title: string; path: string; url: string }
+const distDirectory = resolve(process.env.PWA_DIST_DIR || process.env.NUXT_OUTPUT_DIR || 'dist')
 
 async function waitForServiceWorker(page: Page) {
   await page.waitForFunction(() => navigator.serviceWorker.controller !== null)
@@ -21,7 +22,7 @@ async function getNoteCandidates(page: Page) {
 }
 
 async function getDistNoteCandidates() {
-  const catalog = JSON.parse(await readFile(resolve('dist/search-catalog.json'), 'utf8')) as { documents?: NoteCandidate[] }
+  const catalog = JSON.parse(await readFile(resolve(distDirectory, 'search-catalog.json'), 'utf8')) as { documents?: NoteCandidate[] }
   return (catalog.documents || [])
     .filter((document) => document.kind === 'notes' && document.path && document.url && !document.path.endsWith('/index'))
     .slice(0, 2)
@@ -154,7 +155,7 @@ test.describe('AceYKN PWA', () => {
   })
 
   test('prompts for a waiting service-worker update without forcing it', async ({ page }) => {
-    const serviceWorkerPath = resolve('dist/sw.js')
+    const serviceWorkerPath = resolve(distDirectory, 'sw.js')
     const original = await readFile(serviceWorkerPath, 'utf8')
     try {
       await page.goto('./')
