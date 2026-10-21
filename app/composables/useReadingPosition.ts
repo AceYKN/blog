@@ -1,9 +1,9 @@
-import { articleReadingKey, readingKey, readReadingPosition, writeStorage } from '~/utils/storage'
+import { articleReadingKey, normalizeReadingUrl, readingKey, readReadingPosition, writeStorage } from '~/utils/storage'
 
 /** Restore before enabling saves, so the first layout/scroll event cannot erase a saved position. */
 export function useReadingPosition() {
   const route = useRoute()
-  const url = decodeURIComponent(route.path)
+  const url = normalizeReadingUrl(route.path)
   let ready = false
   let disposed = false
   let frame = 0
@@ -33,7 +33,7 @@ export function useReadingPosition() {
     await nextTick()
     // Vue Router applies its own scroll behavior after the page renders.
     await new Promise<void>((resolve) => requestAnimationFrame(() => requestAnimationFrame(() => resolve())))
-    if (disposed || decodeURIComponent(route.path) !== url) return
+    if (disposed || normalizeReadingUrl(route.path) !== url) return
     const saved = readReadingPosition(articleReadingKey(url)) || readReadingPosition()
     if (!route.hash && (saved?.url === url || saved?.url === route.path)) window.scrollTo({ top: saved.y, behavior: 'instant' })
     ready = true

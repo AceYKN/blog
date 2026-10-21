@@ -10,7 +10,9 @@ type ContentPageCollection = 'essays' | 'tech' | 'projects'
  */
 export async function useContentPage(collection: ContentPageCollection) {
   const route = useRoute()
-  const slug = computed(() => (Array.isArray(route.params.slug) ? route.params.slug.join('/') : route.params.slug))
+  const slug = computed(() =>
+    (Array.isArray(route.params.slug) ? route.params.slug.filter(Boolean).join('/') : route.params.slug || '').replace(/\/+$/, '')
+  )
   const {
     data: entry,
     status,

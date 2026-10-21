@@ -22,7 +22,9 @@ const breadcrumb = () => ({
     }
   ]
 })
-const slug = computed(() => (Array.isArray(route.params.slug) ? route.params.slug.join('/') : route.params.slug))
+const slug = computed(() =>
+  (Array.isArray(route.params.slug) ? route.params.slug.filter(Boolean).join('/') : route.params.slug || '').replace(/\/+$/, '')
+)
 const {
   data: entry,
   status,

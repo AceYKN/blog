@@ -44,6 +44,27 @@ test.describe('published content and reading', () => {
     await expect(page.locator('article[data-content-path]')).toHaveAttribute('data-content-path', '/notes/cs/os/note/chap3')
   })
 
+  test('hosted trailing slashes preserve article hydration and canonical reading history', async ({ page }) => {
+    const errors: string[] = []
+    page.on('console', (message) => {
+      if (/hydration.*mismatch/i.test(message.text())) errors.push(message.text())
+    })
+    const paths = [
+      '/notes/math/ode/3-2&4-1 HW',
+      '/notes/cs/os/index',
+      ...catalogue.documents.filter((entry) => entry.kind !== 'notes').map((entry) => entry.url)
+    ]
+    for (const path of paths) {
+      await page.goto(`.${path}/`)
+      // Reading history is written only after the article has mounted. This
+      // catches SSR content that disappears into a 404 during hydration.
+      await expect.poll(() => page.evaluate(() => JSON.parse(localStorage.getItem('blog:reading-progress-v1') || '{}').url)).toBe(path)
+      await expect(page.locator('article[data-content-path]')).toHaveAttribute('data-content-path', path)
+      await expect(page.locator('.prose')).not.toBeEmpty()
+    }
+    expect(errors).toEqual([])
+  })
+
   test('search scrolls internally, contains focus, closes from a result and restores the trigger', async ({ page }) => {
     await page.goto('./')
     const trigger = page.locator('.search-trigger')
@@ -111,7 +132,7 @@ test.describe('published content and reading', () => {
 
   test('continue reading preserves Chinese document URLs', async ({ page }) => {
     const path = '/notes/cs/db/tutorial/01-数据库基础与关系模型'
-    await page.goto(`.${path}`)
+    await page.goto(`.${path}/`)
     await expect.poll(() => page.evaluate(() => JSON.parse(localStorage.getItem('blog:reading-progress-v1') || '{}').url)).toBe(path)
     await page.evaluate(() => scrollTo({ top: 1400, behavior: 'instant' }))
     await expect.poll(() => page.evaluate(() => JSON.parse(localStorage.getItem('blog:reading-progress-v1') || '{}').y)).toBe(1400)

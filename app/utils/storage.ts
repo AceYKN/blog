@@ -16,12 +16,22 @@ export function writeStorage(key: string, value: string): void {
 
 export type ReadingPosition = { url: string; y: number; progress: number; updatedAt: number }
 export const readingKey = 'blog:reading-progress-v1'
-export const articleReadingKey = (url: string) => `blog:reading-position:${url}`
+export function normalizeReadingUrl(url: string): string {
+  try {
+    url = decodeURIComponent(url)
+  } catch {
+    // Legacy stored URLs can contain a literal percent sign.
+  }
+  return url.replace(/\/+$/, '') || '/'
+}
+export const articleReadingKey = (url: string) => `blog:reading-position:${normalizeReadingUrl(url)}`
 
 export function readReadingPosition(key = readingKey): ReadingPosition | null {
   try {
     const saved = JSON.parse(readStorage(key) || 'null')
-    return saved && typeof saved.url === 'string' && Number.isFinite(saved.y) && saved.y >= 0 ? saved : null
+    return saved && typeof saved.url === 'string' && Number.isFinite(saved.y) && saved.y >= 0
+      ? { ...saved, url: normalizeReadingUrl(saved.url) }
+      : null
   } catch {
     return null
   }
