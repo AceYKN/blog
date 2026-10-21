@@ -2,6 +2,7 @@ import { access, readdir, readFile } from 'node:fs/promises'
 import { join, relative, resolve } from 'node:path'
 import { contentRoutes, tagRoutes } from './content-routes.mjs'
 import { parseMarkdown, collectContent } from './content-manifest.mjs'
+import { normalizeBaseURL } from './pwa-config.mjs'
 
 const root = process.cwd()
 const contentRoot = join(root, 'content')
@@ -110,6 +111,29 @@ if (scope === '--dist') {
         failures.push(`${route}: no rendered article body`)
       if (/找不到這篇|Page not found|FetchError|H3Error/.test(page))
         failures.push(`${route}: generated HTML contains a loading or error fallback`)
+    }
+  }
+  if (normalizeBaseURL(process.env.NUXT_APP_BASE_URL || '/') === '/') {
+    const rules = new Map(
+      (await readFile(join(outputDirectory, '_redirects'), 'utf8'))
+        .trim()
+        .split(/\r?\n/)
+        .filter((line) => line && !line.startsWith('#'))
+        .map((line) => {
+          const [source, target, code] = line.split(/\s+/)
+          return [decodeURIComponent(source), { target, code }]
+        })
+    )
+    for (const { route } of contentRoutes.filter(({ route }) => route.endsWith('/index'))) {
+      const rule = rules.get(route)
+      if (!rule || rule.code !== '200' || /(?:\/index\/?|\.html)$/.test(rule.target)) {
+        failures.push(`${route}: missing safe Cloudflare index proxy (automatic normalization would redirect this page)`)
+        continue
+      }
+      const target = join(outputDirectory, `${decodeURIComponent(rule.target).replace(/^\//, '')}.html`)
+      const page = await readFile(target, 'utf8')
+      const identity = decodeText(page.match(/data-content-path="([^"]+)"/)?.[1] || '')
+      if (identity !== route) failures.push(`${route}: Cloudflare proxy serves the wrong article`)
     }
   }
   const drafts = collectContent(undefined, { includeDrafts: true }).filter((document) => document.draft)

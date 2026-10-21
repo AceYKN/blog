@@ -113,3 +113,5 @@ PWA 只在 production generated output 上测试，不在 `npm run dev` 中默�
 ### Cloudflare Pages
 
 每次推送都会自动更新站点；PR/分支会得到预览链接。
+
+构建会为以 `/index` 结尾的内容网址生成精确的静态代理规则，避免 Cloudflare 的目录规范化把这些页面跳转到首页。代理产物保留文章 canonical 与正文，`check:dist` 会校验对应关系。

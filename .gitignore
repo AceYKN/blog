@@ -10,3 +10,4 @@ home.png
 dist-*
 test-results
 playwright-report
+/.wrangler/
