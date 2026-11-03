@@ -1,4 +1,4 @@
-// These upstream advisories have no patched release as of 2026-10-20.
+// This upstream advisory has no patched release as of 2026-11-03.
 // Exceptions are advisory + installed-version specific, expire, and never
 // apply to browser chunks (see staticDependencyBoundary below).
 export const buildOnlyExceptions = [
@@ -8,13 +8,6 @@ export const buildOnlyExceptions = [
     advisory: 'https://github.com/advisories/GHSA-vfj7-8cjw-p6xm',
     expires: '2026-11-20',
     reason: 'Build-time glob patterns come from the repository configuration; the static site accepts no glob input.'
-  },
-  {
-    package: 'node-forge',
-    version: '1.4.0',
-    advisory: 'https://github.com/advisories/GHSA-86w9-cpqp-85rv',
-    expires: '2026-11-20',
-    reason: 'listhen uses forge for local development certificates. The published site has no Node server or RSA verification.'
   }
 ]
 

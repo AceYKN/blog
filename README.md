@@ -35,7 +35,7 @@ cover: /og-image.png
 
 内容网址保留源文件的大小写、中文文件名及 `index`，通过 `stem` 定位正文。搜索、课程导航、标签页和 sitemap 使用同一份发布清单。构建依赖完整 Git 历史计算更新时间；`npm ci` 和 `npm run generate` 会从 `origin` 补全浅克隆的历史，无法获取时明确报错。CI 检出使用 `fetch-depth: 0`。
 
-`npm run test:content` 验证生产页面及阅读操作；`npm run test:publication` 在构建时插入临时草稿并检查公开产物，结束后清理测试文件。依赖门禁使用 `npm run check:audit`，当前两项未修复的上游构建依赖、适用条件和到期时间见 [依赖审计说明](docs/dependency-audit.md)。
+`npm run test:content` 验证生产页面及阅读操作；`npm run test:publication` 在构建时插入临时草稿并检查公开产物，结束后清理测试文件。依赖门禁使用 `npm run check:audit`，未修复的上游构建依赖、适用条件和到期时间见 [依赖审计说明](docs/dependency-audit.md)。
 
 ## 本地预览
 
