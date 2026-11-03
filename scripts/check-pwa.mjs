@@ -9,6 +9,7 @@ import {
   getPrecacheOptions,
   normalizeBaseURL,
   PWA_CACHE_NAMES,
+  PWA_STARTUP_FILES,
   PRECACHE_HARD_LIMIT_BYTES
 } from './pwa-config.mjs'
 
@@ -159,6 +160,10 @@ assertCriticalAssetSizes(criticalAssetSizes)
 const precacheResult = await getManifest(getPrecacheOptions(distDirectory, criticalAssetPaths))
 const precacheEntries = precacheResult.manifestEntries || []
 const precacheBytes = precacheResult.size || 0
+for (const path of PWA_STARTUP_FILES) {
+  await readDetails(path)
+  if (!precacheEntries.some((entry) => entry.url === path)) throw new Error('Startup file is missing from precache: ' + path)
+}
 if (!precacheEntries.some((entry) => entry.url.endsWith('offline.html'))) throw new Error('offline.html is not in precache')
 if (precacheEntries.some((entry) => /search-index-(?:notes|essays|tech|projects)\.json/.test(entry.url))) {
   throw new Error('Search index found in initial precache')

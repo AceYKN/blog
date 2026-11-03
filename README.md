@@ -65,10 +65,11 @@ npm run check:content
 
 ### Architecture and cache policy
 
-这是一个渐进式离线知识库，不是 App Shell：
+首页和日程页作为离线启动入口，文章仍按访问情况逐渐缓存：
 
-- Initial precache 只包含 `offline.html`、全局 CSS 和当前首页启动所需的 critical JS；不包含文章全文、搜索 index、favicon、PWA icons 或 KaTeX 字体。
-- 页面导航使用 NetworkFirst（3 秒网络超时、120 条、30 天）；Nuxt payload 使用 NetworkFirst（150 条、30 天）。
+- Initial precache 包含首页和日程页的 HTML、Nuxt payload、两页启动所需的 critical JS，以及全局 CSS 和 `offline.html`；不包含文章全文、搜索 index、favicon、PWA icons 或 KaTeX 字体。
+- 缓存就绪后，首页和日程页直接从 precache 启动，不等待网络。日程页的 `view`、`week`、`month` 和 `course` 参数仍由客户端解析；Nuxt payload 的 `_b` 构建参数不影响预缓存命中。
+- 其余页面导航使用 NetworkFirst（3 秒网络超时、120 条、30 天）；其余 Nuxt payload 使用 NetworkFirst（150 条、30 天）。
 - `search-catalog.json` 和 `search-index-*.json` 使用 StaleWhileRevalidate（7 天），搜索 index 始终按需下载，不进入 initial precache。
 - 同源图片和 `/_nuxt/` hashed script/style/font 使用 CacheFirst；所有 runtime cache 只接受同源 GET 的 HTTP 200，并在配额不足时清理。
 - 天气、定位、Cloudflare Analytics、GitHub API 和其他第三方请求不进入 Service Worker runtime cache。
@@ -78,6 +79,8 @@ npm run check:content
 ### Install and update behavior
 
 PWA 是低调的 progressive enhancement：首次访问完成 Service Worker 接管并重新缓存当前页面后，才提示当前内容已可离线阅读。新 Worker 保持 waiting 状态，不会强制刷新；用户可以选择“稍后”或“重新载入”，后者通过 `SKIP_WAITING` 等待 `controllerchange` 后只刷新一次。
+
+首页、日程 HTML 和对应 payload、脚本随同一版 Worker 安装，等待用户确认后一起更新，避免缓存页面引用另一版的启动资源。首次访问仍需联网下载；这里优化的是缓存准备好之后的再次启动。
 
 Install CTA 只在 `NUXT_PUBLIC_SITE_URL` 对应的 canonical origin 主动显示。Cloudflare preview 和 GitHub Pages mirror 仍支持 PWA，但不主动诱导安装；iOS 教程也只在用户主动点击 Install 后显示。
 

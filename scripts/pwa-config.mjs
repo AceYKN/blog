@@ -9,6 +9,7 @@ export const PWA_CACHE_NAME_PREFIX = `${PWA_CACHE_PREFIX}-`
 export const LEGACY_PWA_CACHE_NAME_PREFIX = 'aceykn-'
 export const PWA_PRECACHE_NAME_PREFIX = `${PWA_CACHE_NAME_PREFIX}precache-v2-`
 export const LEGACY_WORKBOX_PRECACHE_NAME_PREFIX = 'workbox-precache-v2-'
+export const PWA_STARTUP_FILES = Object.freeze(['index.html', '_payload.json', 'schedule/index.html', 'schedule/_payload.json'])
 
 export const PWA_CACHE_NAMES = {
   pages: `${PWA_CACHE_PREFIX}-pages-v1`,
@@ -77,8 +78,10 @@ export function getPwaPaths(baseURL) {
 }
 
 export async function getCriticalAssetPaths(distDirectory) {
-  const html = await readFile(join(distDirectory, 'index.html'), 'utf8')
-  const references = [...html.matchAll(/(?:src|href)=["']([^"']*?_nuxt\/[^"']+\.js(?:[?#][^"']*)?)["']/g)]
+  const documents = await Promise.all(
+    PWA_STARTUP_FILES.filter((path) => path.endsWith('index.html')).map((path) => readFile(join(distDirectory, path), 'utf8'))
+  )
+  const references = [...documents.join('\n').matchAll(/(?:src|href)=["']([^"']*?_nuxt\/[^"']+\.js(?:[?#][^"']*)?)["']/g)]
     .map((match) => match[1].split(/[?#]/, 1)[0])
     .map((reference) => reference.slice(reference.indexOf('_nuxt/')))
   return [...new Set(references)]
@@ -102,7 +105,7 @@ export function assertCriticalAssetSizes(criticalAssetSizes = []) {
 }
 
 export function getPrecacheOptions(distDirectory, criticalAssetPaths = []) {
-  const globPatterns = [...new Set(['_nuxt/**/*.css', 'offline.html', ...criticalAssetPaths])]
+  const globPatterns = [...new Set([...PWA_STARTUP_FILES, '_nuxt/**/*.css', 'offline.html', ...criticalAssetPaths])]
   return {
     globDirectory: distDirectory,
     globPatterns,
@@ -113,6 +116,7 @@ export function getPrecacheOptions(distDirectory, criticalAssetPaths = []) {
 
 export function getWorkboxConfig({ distDirectory, baseURL, criticalAssetPaths = [] }) {
   const paths = getPwaPaths(baseURL)
+  const escapedBaseURL = paths.baseURL.replace(/[-/\\^$*+?.()|[\]{}]/g, '\\$&')
 
   return {
     ...getPrecacheOptions(distDirectory, criticalAssetPaths),
@@ -123,6 +127,13 @@ export function getWorkboxConfig({ distDirectory, baseURL, criticalAssetPaths = 
     clientsClaim: true,
     skipWaiting: false,
     navigationPreload: true,
+    // Nuxt's _b parameter identifies the build. HTML and payloads are revised
+    // together in the precache, so startup must not re-fetch the same payload.
+    ignoreURLParametersMatching: [/^utm_/, /^fbclid$/, /^_b$/],
+    // The static schedule document is shared by every view/week/course query.
+    // Limit this cached navigation handler to that route, including /blog/.
+    navigateFallback: withBaseURL(paths.baseURL, 'schedule/index.html'),
+    navigateFallbackAllowlist: [new RegExp('^' + escapedBaseURL + 'schedule/?(?:\\?|$)')],
     runtimeCaching: [
       {
         urlPattern: ({ request, sameOrigin }) =>

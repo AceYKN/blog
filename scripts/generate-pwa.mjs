@@ -4,6 +4,7 @@ import { generateSW, getManifest } from 'workbox-build'
 import {
   PRECACHE_HARD_LIMIT_BYTES,
   PRECACHE_TARGET_BYTES,
+  PWA_STARTUP_FILES,
   assertCriticalAssetSizes,
   getCacheCleanupSource,
   getCriticalAssetPaths,
@@ -56,7 +57,7 @@ if (!pwaEnabled) {
   process.exit(0)
 }
 
-for (const asset of requiredAssets) await assertFile(asset)
+for (const asset of [...requiredAssets, ...PWA_STARTUP_FILES]) await assertFile(asset)
 
 async function applyOfflineBaseURL() {
   const offlinePath = join(distDirectory, 'offline.html')
@@ -97,6 +98,9 @@ const precacheResult = await getManifest(getPrecacheOptions(distDirectory, criti
 const precacheEntries = precacheResult.manifestEntries || []
 const precacheBytes = precacheResult.size || 0
 
+for (const path of PWA_STARTUP_FILES) {
+  if (!precacheEntries.some((entry) => entry.url === path)) throw new Error('Startup file is missing from precache: ' + path)
+}
 if (!precacheEntries.some((entry) => entry.url.endsWith('offline.html'))) {
   throw new Error('offline.html must be included in the precache manifest')
 }

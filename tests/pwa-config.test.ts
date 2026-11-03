@@ -10,8 +10,10 @@ import {
   getCriticalAssetSizes,
   getPrecacheOptions,
   getPwaPaths,
+  getWorkboxConfig,
   normalizeBaseURL,
-  PWA_CACHE_NAMES
+  PWA_CACHE_NAMES,
+  PWA_STARTUP_FILES
 } from '../scripts/pwa-config.mjs'
 
 const temporaryDirectories: string[] = []
@@ -46,21 +48,33 @@ describe('PWA precache inputs', () => {
     const directory = await mkdtemp(join(tmpdir(), 'aceykn-pwa-config-'))
     temporaryDirectories.push(directory)
     await mkdir(join(directory, '_nuxt'), { recursive: true })
+    await mkdir(join(directory, 'schedule'), { recursive: true })
     await writeFile(join(directory, 'index.html'), '<script src="/blog/_nuxt/critical.abc.js?x=1"></script>')
+    await writeFile(join(directory, 'schedule/index.html'), '<link rel="modulepreload" href="/blog/_nuxt/schedule.abc.js">')
+    await writeFile(join(directory, '_payload.json'), '{"data":{}}')
+    await writeFile(join(directory, 'schedule/_payload.json'), '{"data":{},"schedule":true}')
     await writeFile(join(directory, '_nuxt/critical.abc.js'), 'critical-js')
+    await writeFile(join(directory, '_nuxt/schedule.abc.js'), 'schedule-js')
     await writeFile(join(directory, '_nuxt/global.css'), 'global-css')
     await writeFile(join(directory, 'offline.html'), 'offline')
     await writeFile(join(directory, 'search-index-notes.json'), 'must stay runtime-only')
+    await mkdir(join(directory, 'notes'), { recursive: true })
+    await writeFile(join(directory, 'notes/index.html'), 'must stay runtime-only')
 
     const criticalPaths = await getCriticalAssetPaths(directory)
     const options = getPrecacheOptions(directory, criticalPaths)
     const result = await getManifest(options)
 
-    expect(criticalPaths).toEqual(['_nuxt/critical.abc.js'])
+    expect(criticalPaths).toEqual(['_nuxt/critical.abc.js', '_nuxt/schedule.abc.js'])
     expect(options.additionalManifestEntries).toBeUndefined()
     expect(result.manifestEntries?.map((entry) => entry.url)).toContain('_nuxt/critical.abc.js')
+    expect(result.manifestEntries?.map((entry) => entry.url)).toContain('_nuxt/schedule.abc.js')
+    for (const path of PWA_STARTUP_FILES) {
+      expect(result.manifestEntries?.find((entry) => entry.url === path)?.revision).toEqual(expect.any(String))
+    }
     expect(result.manifestEntries?.map((entry) => entry.url)).toContain('offline.html')
     expect(result.manifestEntries?.map((entry) => entry.url)).not.toContain('search-index-notes.json')
+    expect(result.manifestEntries?.map((entry) => entry.url)).not.toContain('notes/index.html')
     expect(result.size).toBeGreaterThanOrEqual('critical-js'.length + 'global-css'.length + 'offline'.length)
   })
 
@@ -68,12 +82,35 @@ describe('PWA precache inputs', () => {
     const directory = await mkdtemp(join(tmpdir(), 'aceykn-pwa-budget-'))
     temporaryDirectories.push(directory)
     await mkdir(join(directory, '_nuxt'), { recursive: true })
+    await mkdir(join(directory, 'schedule'), { recursive: true })
     await writeFile(join(directory, 'index.html'), '<script src="/_nuxt/oversized.js"></script>')
+    await writeFile(join(directory, 'schedule/index.html'), '<main>schedule</main>')
     await writeFile(join(directory, '_nuxt/oversized.js'), Buffer.alloc(5 * 1024 * 1024 + 1))
 
     const criticalPaths = await getCriticalAssetPaths(directory)
     const criticalSizes = await getCriticalAssetSizes(directory, criticalPaths)
     expect(() => assertCriticalAssetSizes(criticalSizes)).toThrow(/Critical JS exceeds/)
+  })
+})
+
+describe('PWA startup navigation', () => {
+  it.each(['/', '/blog/', '/blog.v2/'])('serves schedule query URLs from the same versioned document under %s', (baseURL) => {
+    const config = getWorkboxConfig({ distDirectory: 'dist', baseURL })
+    const matches = (url: string) => config.navigateFallbackAllowlist.some((pattern: RegExp) => pattern.test(url))
+    expect(config.navigateFallback).toBe(baseURL + 'schedule/index.html')
+    expect(matches(baseURL + 'schedule')).toBe(true)
+    expect(matches(baseURL + 'schedule/')).toBe(true)
+    expect(matches(baseURL + 'schedule?view=week&week=8&course=example')).toBe(true)
+    expect(matches(baseURL + 'schedule/?view=today')).toBe(true)
+    expect(matches(baseURL + 'schedule-notes')).toBe(false)
+    expect(matches(baseURL + 'schedule/nested')).toBe(false)
+    expect(matches(baseURL + 'notes/example')).toBe(false)
+    expect(matches('/another/schedule')).toBe(false)
+    if (baseURL !== '/') expect(matches('/schedule')).toBe(false)
+    expect(matches(baseURL.replace('.', 'x') + 'schedule')).toBe(!baseURL.includes('.'))
+    expect(config.ignoreURLParametersMatching.some((pattern: RegExp) => pattern.test('_b'))).toBe(true)
+    expect(config.ignoreURLParametersMatching.some((pattern: RegExp) => pattern.test('week'))).toBe(false)
+    expect(config.skipWaiting).toBe(false)
   })
 })
 
