@@ -1282,13 +1282,6 @@ main {
   font: 0.88rem var(--font-mono);
   text-align: center;
 }
-.schedule-toolbar__today {
-  min-height: 2.4rem;
-  padding: 0.45rem 0.65rem;
-  color: var(--vermilion);
-  font: 0.68rem/1.5 var(--font-mono);
-  text-align: right;
-}
 .schedule-week {
   padding: 2.75rem 0 5rem;
 }
@@ -2054,10 +2047,6 @@ main {
   }
   .schedule-week-select span {
     white-space: nowrap;
-  }
-  .schedule-toolbar__today {
-    grid-column: 1 / -1;
-    text-align: center;
   }
   .schedule-week__intro {
     display: block;

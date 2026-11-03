@@ -25,7 +25,7 @@ import {
   type TodayScheduleState
 } from '~/utils/schedule'
 
-type View = 'today' | 'week' | 'month'
+type View = 'week' | 'month'
 
 const SCHEDULE_VIEW_KEY = 'schedule:view'
 const route = useRoute()
@@ -86,7 +86,9 @@ function getQueryValue(key: string) {
 }
 
 function parseView(value: string | undefined): View | null {
-  return value === 'today' || value === 'week' || value === 'month' ? value : null
+  // Keep old shared links and saved preferences on the weekly timetable.
+  if (value === 'today') return 'week'
+  return value === 'week' || value === 'month' ? value : null
 }
 
 function parseWeek(value: string | undefined) {
@@ -116,12 +118,8 @@ const currentTeachingWeek = computed(() => (todayKey.value ? getTeachingWeek(tod
 const isTodayInSemester = computed(() => Boolean(todayKey.value && getTeachingWeek(todayKey.value)))
 const defaultMonth = computed(() => (isTodayInSemester.value ? getMonthKey(todayKey.value) : semester.start.slice(0, 7)))
 const view = computed<View>(() => requestedView.value || storedView.value || 'week')
-const selectedWeek = computed(() => {
-  if (view.value === 'today') return currentTeachingWeek.value
-  return parseWeek(getQueryValue('week')) || currentTeachingWeek.value
-})
+const selectedWeek = computed(() => parseWeek(getQueryValue('week')) || currentTeachingWeek.value)
 const selectedMonth = computed(() => {
-  if (view.value === 'today') return isTodayInSemester.value ? getMonthKey(todayKey.value) : defaultMonth.value
   if (view.value === 'month') return getValidMonthQuery() || defaultMonth.value
   return getMonthKey(getWeekDates(selectedWeek.value)[0]!)
 })
@@ -129,11 +127,10 @@ const monthGrid = computed(() => getMonthGrid(selectedMonth.value))
 const weekDates = computed(() => getWeekDates(selectedWeek.value))
 const weekRange = computed(() => getWeekRangeLabel(selectedWeek.value))
 const monthName = computed(() => getMonthName(selectedMonth.value))
-const todayWeekday = computed(() => weekDates.value.findIndex((date) => date === todayKey.value))
 
 const isRealtimeView = computed(() => {
   if (!currentClock.value || !isTodayInSemester.value) return false
-  return view.value === 'today' || (view.value === 'week' && selectedWeek.value === currentTeachingWeek.value)
+  return view.value === 'week' && selectedWeek.value === currentTeachingWeek.value
 })
 const todayCourses = computed(() => (todayKey.value ? getCoursesForDate(todayKey.value) : []))
 const todayTemporalStates = computed(() => {
@@ -245,15 +242,11 @@ function readStoredView(): View | null {
 }
 
 function baseQueryForView(nextView: View): Record<string, string> {
-  if (nextView === 'today') return { view: 'today' }
   if (nextView === 'month') return { view: 'month', month: selectedMonth.value }
   return { view: 'week', week: String(selectedWeek.value) }
 }
 
 function courseIsAvailable(courseId: string, candidateView: View, candidateWeek: number) {
-  if (candidateView === 'today') {
-    return Boolean(todayKey.value && getCoursesForDate(todayKey.value).some((course) => course.id === courseId))
-  }
   if (candidateView === 'week') {
     return getWeekDates(candidateWeek).some((date) => getCoursesForDate(date).some((course) => course.id === courseId))
   }
@@ -327,19 +320,6 @@ function refreshNow() {
   now.value = new Date()
 }
 
-function scrollTodayIntoView() {
-  if (!import.meta.client || view.value !== 'today' || !todayKey.value) return
-  void nextTick(() => {
-    const today = document.querySelector<HTMLElement>(`[data-schedule-date="${todayKey.value}"]`)
-    if (!today) return
-    today.scrollIntoView({
-      inline: 'center',
-      block: 'nearest',
-      behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth'
-    })
-  })
-}
-
 function handleVisibilityChange() {
   if (document.visibilityState === 'visible') refreshNow()
 }
@@ -347,9 +327,6 @@ function handleVisibilityChange() {
 const selectedCourse = computed<Course | null>(() => {
   const courseId = getQueryValue('course')
   if (!courseId) return null
-  if (view.value === 'today' && todayKey.value) {
-    return getCoursesForDate(todayKey.value).find((course) => course.id === courseId) || null
-  }
   if (view.value === 'week') {
     for (const date of weekDates.value) {
       const course = getCoursesForDate(date).find((candidate) => candidate.id === courseId)
@@ -364,7 +341,6 @@ watch(
   () => {
     if (!isMounted.value) return
     normalizeRoute()
-    if (view.value === 'today') scrollTodayIntoView()
   },
   { flush: 'post' }
 )
@@ -376,7 +352,6 @@ onMounted(() => {
   normalizeRoute()
   document.addEventListener('visibilitychange', handleVisibilityChange)
   clockTimer = window.setInterval(refreshNow, 30_000)
-  scrollTodayIntoView()
 })
 
 onBeforeUnmount(() => {
@@ -404,7 +379,6 @@ useSeoMeta({
 
   <section class="schedule-toolbar" aria-label="日程檢視與教學週控制">
     <div class="schedule-view-switch" role="group" aria-label="選擇日程檢視">
-      <button :class="{ active: view === 'today' }" type="button" @click="selectView('today')">今日</button>
       <button :class="{ active: view === 'week' }" type="button" @click="selectView('week')">週課表</button>
       <button :class="{ active: view === 'month' }" type="button" @click="selectView('month')">月曆</button>
     </div>
@@ -431,23 +405,15 @@ useSeoMeta({
         下個月 →
       </button>
     </template>
-
-    <span v-else class="schedule-toolbar__today">TODAY · {{ todayKey ? getDateLabel(todayKey) : '今日' }}</span>
   </section>
 
-  <section
-    v-if="view === 'week' || view === 'today'"
-    class="schedule-week"
-    :aria-label="`${view === 'today' ? '今日 · ' : ''}第 ${selectedWeek} 教學週課表`"
-  >
+  <section v-if="view === 'week'" class="schedule-week" :aria-label="`第 ${selectedWeek} 教學週課表`">
     <header class="schedule-week__intro">
       <div>
-        <p class="eyebrow">{{ view === 'today' ? 'TODAY · ' : '' }}TEACHING WEEK {{ String(selectedWeek).padStart(2, '0') }}</p>
-        <h2>{{ view === 'today' ? `今天 · 第 ${selectedWeek} 教學週` : `第 ${selectedWeek} 教學週` }}</h2>
+        <p class="eyebrow">TEACHING WEEK {{ String(selectedWeek).padStart(2, '0') }}</p>
+        <h2>第 {{ selectedWeek }} 教學週</h2>
       </div>
-      <p>
-        {{ view === 'today' && todayKey && todayWeekday >= 0 ? `${getDateLabel(todayKey)} · ${weekdayNames[todayWeekday]}` : weekRange }}
-      </p>
+      <p>{{ weekRange }}</p>
     </header>
 
     <aside v-if="isRealtimeView && todaySummary" class="schedule-now-summary" aria-label="今日课程状态">
