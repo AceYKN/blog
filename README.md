@@ -82,6 +82,8 @@ PWA 是低调的 progressive enhancement：首次访问完成 Service Worker 接
 
 首页、日程 HTML 和对应 payload、脚本随同一版 Worker 安装，等待用户确认后一起更新，避免缓存页面引用另一版的启动资源。首次访问仍需联网下载；这里优化的是缓存准备好之后的再次启动。
 
+从主屏幕以独立 App 模式打开时，会记住上次所在栏目；下次从默认首页启动会恢复该栏目，以及日程的周次、月历等 URL 状态。普通浏览器访问和明确指定地址的链接仍打开原地址。在 App 内点击首页后，再次启动也会停留在首页。记录保存在本机 localStorage，清除网站数据后会重置。
+
 Install CTA 只在 `NUXT_PUBLIC_SITE_URL` 对应的 canonical origin 主动显示。Cloudflare preview 和 GitHub Pages mirror 仍支持 PWA，但不主动诱导安装；iOS 教程也只在用户主动点击 Install 后显示。
 
 ### Kill switch and rollback
