@@ -52,6 +52,49 @@ test.describe('AceYKN PWA', () => {
     await expect.poll(() => page.evaluate(() => navigator.serviceWorker.controller?.state)).toBe('activated')
   })
 
+  test('switches to unvisited teaching weeks offline', async ({ page, context }) => {
+    await page.setViewportSize({ width: 568, height: 215 })
+    await page.clock.setFixedTime(new Date('2026-09-16T07:37:00.000Z'))
+    await page.goto('./')
+    await waitForServiceWorker(page)
+    await context.setOffline(true)
+    await page.getByRole('link', { name: '日程', exact: true }).click()
+    await expect(page).toHaveURL(/\/schedule\?view=week&week=3$/)
+    await expect(page.locator('.offline-indicator')).toBeVisible()
+
+    const nextWeek = page.getByRole('button', { name: '下一週 →' })
+    const buttonBounds = await nextWeek.boundingBox()
+    if (!buttonBounds) throw new Error('The next week button is missing')
+    // Click at the visible position without letting Playwright scroll past the offline notice.
+    await page.mouse.click(buttonBounds.x + buttonBounds.width / 2, buttonBounds.y + buttonBounds.height / 2)
+    await expect(page).toHaveURL(/\/schedule\?view=week&week=4$/)
+    await expect(page.locator('.schedule-day').first()).toHaveAttribute('data-schedule-date', '2026-09-21')
+
+    await page.setViewportSize({ width: 390, height: 844 })
+    await page.getByRole('button', { name: '← 上一週' }).click()
+    await expect(page.locator('.schedule-day').first()).toHaveAttribute('data-schedule-date', '2026-09-14')
+    await page.locator('.schedule-week-select select').selectOption('20')
+    await expect(page).toHaveURL(/\/schedule\?view=week&week=20$/)
+    await expect(nextWeek).toBeDisabled()
+    await page.reload()
+    await expect(page.locator('.schedule-day').first()).toHaveAttribute('data-schedule-date', '2027-01-11')
+  })
+
+  test('resumes the weekly timetable offline without reopening course details', async ({ page, context }) => {
+    await page.addInitScript(() => Object.defineProperty(navigator, 'standalone', { value: true }))
+    await page.goto('./schedule?view=week&week=3')
+    await waitForServiceWorker(page)
+    await page.locator('.schedule-course').filter({ hasText: '大学语文★' }).click()
+    await expect(page.locator('.schedule-course-dialog')).toBeVisible()
+    await expect(page).toHaveURL(/\/schedule\?view=week&week=3&course=college-chinese$/)
+
+    await context.setOffline(true)
+    await page.goto(serverBaseURL())
+    await expect(page).toHaveURL(/\/schedule\?view=week&week=3$/)
+    await expect(page.locator('.offline-indicator')).toBeVisible()
+    await expect(page.locator('.schedule-course-dialog')).toHaveCount(0)
+  })
+
   test('caches the first note before it is reloaded offline', async ({ page, context }) => {
     const notes = await getDistNoteCandidates()
     expect(notes.length).toBeGreaterThanOrEqual(1)

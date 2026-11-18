@@ -45,6 +45,24 @@ test.describe('AceYKN schedule', () => {
     await expect(page.locator('[role="dialog"]')).toHaveCount(0)
   })
 
+  test('unlocks page scrolling when browser history closes overlapping dialogs', async ({ page }) => {
+    await page.clock.setFixedTime(new Date('2026-09-16T07:37:00.000Z'))
+    await page.goto('./')
+    const homeURL = page.url()
+    await page.getByRole('link', { name: '日程', exact: true }).click()
+    await expect(page).toHaveURL(/\/schedule\?view=week&week=3$/)
+    await page.locator('.schedule-course').filter({ hasText: '大学语文★' }).click()
+    await expect(page.locator('.schedule-course-dialog')).toBeVisible()
+    await page.keyboard.press('Control+k')
+    await expect(page.locator('dialog[open]')).toHaveCount(2)
+    await expect(page.locator('html')).toHaveCSS('overflow-y', 'hidden')
+
+    await page.evaluate(() => history.go(-2))
+    await expect(page).toHaveURL(homeURL)
+    await expect(page.locator('dialog[open]')).toHaveCount(0)
+    await expect(page.locator('html')).not.toHaveCSS('overflow-y', 'hidden')
+  })
+
   test('prioritizes an explicit URL view over the stored preference', async ({ page }) => {
     await page.addInitScript(() => localStorage.setItem('schedule:view', 'month'))
     await page.goto('./schedule')

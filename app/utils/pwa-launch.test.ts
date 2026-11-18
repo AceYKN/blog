@@ -9,6 +9,10 @@ describe('remembered PWA pages', () => {
     expect(normalizePwaPage('/')).toBe('/')
   })
 
+  it('drops the transient course dialog from remembered schedule pages', () => {
+    expect(normalizePwaPage('/schedule?view=week&week=3&course=college-chinese')).toBe('/schedule?view=week&week=3')
+  })
+
   it.each([null, '', 'https://example.com/schedule', '//example.com/schedule', '/\\example.com/schedule', '/schedule\n'])(
     'rejects invalid or external destinations: %s',
     (value) => expect(normalizePwaPage(value)).toBeNull()

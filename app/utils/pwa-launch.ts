@@ -9,6 +9,7 @@ export function normalizePwaPage(value: string | null): string | null {
     const url = new URL(value, localOrigin)
     const path = url.pathname.replace(/\/+$/, '') || '/'
     if (url.origin !== localOrigin || !sections.has(path)) return null
+    if (path === '/schedule' && url.searchParams.has('course')) url.searchParams.delete('course')
     return `${path}${url.search}${url.hash}`
   } catch {
     return null

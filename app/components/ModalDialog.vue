@@ -4,7 +4,6 @@ defineProps<{ label: string }>()
 const emit = defineEmits<{ close: [] }>()
 const dialog = ref<HTMLDialogElement>()
 let previousFocus: HTMLElement | null = null
-let previousOverflow = ''
 
 function containFocus(event: KeyboardEvent) {
   if (event.key !== 'Tab' || !dialog.value) return
@@ -29,14 +28,11 @@ function containFocus(event: KeyboardEvent) {
 
 onMounted(() => {
   previousFocus = document.activeElement as HTMLElement | null
-  previousOverflow = document.documentElement.style.overflow
-  document.documentElement.style.overflow = 'hidden'
   dialog.value?.showModal()
 })
 
 onBeforeUnmount(() => {
   dialog.value?.close()
-  document.documentElement.style.overflow = previousOverflow
   if (previousFocus?.isConnected) previousFocus.focus({ preventScroll: true })
 })
 </script>

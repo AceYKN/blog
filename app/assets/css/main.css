@@ -1834,6 +1834,7 @@ main {
   align-items: flex-end;
   gap: 0.5rem;
   max-width: min(32rem, calc(100% - 2rem));
+  pointer-events: none;
 }
 .offline-indicator,
 .pwa-ready-notice,
@@ -1870,6 +1871,7 @@ main {
   gap: 0.35rem;
 }
 .pwa-update-prompt button {
+  pointer-events: auto;
   border: 0;
   padding: 0.2rem 0.35rem;
   background: transparent;
@@ -1885,6 +1887,9 @@ main {
 .pwa-update-prompt button:disabled {
   cursor: wait;
   opacity: 0.6;
+}
+html:has(> body > dialog.modal-dialog[open]) {
+  overflow: hidden;
 }
 .modal-dialog {
   max-height: calc(100dvh - 2rem);
