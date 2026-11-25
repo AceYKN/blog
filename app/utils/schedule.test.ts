@@ -10,6 +10,7 @@ import {
   getGridRow,
   getTeachingWeek,
   getTaipeiClock,
+  getTimeslotSemesterSchedule,
   getTodayScheduleState,
   isCourseWeek
 } from './schedule'
@@ -169,5 +170,30 @@ describe('schedule time states', () => {
     expect(getCurrentTimeMarker(21 * 60 + 50)).toMatchObject({ row: getGridRow(11), progress: 1, label: '21:50' })
     expect(getCurrentTimeMarker(7 * 60 + 59)).toBeNull()
     expect(getCurrentTimeMarker(21 * 60 + 51)).toBeNull()
+  })
+
+  it('groups timeslot arrangements across the semester and marks the selected week', () => {
+    const tuesdayNetworks = courses.find((course) => course.id === 'computer-networks-early')!
+    const networkGroups = getTimeslotSemesterSchedule(tuesdayNetworks, 3)
+    expect(
+      networkGroups.map((group) => ({ label: group.weekLabel, current: group.containsSelectedWeek, ids: group.entries.map((e) => e.id) }))
+    ).toEqual([
+      { label: '第 1–9 週', current: true, ids: ['computer-networks-early'] },
+      { label: '第 10–18 週', current: false, ids: ['computer-networks-late'] }
+    ])
+
+    const tuesdayMining = courses.find((course) => course.id === 'web-mining-tuesday')!
+    const miningGroups = getTimeslotSemesterSchedule(tuesdayMining, 9)
+    expect(miningGroups.map((group) => ({ label: group.weekLabel, current: group.containsSelectedWeek }))).toEqual([
+      { label: '第 1–8、10–18 週', current: false },
+      { label: '第 9 週', current: true }
+    ])
+
+    const thursdayManagement = courses.find((course) => course.id === 'it-project-management-thursday')!
+    const thursdayGroups = getTimeslotSemesterSchedule(thursdayManagement, 3)
+    expect(thursdayGroups.map((group) => ({ label: group.weekLabel, current: group.containsSelectedWeek }))).toEqual([
+      { label: '第 1–17 週・單週', current: true },
+      { label: '第 2–18 週・雙週', current: false }
+    ])
   })
 })

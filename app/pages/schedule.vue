@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { readStorage, writeStorage } from '~/utils/storage'
-import { sectionTimes, semester, type Course, type CourseKind } from '~/config/schedule'
+import { courses, sectionTimes, semester, type Course, type CourseKind } from '~/config/schedule'
+import { courseColorStyleVars, schedulePaletteForCourses } from '~/utils/course-colors'
 import {
   formatScheduleDuration,
   formatWeekRules,
@@ -17,6 +18,7 @@ import {
   getMonthName,
   getTeachingWeek,
   getTaipeiClock,
+  getTimeslotSemesterSchedule,
   getTodayScheduleState,
   getWeekDates,
   getWeekRangeLabel,
@@ -36,21 +38,8 @@ const storedView = ref<View | null>(null)
 const isMounted = ref(false)
 let clockTimer: number | undefined
 
+const coursePalette = schedulePaletteForCourses(courses)
 const courseKindLabels: Record<CourseKind, string> = { theory: '理論', lab: '實驗', computer: '上機' }
-const courseTones: Record<string, string> = {
-  數據結構實驗: 'data-structures',
-  'Web 數據挖掘（雙語）': 'web-mining',
-  '軟件測試（雙語）': 'software-testing',
-  計算機網絡: 'computer-networks',
-  計算機網絡實驗: 'computer-networks-lab',
-  計算機組成原理實驗: 'computer-organization',
-  'IT 項目管理（雙語）（含上機）': 'it-project-management',
-  '人工智能（雙語）': 'artificial-intelligence',
-  習近平新時代中國特色社會主義思想概論: 'xi-thought',
-  機器學習: 'machine-learning',
-  '設計模式與 UML': 'design-patterns',
-  '大學語文★': 'college-chinese'
-}
 const originalCourseText: Record<string, string> = {
   數據結構實驗: '数据结构实验',
   'Web 數據挖掘（雙語）': 'Web 数据挖掘（双语）',
@@ -178,10 +167,6 @@ function courseTime(startSection: number, endSection: number) {
   return `${range.startLabel}–${range.endLabel}`
 }
 
-function courseTone(title: string) {
-  return courseTones[title] || 'default'
-}
-
 function displayCourseText(value: string) {
   return originalCourseText[value] || value
 }
@@ -206,7 +191,14 @@ function temporalStateLabel(state: CourseTemporalState | undefined) {
 
 function courseClassNames(date: string, course: Course) {
   const state = temporalStateFor(date, course)
-  return [`schedule-course--${courseTone(course.title)}`, state ? `schedule-course--${state}` : '']
+  return state ? [`schedule-course--${state}`] : []
+}
+
+function courseStyle(course: Course) {
+  return {
+    gridRow: `${getGridRow(course.startSection)} / ${getGridRow(course.endSection) + 1}`,
+    ...courseColorStyleVars(course, coursePalette)
+  }
 }
 
 function courseAriaLabel(date: string, course: Course) {
@@ -336,6 +328,11 @@ const selectedCourse = computed<Course | null>(() => {
   return null
 })
 
+const selectedCourseTimeslotGroups = computed(() => {
+  if (!selectedCourse.value) return []
+  return getTimeslotSemesterSchedule(selectedCourse.value, selectedWeek.value)
+})
+
 watch(
   () => [route.query.view, route.query.week, route.query.month, route.query.course, todayKey.value, view.value, selectedWeek.value],
   () => {
@@ -457,18 +454,17 @@ useSeoMeta({
               class="schedule-course"
               :class="courseClassNames(date, course)"
               :aria-label="courseAriaLabel(date, course)"
-              :style="{ gridRow: `${getGridRow(course.startSection)} / ${getGridRow(course.endSection) + 1}` }"
+              :style="courseStyle(course)"
               type="button"
               @click="openCourse(course)"
             >
               <strong>{{ displayCourseText(course.title) }}</strong>
-              <small class="schedule-course__campus">{{ displayCourseText(course.campus) }}</small>
               <small class="schedule-course__room">{{ displayCourseText(course.room) }}</small>
-              <small class="schedule-course__teacher">{{ displayCourseText(course.teacher) }}</small>
-              <small v-if="temporalStateFor(date, course)" class="schedule-course__status">{{
-                temporalStateLabel(temporalStateFor(date, course))
-              }}</small>
-              <em class="schedule-course__weeks">{{ formatWeekRules(course.weekRules) }} · {{ courseKindLabels[course.kind] }}</em>
+              <small
+                v-if="temporalStateFor(date, course) === 'current' || temporalStateFor(date, course) === 'next'"
+                class="schedule-course__status"
+                >{{ temporalStateLabel(temporalStateFor(date, course)) }}</small
+              >
             </button>
             <div
               v-if="isRealtimeView && date === todayKey && currentTimeMarker"
@@ -527,10 +523,13 @@ useSeoMeta({
     :label="`${displayCourseText(selectedCourse.title)} 課程詳情`"
     @close="closeCourse"
   >
-    <section class="schedule-course-dialog__card">
+    <section class="schedule-course-dialog__card" :style="courseColorStyleVars(selectedCourse, coursePalette)">
       <button class="schedule-course-dialog__close" type="button" aria-label="關閉課程詳情" @click="closeCourse">×</button>
       <p class="eyebrow">{{ courseKindLabels[selectedCourse.kind] }} / {{ formatWeekRules(selectedCourse.weekRules) }}</p>
-      <h2>{{ displayCourseText(selectedCourse.title) }}</h2>
+      <h2 class="schedule-course-dialog__title">
+        <i class="schedule-course-dialog__dot" aria-hidden="true" />
+        <span>{{ displayCourseText(selectedCourse.title) }}</span>
+      </h2>
       <dl>
         <div>
           <dt>時間</dt>
@@ -552,6 +551,10 @@ useSeoMeta({
         <div>
           <dt>教師</dt>
           <dd>{{ displayCourseText(selectedCourse.teacher) }}</dd>
+        </div>
+        <div>
+          <dt>週次</dt>
+          <dd>{{ formatWeekRules(selectedCourse.weekRules) }}</dd>
         </div>
         <div v-if="selectedCourse.courseCode">
           <dt>课程号</dt>
@@ -586,6 +589,35 @@ useSeoMeta({
           <dd>{{ selectedCourse.credits.toFixed(1) }}</dd>
         </div>
       </dl>
+      <section v-if="selectedCourseTimeslotGroups.length" class="schedule-course-dialog__timeslot" aria-label="本節次其他週安排">
+        <h3>本節次其他週安排</h3>
+        <ul class="schedule-course-dialog__timeslot-list">
+          <li v-for="group in selectedCourseTimeslotGroups" :key="group.weekLabel" class="schedule-course-dialog__timeslot-group">
+            <div
+              v-for="entry in group.entries"
+              :key="entry.id"
+              class="schedule-course-dialog__timeslot-item"
+              :style="courseColorStyleVars(entry, coursePalette)"
+            >
+              <i class="schedule-course-dialog__timeslot-dot" aria-hidden="true" />
+              <div class="schedule-course-dialog__timeslot-content">
+                <p class="schedule-course-dialog__timeslot-weeks" :class="{ active: group.containsSelectedWeek }">
+                  {{ group.weekLabel }}<span v-if="group.containsSelectedWeek"> · 當前</span>
+                </p>
+                <strong>
+                  {{ displayCourseText(entry.title) }}
+                  <small v-if="entry.startSection !== selectedCourse.startSection || entry.endSection !== selectedCourse.endSection">
+                    第 {{ entry.startSection }}–{{ entry.endSection }} 節
+                  </small>
+                </strong>
+                <p class="schedule-course-dialog__timeslot-meta">
+                  {{ displayCourseText(entry.room) }} · {{ displayCourseText(entry.teacher) }}
+                </p>
+              </div>
+            </div>
+          </li>
+        </ul>
+      </section>
     </section>
   </ModalDialog>
 </template>

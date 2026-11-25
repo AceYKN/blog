@@ -38,6 +38,13 @@ export interface CurrentTimeMarker {
   label: string
 }
 
+export interface TimeslotWeekGroup {
+  weeks: number[]
+  weekLabel: string
+  entries: Course[]
+  containsSelectedWeek: boolean
+}
+
 const holidays: Record<string, string> = {
   '2026-09-25': '中秋節放假',
   '2026-09-26': '中秋節放假',
@@ -328,4 +335,67 @@ export function getCurrentTimeMarker(minutes: number): CurrentTimeMarker | null 
   }
 
   return null
+}
+
+function formatTimeslotWeeks(weeks: number[]): string {
+  if (!weeks.length) return '無教學週'
+  if (weeks.length === 1) return `第 ${weeks[0]} 週`
+
+  const step = weeks[1]! - weeks[0]!
+  if ((step === 1 || step === 2) && weeks.every((week, index) => week === weeks[0]! + step * index)) {
+    const parity = step === 2 ? (weeks[0]! % 2 === 1 ? '・單週' : '・雙週') : ''
+    return `第 ${weeks[0]}–${weeks.at(-1)} 週${parity}`
+  }
+
+  const ranges: string[] = []
+  let start = weeks[0]!
+  let end = start
+  for (const week of weeks.slice(1)) {
+    if (week === end + 1) {
+      end = week
+      continue
+    }
+    ranges.push(start === end ? `${start}` : `${start}–${end}`)
+    start = week
+    end = week
+  }
+  ranges.push(start === end ? `${start}` : `${start}–${end}`)
+  return `第 ${ranges.join('、')} 週`
+}
+
+export function getTimeslotSemesterSchedule(
+  target: Pick<Course, 'day' | 'startSection' | 'endSection'>,
+  selectedWeek: number
+): TimeslotWeekGroup[] {
+  const groupsByKey = new Map<string, { weeks: number[]; entries: Course[] }>()
+
+  for (let week = 1; week <= semester.totalWeeks; week += 1) {
+    const entries = courses
+      .filter(
+        (course) =>
+          course.day === target.day &&
+          isCourseWeek(course, week) &&
+          course.startSection <= target.endSection &&
+          target.startSection <= course.endSection
+      )
+      .sort((left, right) => left.startSection - right.startSection || left.id.localeCompare(right.id))
+
+    if (!entries.length) continue
+    const key = entries.map((entry) => entry.id).join('\0')
+    const existing = groupsByKey.get(key)
+    if (existing) {
+      existing.weeks.push(week)
+    } else {
+      groupsByKey.set(key, { weeks: [week], entries })
+    }
+  }
+
+  return [...groupsByKey.values()]
+    .sort((left, right) => left.weeks[0]! - right.weeks[0]!)
+    .map(({ weeks, entries }) => ({
+      weeks,
+      weekLabel: formatTimeslotWeeks(weeks),
+      entries,
+      containsSelectedWeek: weeks.includes(selectedWeek)
+    }))
 }

@@ -1304,37 +1304,36 @@ main {
 .schedule-now-summary {
   display: grid;
   grid-template-columns: auto minmax(0, 1fr) auto;
-  gap: 1rem;
-  align-items: center;
-  margin: 0 0 1.25rem;
-  padding: 0.85rem 1rem;
-  border: 1px solid var(--line);
-  border-left: 3px solid var(--vermilion);
-  background: color-mix(in srgb, var(--paper) 88%, var(--surface-rose));
+  gap: 0.35rem 0.75rem;
+  align-items: baseline;
+  margin: 0 0 0.75rem;
+  padding: 0.25rem 0 0.45rem;
+  border-bottom: 1px solid var(--line);
 }
 .schedule-now-summary__eyebrow {
   margin: 0;
   color: var(--vermilion);
-  font: 0.67rem var(--font-mono);
+  font: 600 0.65rem var(--font-mono);
   letter-spacing: 0.08em;
 }
 .schedule-now-summary__body {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.2rem 0.6rem;
+  align-items: baseline;
   min-width: 0;
 }
 .schedule-now-summary__body strong,
 .schedule-now-summary__body span {
-  display: block;
+  display: inline-block;
 }
 .schedule-now-summary__body strong {
-  overflow: hidden;
-  font: 600 0.9rem/1.25 var(--font-base);
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  font: 600 0.84rem/1.3 var(--font-base);
+  overflow-wrap: anywhere;
 }
 .schedule-now-summary__body span {
-  margin-top: 0.2rem;
   color: var(--muted);
-  font: 0.63rem var(--font-mono);
+  font: 0.66rem var(--font-mono);
 }
 .schedule-now-summary__countdown {
   margin: 0;
@@ -1447,120 +1446,60 @@ main {
   pointer-events: none;
 }
 .schedule-course {
-  --course-accent: var(--moss);
-  --course-surface: var(--surface-moss);
+  --course-bg: var(--course-bg-light, var(--surface-moss));
+  --course-fg: var(--course-fg-light, var(--ink));
+  --course-accent: var(--course-accent-light, var(--moss));
   grid-column: 1;
   z-index: 1;
   display: flex;
   min-width: 0;
   flex-direction: column;
   align-items: flex-start;
-  justify-content: center;
-  margin: 0.28rem;
-  padding: 0.6rem;
-  border: 1px solid color-mix(in srgb, var(--course-accent) 45%, var(--line));
-  border-left: 3px solid var(--course-accent);
-  background: var(--course-surface);
-  box-shadow: 0 0.35rem 0.8rem rgb(42 50 38 / 6%);
-  overflow: hidden;
+  justify-content: flex-start;
+  gap: 0.16rem;
+  margin: 0.24rem;
+  padding: 0.48rem 0.46rem;
+  border: 0;
+  border-radius: 3px;
+  background: var(--course-bg);
+  color: var(--course-fg);
   text-align: left;
 }
-.schedule-course--data-structures {
-  --course-accent: #486b8f;
-  --course-surface: color-mix(in srgb, #486b8f 17%, var(--paper));
-}
-.schedule-course--web-mining {
-  --course-accent: #86608f;
-  --course-surface: color-mix(in srgb, #86608f 16%, var(--paper));
-}
-.schedule-course--software-testing {
-  --course-accent: #b06156;
-  --course-surface: color-mix(in srgb, #b06156 16%, var(--paper));
-}
-.schedule-course--computer-networks {
-  --course-accent: #407d79;
-  --course-surface: color-mix(in srgb, #407d79 16%, var(--paper));
-}
-.schedule-course--computer-networks-lab {
-  --course-accent: #8a753d;
-  --course-surface: color-mix(in srgb, #8a753d 18%, var(--paper));
-}
-.schedule-course--computer-organization {
-  --course-accent: #5a6497;
-  --course-surface: color-mix(in srgb, #5a6497 17%, var(--paper));
-}
-.schedule-course--it-project-management {
-  --course-accent: #8e514f;
-  --course-surface: color-mix(in srgb, #8e514f 17%, var(--paper));
-}
-.schedule-course--artificial-intelligence {
-  --course-accent: #5b7d47;
-  --course-surface: color-mix(in srgb, #5b7d47 17%, var(--paper));
-}
-.schedule-course--xi-thought {
-  --course-accent: #7a677f;
-  --course-surface: color-mix(in srgb, #7a677f 16%, var(--paper));
-}
-.schedule-course--machine-learning {
-  --course-accent: #ae7140;
-  --course-surface: color-mix(in srgb, #ae7140 16%, var(--paper));
-}
-.schedule-course--design-patterns {
-  --course-accent: #3d748f;
-  --course-surface: color-mix(in srgb, #3d748f 16%, var(--paper));
-}
-.schedule-course--college-chinese {
-  --course-accent: #657c69;
-  --course-surface: color-mix(in srgb, #657c69 16%, var(--paper));
+:root[data-theme='dark'] .schedule-course {
+  --course-bg: var(--course-bg-dark, var(--surface-moss));
+  --course-fg: var(--course-fg-dark, var(--ink));
+  --course-accent: var(--course-accent-dark, var(--moss));
 }
 .schedule-course--ended {
-  opacity: 0.58;
+  opacity: 0.56;
 }
 .schedule-course--current {
-  border-left-width: 5px;
-  background: color-mix(in srgb, var(--course-accent) 21%, var(--paper));
-  box-shadow: 0 0.35rem 0.8rem rgb(42 50 38 / 10%);
-}
-.schedule-course--next {
-  border-color: color-mix(in srgb, var(--course-accent) 58%, var(--line));
+  box-shadow: inset 0 0 0 1.5px var(--course-accent);
 }
 .schedule-course--later {
-  opacity: 0.74;
+  opacity: 0.78;
 }
 .schedule-course strong,
-.schedule-course small,
-.schedule-course em {
+.schedule-course__room,
+.schedule-course__status {
   display: block;
   max-width: 100%;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-.schedule-course strong {
-  font: 600 0.77rem/1.28 var(--font-base);
-  text-wrap: balance;
-}
-.schedule-course small,
-.schedule-course em {
-  margin-top: 0.22rem;
-  color: var(--muted);
-  font: 0.57rem/1.3 var(--font-mono);
+  white-space: normal;
   overflow-wrap: anywhere;
 }
-.schedule-course strong + small {
-  margin-top: 0.35rem;
+.schedule-course strong {
+  color: var(--course-fg);
+  font: 700 0.8rem/1.26 var(--font-base);
+  text-wrap: balance;
 }
-.schedule-course small {
-  overflow: visible;
-  text-overflow: clip;
-  white-space: normal;
+.schedule-course__room {
+  color: color-mix(in srgb, var(--course-fg) 78%, transparent);
+  font: 500 0.68rem/1.28 var(--font-mono);
 }
-.schedule-course em {
-  margin-top: 0.4rem;
-  color: var(--course-accent);
-  font-style: normal;
-}
-.schedule-course__status::before {
-  content: '';
+.schedule-course__status {
+  margin-top: 0.14rem;
+  color: color-mix(in srgb, var(--course-fg) 84%, transparent);
+  font: 600 0.6rem/1.2 var(--font-mono);
 }
 .schedule-course--next .schedule-course__status::before {
   margin-right: 0.25rem;
@@ -1633,52 +1572,68 @@ main {
 .schedule-course-dialog {
   width: min(28rem, calc(100% - 2rem));
   padding: 0;
+  border-radius: 10px;
 }
 .schedule-course-dialog__card {
+  --course-accent: var(--course-accent-light, var(--moss));
   position: relative;
   width: 100%;
-  padding: 1.6rem;
-  border: 1px solid var(--line);
-  border-top: 3px solid var(--vermilion);
+  padding: 1.25rem 1.35rem 1.4rem;
   background: var(--paper);
   box-shadow: 0 2rem 5rem rgb(20 24 18 / 30%);
 }
+:root[data-theme='dark'] .schedule-course-dialog__card,
+:root[data-theme='dark'] .schedule-course-dialog__timeslot-item {
+  --course-accent: var(--course-accent-dark, var(--moss));
+}
 .schedule-course-dialog__close {
   position: absolute;
-  top: 0.6rem;
-  right: 0.7rem;
+  top: 0.75rem;
+  right: 0.85rem;
   border: 0;
   background: transparent;
   color: var(--muted);
-  font: 1.7rem/1 var(--font-heading);
+  font: 1.5rem/1 var(--font-heading);
 }
-.schedule-course-dialog__card h2 {
+.schedule-course-dialog__title {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
   max-width: calc(100% - 2rem);
-  margin: 0.65rem 0 1.5rem;
-  font: 1.8rem/1.15 var(--font-heading);
+  margin: 0.35rem 0 0.95rem;
+  font: 600 1.45rem/1.2 var(--font-heading);
+}
+.schedule-course-dialog__dot {
+  width: 0.62rem;
+  height: 0.62rem;
+  border-radius: 50%;
+  background: var(--course-accent);
+  flex-shrink: 0;
 }
 .schedule-course-dialog__card dl {
   margin: 0;
 }
 .schedule-course-dialog__card dl > div {
   display: grid;
-  grid-template-columns: 4rem 1fr;
-  gap: 1rem;
-  padding: 0.65rem 0;
-  border-top: 1px solid var(--line);
+  grid-template-columns: 3.8rem 1fr;
+  gap: 0.85rem;
+  align-items: baseline;
+  padding: 0.28rem 0;
 }
 .schedule-course-dialog__card dt {
-  color: var(--moss);
-  font: 0.65rem var(--font-mono);
+  color: var(--muted);
+  font: 0.7rem var(--font-mono);
 }
 .schedule-course-dialog__card dd {
   margin: 0;
+  font-size: 0.92rem;
+  line-height: 1.5;
 }
 .schedule-course-dialog__groups,
 .schedule-course-dialog__hours {
   display: flex;
   flex-direction: column;
-  gap: 0.25rem;
+  gap: 0.2rem;
 }
 .schedule-course-dialog__groups {
   margin: 0;
@@ -1687,6 +1642,67 @@ main {
 }
 .schedule-course-dialog__hours span {
   display: block;
+}
+.schedule-course-dialog__timeslot {
+  margin-top: 1.05rem;
+  padding-top: 0.95rem;
+  border-top: 1px solid var(--line);
+}
+.schedule-course-dialog__timeslot h3 {
+  margin: 0 0 0.75rem;
+  font: 600 0.92rem/1.3 var(--font-base);
+}
+.schedule-course-dialog__timeslot-list {
+  display: grid;
+  gap: 0.7rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.schedule-course-dialog__timeslot-group {
+  display: grid;
+  gap: 0.5rem;
+}
+.schedule-course-dialog__timeslot-item {
+  --course-accent: var(--course-accent-light, var(--moss));
+  display: flex;
+  align-items: flex-start;
+  gap: 0.55rem;
+}
+.schedule-course-dialog__timeslot-dot {
+  width: 0.48rem;
+  height: 0.48rem;
+  margin-top: 0.34rem;
+  border-radius: 50%;
+  background: var(--course-accent);
+  flex-shrink: 0;
+}
+.schedule-course-dialog__timeslot-content {
+  min-width: 0;
+}
+.schedule-course-dialog__timeslot-weeks {
+  margin: 0;
+  color: var(--moss);
+  font: 600 0.68rem/1.35 var(--font-mono);
+}
+.schedule-course-dialog__timeslot-weeks.active {
+  color: var(--vermilion);
+}
+.schedule-course-dialog__timeslot-content strong {
+  display: block;
+  margin-top: 0.1rem;
+  font: 600 0.88rem/1.35 var(--font-base);
+}
+.schedule-course-dialog__timeslot-content strong small {
+  margin-left: 0.35rem;
+  color: var(--muted);
+  font: 500 0.68rem var(--font-mono);
+}
+.schedule-course-dialog__timeslot-meta {
+  margin: 0.1rem 0 0;
+  color: var(--muted);
+  font-size: 0.76rem;
+  line-height: 1.4;
 }
 .schedule-month {
   padding: 2.75rem 0 5rem;
@@ -2067,12 +2083,12 @@ html:has(> body > dialog.modal-dialog[open]) {
     min-height: 7rem;
   }
   .schedule-now-summary {
-    grid-template-columns: 1fr;
-    gap: 0.35rem;
-    align-items: start;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    gap: 0.25rem 0.55rem;
+    align-items: baseline;
   }
   .schedule-now-summary__countdown {
-    text-align: left;
+    text-align: right;
   }
   .schedule-now-summary__body strong {
     white-space: normal;
@@ -2101,27 +2117,19 @@ html:has(> body > dialog.modal-dialog[open]) {
     padding-inline: 0.35rem;
   }
   .schedule-course {
-    margin: 0.22rem;
-    padding: 0.48rem;
+    margin: 0.18rem;
+    padding: 0.38rem 0.4rem;
   }
   .schedule-course strong {
-    font-size: 0.66rem;
+    font-size: 0.72rem;
+    line-height: 1.24;
   }
-  .schedule-course__campus,
-  .schedule-course__weeks {
-    display: none !important;
-  }
-  .schedule-course__room,
-  .schedule-course__teacher {
-    display: -webkit-box;
-    max-height: 2.6em;
-    font-size: 0.51rem;
-    line-height: 1.3;
-    -webkit-box-orient: vertical;
-    -webkit-line-clamp: 2;
+  .schedule-course__room {
+    font-size: 0.62rem;
+    line-height: 1.28;
   }
   .schedule-course__status {
-    font-size: 0.51rem;
+    font-size: 0.58rem;
   }
   .schedule-now-marker {
     right: 0.3rem;
