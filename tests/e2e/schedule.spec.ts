@@ -176,6 +176,8 @@ test.describe('AceYKN schedule', () => {
     expect(geometry.saturdayLeft).toBeGreaterThanOrEqual(geometry.viewportRight - 1)
 
     const collegeCard = page.locator('[data-schedule-date="2026-09-16"] .schedule-course').filter({ hasText: '大学语文★' })
+    await expect(collegeCard).not.toContainText('19:00')
+    await expect(collegeCard.locator('.schedule-course__time')).toHaveCount(0)
     await expect(collegeCard).toContainText('1210')
     await expect(collegeCard).toContainText('李斌')
     await expect(collegeCard.locator('.schedule-course__room')).toBeVisible()

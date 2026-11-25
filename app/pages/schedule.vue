@@ -462,7 +462,6 @@ useSeoMeta({
               @click="openCourse(course)"
             >
               <strong>{{ displayCourseText(course.title) }}</strong>
-              <span class="schedule-course__time">{{ courseTime(course.startSection, course.endSection) }}</span>
               <small class="schedule-course__campus">{{ displayCourseText(course.campus) }}</small>
               <small class="schedule-course__room">{{ displayCourseText(course.room) }}</small>
               <small class="schedule-course__teacher">{{ displayCourseText(course.teacher) }}</small>
