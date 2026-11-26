@@ -18,58 +18,59 @@ const DARK_PAPER = '#161914'
 // distinct LCh tones so courses stay separated across light and dark paper.
 const SCHEDULE_HUES = [250, 70, 160, 340, 100, 280, 190, 10, 130, 310, 220, 40] as const
 
+// Calm mineral/washi tones aligned with the site's warm paper palette.
 const LIGHT_TONES: ReadonlyArray<readonly [number, number]> = [
-  [90, 16],
-  [90, 19],
-  [89, 24],
-  [87, 24],
-  [94, 6],
-  [82, 24],
-  [82, 13],
-  [82, 11],
-  [82, 17],
-  [92, 15],
-  [83, 24],
-  [82, 24],
-  [82, 24],
-  [82, 11],
-  [92, 13],
-  [94, 6],
-  [84, 24],
-  [82, 7],
-  [95, 23],
-  [82, 24],
-  [95, 24],
-  [83, 24],
-  [93, 7],
-  [91, 12]
+  [90, 6],
+  [89, 8],
+  [91, 7],
+  [88, 9],
+  [92, 5],
+  [87, 8],
+  [90, 7],
+  [88, 7],
+  [91, 8],
+  [89, 6],
+  [87, 9],
+  [90, 8],
+  [88, 6],
+  [91, 6],
+  [89, 9],
+  [92, 6],
+  [87, 7],
+  [90, 5],
+  [88, 8],
+  [91, 9],
+  [89, 7],
+  [87, 9],
+  [92, 7],
+  [90, 9]
 ]
 
 const DARK_TONES: ReadonlyArray<readonly [number, number]> = [
-  [26, 22],
-  [16, 24],
-  [19, 24],
-  [18, 24],
+  [23, 8],
+  [20, 9],
+  [24, 7],
   [21, 10],
-  [12, 16],
-  [11, 13],
-  [26, 22],
-  [11, 18],
-  [26, 24],
-  [26, 6],
-  [12, 13],
-  [14, 5],
-  [26, 18],
-  [23, 13],
-  [23, 11],
-  [21, 24],
-  [22, 24],
-  [26, 20],
-  [12, 24],
-  [26, 24],
-  [12, 24],
-  [20, 16],
-  [21, 24]
+  [22, 6],
+  [19, 8],
+  [25, 7],
+  [21, 7],
+  [23, 9],
+  [20, 6],
+  [24, 9],
+  [22, 8],
+  [19, 6],
+  [25, 6],
+  [21, 9],
+  [23, 6],
+  [20, 8],
+  [24, 8],
+  [22, 10],
+  [19, 9],
+  [25, 8],
+  [21, 8],
+  [23, 7],
+  [20, 10]
 ]
 
 interface RgbColor {
@@ -161,7 +162,7 @@ function lchToRgb(lightness: number, chroma: number, hue: number): RgbColor {
 }
 
 function neutralScheduleForeground(backgroundHex: string, brightness: 'light' | 'dark'): string {
-  const preferred = brightness === 'light' ? '#3b3c3f' : '#f3f4f6'
+  const preferred = brightness === 'light' ? '#20251e' : '#ece9dd'
   if (contrastRatio(backgroundHex, preferred) >= 4.5) return preferred
   return contrastRatio(backgroundHex, '#000000') >= contrastRatio(backgroundHex, '#ffffff') ? '#000000' : '#ffffff'
 }
@@ -217,19 +218,16 @@ export function resolveScheduleColor(
   const tones = light ? LIGHT_TONES : DARK_TONES
   const paletteLength = schedulePaletteLength()
   const [lightness, chroma] =
-    index < paletteLength
-      ? tones[index]!
-      : light
-        ? [84 + (index % 4) * 3, 14 + (index % 3) * 7]
-        : [14 + (index % 4) * 4, 14 + (index % 3) * 7]
+    index < paletteLength ? tones[index]! : light ? [88 + (index % 4), 6 + (index % 3) * 2] : [20 + (index % 4) * 2, 6 + (index % 3) * 2]
   const hue = index < paletteLength ? SCHEDULE_HUES[index % SCHEDULE_HUES.length]! : ((index - paletteLength) * 137.507764) % 360
 
   const accentTone = lchToRgb(lightness, chroma, hue)
   const surface = parseHexColor(options.surfaceHex ?? (light ? LIGHT_PAPER : DARK_PAPER))
-  const containerRgb = lerpRgb(surface, accentTone, 0.9)
+  const containerRgb = lerpRgb(surface, accentTone, 0.72)
   const container = formatHexColor(containerRgb)
   const onContainer = neutralScheduleForeground(container, brightness)
-  const accent = formatHexColor(lerpRgb(containerRgb, parseHexColor(onContainer), 0.28))
+  const accentRgb = lchToRgb(light ? 44 : 70, Math.min(chroma + 8, 18), hue)
+  const accent = formatHexColor(lerpRgb(surface, accentRgb, 0.85))
 
   return { container, onContainer, accent }
 }
